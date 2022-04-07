@@ -11,4 +11,12 @@
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="MVVM\ViewModel\" />
+    <Folder Include="MVVM\View\" />
+    <Folder Include="MVVM\Model\" />
+    <Folder Include="Theme\" />
+    <Folder Include="Images\" />
+  </ItemGroup>
+
 </Project>
