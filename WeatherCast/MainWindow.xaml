@@ -62,27 +62,22 @@
 
         <Grid.RowDefinitions>
             <RowDefinition Height="60"/>
-            <RowDefinition Height="6*" />
+            <RowDefinition />
         </Grid.RowDefinitions>
 
-        <TextBlock
-            x:Name="Header"
-            Margin="30 0 0 0"
-            VerticalAlignment="Center" 
-            FontSize="23" TextAlignment="Left"
-            FontWeight="DemiBold"
-            Text="WeatherCast"/>
+        <TextBlock Text="WeatherCast"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Center" 
+                   FontSize="23" 
+                   FontWeight="DemiBold"
+                   Margin="30 0 0 0"/>
 
-        <StackPanel Grid.Row="1" Grid.Column="0">
-            <Grid HorizontalAlignment="Stretch">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="30"/>
-                    <RowDefinition />
-                </Grid.RowDefinitions>
-                <Button Content="Добавить город"
-                    Template="{StaticResource ButtonTemplate}"/>
+        <StackPanel Grid.Row="1">
+            <Button Content="Добавить город"
+                    Height="35"
+                    FontSize="15"
+                    Style="{StaticResource MenuButtonTheme}"/>
 
-            </Grid>
         </StackPanel>
 
 
