@@ -54,7 +54,7 @@
 
 
 
-    <Grid>
+    <Grid Background="#E4E7E4">
         <Grid.ColumnDefinitions>
             <ColumnDefinition MaxWidth="240"/>
             <ColumnDefinition/>
@@ -66,6 +66,7 @@
         </Grid.RowDefinitions>
 
         <TextBlock Text="WeatherCast"
+                   Foreground="#080C2E"
                    HorizontalAlignment="Left"
                    VerticalAlignment="Center" 
                    FontSize="23" 
@@ -78,12 +79,22 @@
                     FontSize="15"
                     Style="{StaticResource MenuButtonTheme}"/>
 
+
         </StackPanel>
 
+        <TextBox Grid.Column="1"
+                 MinWidth="270"
+                 
+                 MaxWidth="500"
+                 Height="35"
+                 HorizontalAlignment="Left"
+                 VerticalAlignment="Center"
+                 Margin="15 0 0 0"
+                 Style="{StaticResource TextBoxTheme}"/>
+
+        <ContentControl Grid.Row="1" 
+                        Grid.Column="1" 
+                        Margin="5"/>
 
     </Grid>
-</Window>
-
-
-
-<!--  <Button Height=" 30" Width="70" Content="Нажать" Click="Button_Click" /> -->
+</Window> 
