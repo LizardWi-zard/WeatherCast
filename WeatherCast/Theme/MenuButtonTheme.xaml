@@ -12,6 +12,7 @@
                               Background="{TemplateBinding Background}">
                             
                             <TextBlock Text="{TemplateBinding Property=Content}"
+                                       Foreground="#080C2E"
                                        VerticalAlignment="Center"
                                        Margin="30 0 0 0"/>
 
@@ -26,7 +27,7 @@
 
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Background" Value="IndianRed"/>
+                <Setter Property="Background" Value="#767A89"/>
             </Trigger>
         </Style.Triggers>
     </Style>
