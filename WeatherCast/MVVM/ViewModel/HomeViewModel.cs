@@ -6,7 +6,17 @@ using System.Threading.Tasks;
 
 namespace WeatherCast.MVVM.ViewModel
 {
-    internal class HomeViewModel
+    public class HomeViewModel
     {
+        public WeatherResponse Response { get; set; }
+
+        public string Title { get; set; }
+
+        public HomeViewModel()
+        {
+            APIControl control = new APIControl();
+
+            Response = control.GetResponse();
+        }
     }
 }
