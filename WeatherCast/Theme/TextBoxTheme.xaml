@@ -9,8 +9,8 @@
                     <ControlTemplate TargetType="{x:Type TextBox}">
                         <Border CornerRadius="10"
                                 Background="#D5D8D8"
-                                Width="250"
-                                Height="35">
+                                Height="35"
+                                HorizontalAlignment="Stretch">
 
                             <Grid>
                                 <Rectangle StrokeThickness="1"/>
