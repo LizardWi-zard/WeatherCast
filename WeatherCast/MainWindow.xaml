@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:WeatherCast"
         mc:Ignorable="d"
         Title="MainWindow" Height="520" Width="920"
-        MinHeight="400" MinWidth="600">
+        MinHeight="500" MinWidth="650">
 
     <Window.DataContext>
         <viewModel:MainViewModel/>
@@ -90,20 +90,35 @@
                 <ColumnDefinition MaxWidth="700"
                                   MinWidth="250"/>
                 <ColumnDefinition/>
+                <ColumnDefinition/>
                 
             </Grid.ColumnDefinitions>
             <TextBox Grid.Column="0"
-                 Height="36"
-                 HorizontalAlignment="Stretch"
-                 VerticalAlignment="Center"
-                 Margin="5 0 5 0"
-                 Style="{StaticResource TextBoxTheme}"/>
+                     x:Name="SearchField"
+                     Height="36"
+                     HorizontalAlignment="Stretch"
+                     VerticalAlignment="Center"
+                     Margin="5 0 5 0"/>
+
+            <Button Command="{Binding SearchViewCommand}"
+                    Click="Button_Click"
+                    Grid.Column="1" 
+                    Style="{StaticResource MenuButtonTheme}"
+                    Content="Найти город"
+                    FontSize="18"/>
         </Grid>
 
-        <ContentControl Grid.Row="1" 
-                        Grid.Column="1" 
-                        Margin="5"
-                        Content="{Binding CurrentView}"/>
+        <Grid Grid.Row="1"
+              Grid.Column="1">
+         
+            <ContentControl Margin="5"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Stretch"
+                            Content="{Binding CurrentView}"/>
 
+        </Grid>
+        
     </Grid>
-</Window> 
+</Window>
+
+<!-- " Style="{StaticResource TextBoxTheme}" -->

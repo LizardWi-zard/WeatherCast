@@ -18,11 +18,18 @@ namespace WeatherCast
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+            string city = SearchField.Text;
+
             APIControl control = new APIControl();
+
+            control.CreateAPIurl(city);
 
             WeatherResponse response = control.GetResponse();
 
-            MessageBox.Show($"Температура : {response.Main.Temp} \t Ощущается как : {response.Main.Feels_Like}");
+            if (response != null)
+            {
+                MessageBox.Show($"Температура : {response.Main.Temp} \t Ощущается как : {response.Main.Feels_Like}");
+            }
         }
     }
 }
