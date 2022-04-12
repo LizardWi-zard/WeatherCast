@@ -11,94 +11,126 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     
-    <StackPanel>
-        
-        <TextBlock Text="Добрый день" 
+    <Grid HorizontalAlignment="Stretch"
+          VerticalAlignment="Stretch" 
+          Background="AntiqueWhite">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="150"/>
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0"
+                   Text="Добрый день" 
                    Margin="10 0 0 20"
                    FontSize="24"/>
 
-        <StackPanel Orientation="Horizontal"
-                    Background="Transparent">
+        <Grid Grid.Row="1"
+              Background="Transparent"
+              VerticalAlignment="Top">
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
 
             <Border Height="150"
-                    Width="300"
                     Background="AliceBlue"
-                    HorizontalAlignment="Left"
+                    HorizontalAlignment="Stretch"
                     VerticalAlignment="Top"
-                    Margin="0 0 0 0"
                     CornerRadius="20">
 
-                <Grid>
+                <Grid HorizontalAlignment="Stretch"
+                      Grid.IsSharedSizeScope="True">
                     <Grid.RowDefinitions>
-                        <RowDefinition/>
-                        <RowDefinition/>
+                        <RowDefinition SharedSizeGroup="Label"/>
+                        <RowDefinition Height="2*"/>
                     </Grid.RowDefinitions>
+                    
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition SharedSizeGroup="col"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
 
-                    <TextBlock Text="Температура на данный момент:"
+                    <TextBlock Grid.Column="1" Grid.Row="0"
+                               Text="Температура на данный момент:"
+                               TextWrapping="Wrap"
                                Foreground="Black"
-                               FontSize="18"
-                               FontWeight="Bold"/>
+                               FontSize="18"/>
 
-                    <TextBlock Text="{Binding Response.Main.Temp}"
-                                Foreground="Black"
-                                FontSize="16"
-                                FontWeight="Medium"
-                                Grid.Row="1"/>
+                    <TextBlock Grid.Row="2"
+                               Grid.Column="1"
+                           
+                               Foreground="Black"
+                               FontSize="16"/>
                 </Grid>
-                
-                
+
+
 
             </Border>
-
+            <!-- Text="{Binding Response.Main.Temp}" -->
             <Border Height="150"
                     Width="150"
                     Background="AliceBlue"
-                    HorizontalAlignment="Left"
+                    HorizontalAlignment="Right"
                     VerticalAlignment="Top"
                     Margin="20 0 0 0"
-                    CornerRadius="20"/>
-            
-        </StackPanel>
+                    CornerRadius="20"
+                    Grid.Column="1"/>
 
-        <TextBlock Text="Погода в других городах" 
-                   Margin="10 20 0 20"
+        </Grid>
+
+        <TextBlock Grid.Row="2"
+                   Text="Погода в других городах" 
+                   Margin="5"
                    FontSize="24"/>
 
-        <StackPanel Background="Transparent"
-                    Orientation="Horizontal">
+        <Grid Grid.Row="3"
+              Background="Transparent"
+              VerticalAlignment="Stretch"
+              Margin="0 0 0 0"
+              MinHeight="110">
 
-            <Border Height="150"
-                    Width="150"
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <Border Grid.Column="0"
                     Background="AliceBlue"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
-                    Margin="0 0 0 0"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    Margin="0 0 5 0"
                     CornerRadius="20"/>
 
-            <Border Height="150"
-                    Width="150"
+            <Border Grid.Column="1"
                     Background="AliceBlue"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
-                    Margin="20 0 0 0"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    Margin="5 0 5 0"
                     CornerRadius="20"/>
 
-            <Border Height="150"
-                    Width="150"
+            <Border Grid.Column="2"
                     Background="AliceBlue"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
-                    Margin="20 0 0 0"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    Margin="5 0 5 0"
                     CornerRadius="20"/>
 
-            <Border Height="150"
-                    Width="150"
+            <Border Grid.Column="3"
                     Background="AliceBlue"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
-                    Margin="20 0 0 0"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    Margin="5 0 0 0"
                     CornerRadius="20"/>
 
-        </StackPanel>
-    </StackPanel>
+        </Grid>
+
+
+    </Grid>
 </UserControl>
