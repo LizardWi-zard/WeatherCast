@@ -9,8 +9,6 @@ namespace WeatherCast.MVVM.ViewModel
 {
     class MainViewModel : ObservableObject
     {
-        internal APIControl control;
-
         public HomeViewModel HomeVM { get; set; }
         
         public SearchViewModel SearchVM { get; set; }
@@ -19,14 +17,14 @@ namespace WeatherCast.MVVM.ViewModel
         
         public RelayCommand SearchViewCommand { get; set; }
 
-        public RelayCommand GetTextCommand { get; set; }
+        public RelayCommand SearchCommand { get; set; }
 
         public WeatherResponse Response { get; set; }
 
         public string InputText { get; set; }
 
         private object _currentView;
-
+        APIControl control;
 
         public object CurrentView
         {
@@ -39,14 +37,12 @@ namespace WeatherCast.MVVM.ViewModel
         {
             APIControl control = new APIControl();
 
-            //Response = control.GetResponse();
-
             HomeVM = new HomeViewModel();
-            SearchVM = new SearchViewModel(/*control, Response*/);
+            SearchVM = new SearchViewModel();
 
             CurrentView = HomeVM;
 
-            GetTextCommand = new RelayCommand(o =>
+            SearchCommand = new RelayCommand(o =>
             {
                 InputText = MainWindow.SearchText.ToString();
                 APICall(control);
@@ -54,9 +50,7 @@ namespace WeatherCast.MVVM.ViewModel
                 SearchVM.UpdateControlResponse(control, Response);
 
                 CurrentView = SearchVM;
-                
             });
-
 
             HomeViewCommand = new RelayCommand(o =>
             {

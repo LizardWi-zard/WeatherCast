@@ -16,7 +16,7 @@ namespace WeatherCast.MVVM.ViewModel
         {
             APIControl control = new APIControl();
 
-            Response = control.GetResponse();
+            //Response = control.GetResponse();
         }
     }
 }
