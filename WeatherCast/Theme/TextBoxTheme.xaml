@@ -23,7 +23,7 @@
                                          Foreground="#080C2E"
                                          BorderThickness="0"/>
 
-                                <TextBlock Text="Найти город"
+                                <TextBlock Text="Впишите название города"
                                            IsHitTestVisible="False" 
                                            VerticalAlignment="Center"
                                            HorizontalAlignment="Left"

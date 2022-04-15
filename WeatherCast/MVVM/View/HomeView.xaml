@@ -13,7 +13,7 @@
     
     <Grid HorizontalAlignment="Stretch"
           VerticalAlignment="Stretch" 
-          Background="AntiqueWhite">
+          Background="Transparent">
 
         <Grid.RowDefinitions>
             <RowDefinition Height="60"/>
