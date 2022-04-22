@@ -8,15 +8,52 @@ namespace WeatherCast.MVVM.ViewModel
 {
     public class HomeViewModel
     {
-        public WeatherResponse Response { get; set; }
+        public CurrentWeather Response { get; set; }
+
+        APIControl Control { get; set; }
+
+        public CurrentWeather CurrentWeather { get; set; }
 
         public string Title { get; set; }
 
-        public HomeViewModel()
+        public string WelcomeText { get; set; }
+
+
+        public HomeViewModel(APIControl control, CurrentWeather weather)
         {
-            APIControl control = new APIControl();
+            this.Control = control;
+            CurrentWeather = weather;
 
             //Response = control.GetResponse();
+
+            WelcomeText = SetMessageByTime();
+
+        }
+
+        static string SetMessageByTime()
+        {
+            string message = null;
+
+            TimeSpan time = DateTime.Now.TimeOfDay;
+
+            if (new TimeSpan(0, 0, 0) < time && new TimeSpan(6, 0, 0) >= time)
+            {
+                message = "Доброй ночи";
+            }
+            else if (new TimeSpan(6, 0, 0) < time && new TimeSpan(12, 0, 0) >= time)
+            {
+                message = "Доброе утро";
+            }
+            else if (new TimeSpan(12, 0, 0) < time && new TimeSpan(18, 0, 0) >= time)
+            {
+                message = "Добрый день";
+            }
+            else if (new TimeSpan(18, 0, 0) < time && new TimeSpan(24, 0, 0) >= time)
+            {
+                message = "Добрый вечер";
+            }
+
+            return message;
         }
     }
 }

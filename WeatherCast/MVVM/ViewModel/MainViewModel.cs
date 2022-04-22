@@ -19,11 +19,12 @@ namespace WeatherCast.MVVM.ViewModel
 
         public RelayCommand SearchCommand { get; set; }
 
-        public WeatherResponse Response { get; set; }
+        public CurrentWeather Response { get; set; }
 
         public string InputText { get; set; }
 
         private object _currentView;
+        string homeCity = "Ivanovo";
         APIControl control;
 
         public object CurrentView
@@ -36,8 +37,10 @@ namespace WeatherCast.MVVM.ViewModel
         public MainViewModel()
         {
             APIControl control = new APIControl();
+            control.CreateСurrentWeatherUrl(homeCity);
+            
 
-            HomeVM = new HomeViewModel();
+            HomeVM = new HomeViewModel(control, control.CurrentWeather());
             SearchVM = new SearchViewModel();
 
             CurrentView = HomeVM;
@@ -46,7 +49,7 @@ namespace WeatherCast.MVVM.ViewModel
             {
                 InputText = MainWindow.SearchText.ToString();
                 APICall(control);
-                Response = control.GetResponse();
+                Response = control.CurrentWeather();
                 SearchVM.UpdateControlResponse(control, Response);
 
                 CurrentView = SearchVM;
@@ -65,7 +68,7 @@ namespace WeatherCast.MVVM.ViewModel
 
         void APICall(APIControl control)
         {
-            control.CreateAPIurl(InputText);
+            control.CreateСurrentWeatherUrl(InputText);
         }
     }
 }

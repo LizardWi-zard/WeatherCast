@@ -6,10 +6,10 @@
              
              xmlns:local="clr-namespace:WeatherCast.MVVM.View" 
              xmlns:viewmodel="clr-namespace:WeatherCast.MVVM.ViewModel" 
-             d:DataContext="{d:DesignInstance Type=viewmodel:MainViewModel}"
+             d:DataContext="{d:DesignInstance Type=viewmodel:HomeViewModel}"
              
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="850" d:DesignWidth="800">
     
     <Grid HorizontalAlignment="Stretch"
           VerticalAlignment="Stretch" 
@@ -17,26 +17,31 @@
 
         <Grid.RowDefinitions>
             <RowDefinition Height="60"/>
-            <RowDefinition Height="150"/>
+            <RowDefinition Height="250"/>
             <RowDefinition Height="60"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="*" MaxHeight="400"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.Row="0"
-                   Text="Добрый день" 
-                   Margin="10 0 0 20"
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition MinWidth="0" MaxWidth="200"/>
+            <ColumnDefinition MinWidth="400"/>
+            <ColumnDefinition MinWidth="0" MaxWidth="200"/>
+        </Grid.ColumnDefinitions>
+
+        <TextBlock Grid.Row="0" Grid.Column="1"
+                   x:Name="WelcomeTextBlock"
+                   Text="{Binding Path=WelcomeText}" 
+                   HorizontalAlignment="Center"
                    FontSize="24"/>
 
-        <Grid Grid.Row="1"
+        <Grid Grid.Row="1" Grid.Column="1"
+              MaxWidth="500"
               Background="Transparent"
+              HorizontalAlignment="Stretch"
               VerticalAlignment="Top">
 
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
 
-            <Border Height="150"
+            <Border Height="250"
                     Background="AliceBlue"
                     HorizontalAlignment="Stretch"
                     VerticalAlignment="Top"
@@ -46,7 +51,8 @@
                       Grid.IsSharedSizeScope="True">
                     <Grid.RowDefinitions>
                         <RowDefinition SharedSizeGroup="Label"/>
-                        <RowDefinition Height="2*"/>
+                        <RowDefinition Height="2*" MaxHeight="120"/>
+                        <RowDefinition/>
                     </Grid.RowDefinitions>
                     
                     <Grid.ColumnDefinitions>
@@ -56,80 +62,67 @@
                     </Grid.ColumnDefinitions>
 
                     <TextBlock Grid.Column="1" Grid.Row="0"
-                               Text="Температура на данный момент:"
+                               Text="{Binding CurrentWeather.Name}"
+                               VerticalAlignment="Top"
+                               HorizontalAlignment="Center"
                                TextWrapping="Wrap"
                                Foreground="Black"
-                               FontSize="18"/>
+                               FontSize="32"/>
 
-                    <TextBlock Grid.Row="2"
+                    <TextBlock Grid.Row="1"
                                Grid.Column="1"
-                           
                                Foreground="Black"
-                               FontSize="16"/>
+                               VerticalAlignment="Top"
+                               HorizontalAlignment="Center"
+                               Text="{Binding CurrentWeather.Main.Temp}"
+                               FontSize="72"/>
+                    
+                    <TextBlock Grid.Row="1" 
+                               Grid.Column="1"
+                               Foreground="Black"
+                               VerticalAlignment="Bottom"
+                               HorizontalAlignment="Center"
+                               Text="{Binding CurrentWeather.Weather[0].Main}"
+                               FontSize="32"/>
+                    
+                    <StackPanel Grid.Column="0"
+                                Grid.ColumnSpan="3"
+                                Grid.Row="2"
+                                Orientation="Horizontal">
+
+                        <TextBlock Text="По ощущениям:"
+                                   FontSize="16"
+                                   Margin="0 0 5 0"/>
+                        <TextBlock Text="{Binding CurrentWeather.Main.Feels_Like}"
+                                   FontSize="19"
+                                   Margin="0 0 5 0"/>
+                        <TextBlock Text="Описание:"
+                                   FontSize="16"
+                                   Margin="0 0 5 0"/>
+                        <TextBlock Text="{Binding CurrentWeather.Weather[0].Description}"
+                                   FontSize="19"
+                                   Margin="0 0 5 0"/>
+
+                    </StackPanel>
+                               
                 </Grid>
 
 
 
             </Border>
             <!-- Text="{Binding Response.Main.Temp}" -->
-            <Border Height="150"
-                    Width="150"
-                    Background="AliceBlue"
-                    HorizontalAlignment="Right"
-                    VerticalAlignment="Top"
-                    Margin="20 0 0 0"
-                    CornerRadius="20"
-                    Grid.Column="1"/>
+
 
         </Grid>
 
-        <TextBlock Grid.Row="2"
-                   Text="Погода в других городах" 
+        <TextBlock Grid.Row="2" Grid.Column="1"
+                   Text="По дням" 
                    Margin="5"
                    FontSize="24"/>
 
-        <Grid Grid.Row="3"
-              Background="Transparent"
-              VerticalAlignment="Stretch"
-              Margin="0 0 0 0"
-              MinHeight="110">
-
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
-
-            <Border Grid.Column="0"
-                    Background="AliceBlue"
-                    HorizontalAlignment="Stretch"
-                    VerticalAlignment="Stretch"
-                    Margin="0 0 5 0"
-                    CornerRadius="20"/>
-
-            <Border Grid.Column="1"
-                    Background="AliceBlue"
-                    HorizontalAlignment="Stretch"
-                    VerticalAlignment="Stretch"
-                    Margin="5 0 5 0"
-                    CornerRadius="20"/>
-
-            <Border Grid.Column="2"
-                    Background="AliceBlue"
-                    HorizontalAlignment="Stretch"
-                    VerticalAlignment="Stretch"
-                    Margin="5 0 5 0"
-                    CornerRadius="20"/>
-
-            <Border Grid.Column="3"
-                    Background="AliceBlue"
-                    HorizontalAlignment="Stretch"
-                    VerticalAlignment="Stretch"
-                    Margin="5 0 0 0"
-                    CornerRadius="20"/>
-
-        </Grid>
+        <ListBox Grid.Row="3" Grid.Column="1" >
+            
+        </ListBox>       
 
 
     </Grid>
