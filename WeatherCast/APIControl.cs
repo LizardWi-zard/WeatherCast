@@ -17,40 +17,56 @@ namespace WeatherCast
 
         string response;
 
-        string url;
+        string currentWeatherUrl;
+        string futureWeatherUrl;
 
-        public void CreateAPIurl(string str)
+        public void CreateСurrentWeatherUrl(string cityName)
         {
-            this.url = "http://api.openweathermap.org/data/2.5/weather?q=" + str + "&units=metric&appid=8b946297edc5dc36bd60f3acab86dc68";
+            currentWeatherUrl = "http://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&units=metric&appid=8b946297edc5dc36bd60f3acab86dc68";
         }
 
-        public WeatherResponse GetResponse()
+        public void CreateFutureWeatherUrl(string lon, string lat)
         {
-            if (WebRequestResponse() != null)
+            futureWeatherUrl = $"https://api.openweathermap.org/data/2.5/onecall?lon={lon}&lat={lat}&lang=ru&appid=8b946297edc5dc36bd60f3acab86dc68";
+        }
+
+
+        //TODO: combine methods by making switch 
+        public CurrentWeather CurrentWeather()
+        {
+            CurrentWeather currentWeather = JsonConvert.DeserializeObject<CurrentWeather>(GetResponseAsString(currentWeatherUrl));
+
+            return currentWeather;
+        }
+
+        public ForecastWeather FutureWeather()
+        {
+            ForecastWeather futureWeather = JsonConvert.DeserializeObject<ForecastWeather>(GetResponseAsString(futureWeatherUrl));
+
+            return futureWeather;
+        }
+
+        public string GetResponseAsString(string geivenUrl)
+        {
+            if (WebRequestResponse(geivenUrl) != null)
             {
                 using (StreamReader streamReader = new StreamReader(httpWebResponse.GetResponseStream()))
                 {
                     response = streamReader.ReadToEnd();
                 }
 
-                Console.WriteLine();
-
-                WeatherResponse weatherResponse = JsonConvert.DeserializeObject<WeatherResponse>(response);
-
-                return weatherResponse;
+                return response;
             }
 
             return null;
         }
 
-        private HttpWebResponse WebRequestResponse()
+        private HttpWebResponse WebRequestResponse(string geivenUrl)
         {
-            httpWebRequest = (HttpWebRequest)WebRequest.Create(url);
-
-
-
             try
             {
+                httpWebRequest = (HttpWebRequest)WebRequest.Create(geivenUrl);
+
                 httpWebResponse = (HttpWebResponse)httpWebRequest.GetResponse();
             }
             catch (Exception ex)
@@ -61,28 +77,5 @@ namespace WeatherCast
             return httpWebResponse;
 
         }
-    }
-
-    public class WeatherResponse
-    {
-        public string Name { get; set; }
-
-        public TemperatureInfo Main { get; set; }
-
-        public WeatherInfo[] Weather { get; set; }
-    }
-
-    public class WeatherInfo
-    {
-        public string Main { get; set; }
-
-        public string Description { get; set; }
-    }
-
-    public class TemperatureInfo
-    {
-        public float Temp { get; set; }
-
-        public float Feels_Like { get; set; }
     }
 }
