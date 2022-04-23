@@ -13,14 +13,6 @@ namespace WeatherCast
         public MainWindow()
         {
             InitializeComponent();
-
-        }
-
-        public static object SearchText { get; internal set; }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            SearchText = SearchField.Text;
         }
     }
 }
