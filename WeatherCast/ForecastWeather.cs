@@ -33,6 +33,13 @@ namespace WeatherCast
 
         public int Clouds { get; set; }
 
+        public int TempToInt(float temp)
+        {
+            int tmp = (int)temp;
+
+            return tmp;
+        }
+
         public DateTime GetDate(double unixTimeStamp)
         {
             DateTime dateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
@@ -43,6 +50,8 @@ namespace WeatherCast
     public class FutureTempInfo
     {
         public float Day { get; set; }
+
+        public int DayInt { get; set; }
 
         public float Min { get; set; }
 

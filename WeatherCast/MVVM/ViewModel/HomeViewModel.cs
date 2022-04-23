@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -31,6 +32,7 @@ namespace WeatherCast.MVVM.ViewModel
             foreach (var item in ForecastWeather.Daily)
             {
                 item.Date = item.GetDate(item.Dt);
+                item.Temp.DayInt = item.TempToInt(item.Temp.Day);
             }
 
             WelcomeText = SetMessageByTime();

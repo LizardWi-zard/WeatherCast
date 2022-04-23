@@ -19,7 +19,8 @@
             <RowDefinition Height="60"/>
             <RowDefinition Height="250"/>
             <RowDefinition Height="60"/>
-            <RowDefinition Height="*" MaxHeight="400"/>
+            <RowDefinition Height="185"/>
+            <RowDefinition/>
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
@@ -121,192 +122,45 @@
                  Background="Transparent"
                  ScrollViewer.HorizontalScrollBarVisibility="Auto"
                  ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                 BorderBrush="Transparent">
+                 BorderBrush="Transparent"
+                 ItemsSource="{Binding ForecastWeather.Daily}">
 
-            <ListBox.ItemsPanel>
-                <ItemsPanelTemplate>
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="ListBoxItem">
+                    <Setter Property="Height" Value="150"/>
+                    <Setter Property="Width" Value="150"/>
+                    <Setter Property="Background" Value="AliceBlue"/>
+                </Style>
+            </ListBox.ItemContainerStyle>
+
+            <ListBox.ItemsPanel >
+                <ItemsPanelTemplate >
                     <WrapPanel IsItemsHost="True"/>
                 </ItemsPanelTemplate>
             </ListBox.ItemsPanel>
 
-            <ListBoxItem Height="150"
-                         Width="150"
-                         Background="AliceBlue">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
 
-                <StackPanel Orientation="Vertical">
+                    <StackPanel Orientation="Vertical">
 
-                    <TextBlock Text="{Binding ForecastWeather.Daily[0].Date.DayOfWeek}"
+                        <TextBlock Text="{Binding Date.DayOfWeek}"
                                FontSize="23"
                                Margin="3"/>
-                    <TextBlock Text="{Binding ForecastWeather.Daily[0].Temp.Day}"
+                        <TextBlock Text="{Binding Temp.DayInt}"
                                FontSize="32"
                                Margin="3"/>
-                    <TextBlock Text="{Binding ForecastWeather.Daily[0].Weather[0].Main}"
+                        <TextBlock Text="{Binding Weather[0].Main}"
                                FontSize="19"
                                Margin="3"/>
-                    <TextBlock Text="{Binding ForecastWeather.Daily[0].Clouds}"
+                        <TextBlock Text="{Binding Clouds}"
                                FontSize="19"
                                Margin="3"/>
-                </StackPanel>
+                    </StackPanel>
 
-            </ListBoxItem>
-
-            <ListBoxItem Height="150"
-                         Width="150"
-                         Background="AliceBlue">
-
-                <StackPanel Orientation="Vertical">
-
-                    <TextBlock Text="{Binding ForecastWeather.Daily[1].Date.DayOfWeek}"
-                               FontSize="23"                        
-                               Margin="3"/>
-                    <TextBlock Text="{Binding ForecastWeather.Daily[1].Temp.Day}"
-                               FontSize="32"                        
-                               Margin="3"/>                         
-                    <TextBlock Text="{Binding ForecastWeather.Daily[1].Weather[0].Main}"
-                               FontSize="19"                        
-                               Margin="3"/>                         
-                    <TextBlock Text="{Binding ForecastWeather.Daily[1].Clouds}"
-                               FontSize="19"
-                               Margin="3"/>
-                </StackPanel>
-
-            </ListBoxItem>
-
-            <ListBoxItem Height="150"
-                         Width="150"
-                         Background="AliceBlue">
-
-                <StackPanel Orientation="Vertical">
-
-                    <TextBlock Text="{Binding ForecastWeather.Daily[2].Date.DayOfWeek}"
-                               FontSize="23"                        
-                               Margin="3"/>
-                    <TextBlock Text="{Binding ForecastWeather.Daily[2].Temp.Day}"
-                               FontSize="32"                        
-                               Margin="3"/>                         
-                    <TextBlock Text="{Binding ForecastWeather.Daily[2].Weather[0].Main}"
-                               FontSize="19"                        
-                               Margin="3"/>                         
-                    <TextBlock Text="{Binding ForecastWeather.Daily[2].Clouds}"
-                               FontSize="19"
-                               Margin="3"/>
-                </StackPanel>
-
-            </ListBoxItem>
-
-            <ListBoxItem Height="150"
-                         Width="150"
-                         Background="AliceBlue">
-
-                <StackPanel Orientation="Vertical">
-
-                    <TextBlock Text="{Binding ForecastWeather.Daily[3].Date.DayOfWeek}"
-                               FontSize="23"                        
-                               Margin="3"/>
-                    <TextBlock Text="{Binding ForecastWeather.Daily[3].Temp.Day}"
-                               FontSize="32"                        
-                               Margin="3"/>                         
-                    <TextBlock Text="{Binding ForecastWeather.Daily[3].Weather[0].Main}"
-                               FontSize="19"                        
-                               Margin="3"/>                         
-                    <TextBlock Text="{Binding ForecastWeather.Daily[3].Clouds}"
-                               FontSize="19"
-                               Margin="3"/>
-                </StackPanel>
-
-            </ListBoxItem>
-
-            <ListBoxItem Height="150"
-                         Width="150"
-                         Background="AliceBlue">
-
-                <StackPanel Orientation="Vertical">
-
-                    <TextBlock Text="{Binding ForecastWeather.Daily[4].Date.DayOfWeek}"
-                               FontSize="23"                        
-                               Margin="3"/>                         
-                    <TextBlock Text="{Binding ForecastWeather.Daily[4].Temp.Day}"
-                               FontSize="32"                        
-                               Margin="3"/>                         
-                    <TextBlock Text="{Binding ForecastWeather.Daily[4].Weather[0].Main}"
-                               FontSize="19"                        
-                               Margin="3"/>                         
-                    <TextBlock Text="{Binding ForecastWeather.Daily[4].Clouds}"
-                               FontSize="19"
-                               Margin="3"/>
-                </StackPanel>
-
-            </ListBoxItem>
-
-            <ListBoxItem Height="150"
-                         Width="150"
-                         Background="AliceBlue">
-
-                <StackPanel Orientation="Vertical">
-
-                    <TextBlock Text="{Binding ForecastWeather.Daily[5].Date.DayOfWeek}"
-                               FontSize="23"                        
-                               Margin="3"/>                         
-                    <TextBlock Text="{Binding ForecastWeather.Daily[5].Temp.Day}"
-                               FontSize="32"                        
-                               Margin="3"/>                         
-                    <TextBlock Text="{Binding ForecastWeather.Daily[5].Weather[0].Main}"
-                               FontSize="19"                        
-                               Margin="3"/>                         
-                    <TextBlock Text="{Binding ForecastWeather.Daily[5].Clouds}"
-                               FontSize="19"
-                               Margin="3"/>
-                </StackPanel>
-
-            </ListBoxItem>
-
-            <ListBoxItem Height="150"
-                         Width="150"
-                         Background="AliceBlue">
-
-                <StackPanel Orientation="Vertical">
-
-                    <TextBlock Text="{Binding ForecastWeather.Daily[6].Date.DayOfWeek}"
-                               FontSize="23"                        
-                               Margin="3"/>
-                    <TextBlock Text="{Binding ForecastWeather.Daily[6].Temp.Day}"
-                               FontSize="32"                        
-                               Margin="3"/>
-                    <TextBlock Text="{Binding ForecastWeather.Daily[6].Weather[0].Main}"
-                               FontSize="19"                        
-                               Margin="3"/>
-                    <TextBlock Text="{Binding ForecastWeather.Daily[6].Clouds}"
-                               FontSize="19"
-                               Margin="3"/>
-                </StackPanel>
-
-            </ListBoxItem>
-
-            <ListBoxItem Height="150"
-                         Width="150"
-                         Background="AliceBlue">
-
-                <StackPanel Orientation="Vertical">
-
-                    <TextBlock Text="{Binding ForecastWeather.Daily[7].Date.DayOfWeek}"
-                               FontSize="23"                        
-                               Margin="3"/>                         
-                    <TextBlock Text="{Binding ForecastWeather.Daily[7].Temp.Day}"
-                               FontSize="32"                        
-                               Margin="3"/>                         
-                    <TextBlock Text="{Binding ForecastWeather.Daily[7].Weather[0].Main}"
-                               FontSize="19"                        
-                               Margin="3"/>                         
-                    <TextBlock Text="{Binding ForecastWeather.Daily[7].Clouds}"
-                               FontSize="19"
-                               Margin="3"/>
-                </StackPanel>
-
-            </ListBoxItem>
-
-        </ListBox>       
-
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
 
     </Grid>
 </UserControl>
