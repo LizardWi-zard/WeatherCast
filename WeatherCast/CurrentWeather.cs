@@ -12,19 +12,19 @@ namespace WeatherCast
 
         public Coordinates Coord { get; set; }
 
-        public Weather[] Weather { get; set; }
+        public CurrentWeatherInfo[] Weather { get; set; }
 
-        public TempInfo Main { get; set; }
+        public CurrentTempInfo Main { get; set; }
     }
 
-    public class TempInfo
+    public class CurrentTempInfo
     {
         public float Temp { get; set; }
 
         public float Feels_Like { get; set; }
     }
 
-    public class Weather
+    public class CurrentWeatherInfo
     {
         public string Main { get; set; }
 

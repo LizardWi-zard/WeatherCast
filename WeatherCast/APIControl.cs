@@ -27,7 +27,7 @@ namespace WeatherCast
 
         public void CreateFutureWeatherUrl(string lon, string lat)
         {
-            futureWeatherUrl = $"https://api.openweathermap.org/data/2.5/onecall?lon={lon}&lat={lat}&lang=ru&appid=8b946297edc5dc36bd60f3acab86dc68";
+            futureWeatherUrl = $"https://api.openweathermap.org/data/2.5/onecall?lon={lon}&lat={lat}&units=metric&lang=ru&appid=8b946297edc5dc36bd60f3acab86dc68";
         }
 
 

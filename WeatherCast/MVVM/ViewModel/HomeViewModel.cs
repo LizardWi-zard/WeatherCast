@@ -14,20 +14,26 @@ namespace WeatherCast.MVVM.ViewModel
 
         public CurrentWeather CurrentWeather { get; set; }
 
+        public ForecastWeather ForecastWeather { get; set; }
+
         public string Title { get; set; }
 
         public string WelcomeText { get; set; }
-
 
         public HomeViewModel(APIControl control, CurrentWeather weather)
         {
             this.Control = control;
             CurrentWeather = weather;
 
-            //Response = control.GetResponse();
+            control.CreateFutureWeatherUrl(weather.Coord.Lon.ToString(), weather.Coord.Lat.ToString());
+
+            ForecastWeather = control.FutureWeather();
+            foreach (var item in ForecastWeather.Daily)
+            {
+                item.Date = item.GetDate(item.Dt);
+            }
 
             WelcomeText = SetMessageByTime();
-
         }
 
         static string SetMessageByTime()
