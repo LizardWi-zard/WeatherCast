@@ -15,6 +15,24 @@ namespace WeatherCast
         public string TimeZone { get; set; }
 
         public DailyCast[] Daily { get; set; }
+
+        public HourCast[] Hourly { get; set; }
+
+        public List<HourCast> ForecastFor24Hours { get; set; }
+
+        public int TempToInt(float temp)
+        {
+            int tmp = (int)temp;
+
+            return tmp;
+        }
+
+        public DateTime GetDate(double unixTimeStamp)
+        {
+            DateTime dateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+            dateTime = dateTime.AddSeconds(unixTimeStamp).ToLocalTime();
+            return dateTime;
+        }
     }
 
     public class DailyCast
@@ -32,21 +50,28 @@ namespace WeatherCast
         public FutureWeatherInfo[] Weather { get; set; }
 
         public int Clouds { get; set; }
-
-        public int TempToInt(float temp)
-        {
-            int tmp = (int)temp;
-
-            return tmp;
-        }
-
-        public DateTime GetDate(double unixTimeStamp)
-        {
-            DateTime dateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
-            dateTime = dateTime.AddSeconds(unixTimeStamp).ToLocalTime();
-            return dateTime;
-        }
     }
+
+    public class HourCast
+    {
+        public int Dt { get; set; }
+
+        public DateTime Date { get; set; }
+
+        public float Temp { get; set; }
+
+        public float Feels_Like { get; set; }
+
+        public int Pressure { get; set; }
+
+        public int Clouds { get; set; }
+
+        public float Wind_Speed { get; set; }
+
+        public FutureWeatherInfo[] Weather { get; set; }
+
+    }
+
     public class FutureTempInfo
     {
         public float Day { get; set; }

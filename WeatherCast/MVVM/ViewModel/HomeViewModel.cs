@@ -29,10 +29,26 @@ namespace WeatherCast.MVVM.ViewModel
             control.CreateFutureWeatherUrl(weather.Coord.Lon.ToString(), weather.Coord.Lat.ToString());
 
             ForecastWeather = control.FutureWeather();
-            foreach (var item in ForecastWeather.Daily)
+            foreach (var day in ForecastWeather.Daily)
             {
-                item.Date = item.GetDate(item.Dt);
-                item.Temp.DayInt = item.TempToInt(item.Temp.Day);
+                day.Date = ForecastWeather.GetDate(day.Dt);
+                day.Temp.Day = ForecastWeather.TempToInt(day.Temp.Day);
+                day.Temp.Night = ForecastWeather.TempToInt(day.Temp.Night);
+            }
+
+
+            ForecastWeather.ForecastFor24Hours = new List<HourCast>();
+
+            for(int i = 0; i < 24; i++)
+            {
+                ForecastWeather.ForecastFor24Hours.Add(ForecastWeather.Hourly[i]);
+            }
+
+            foreach (var hour in ForecastWeather.ForecastFor24Hours)
+            {
+                hour.Date = ForecastWeather.GetDate(hour.Dt);
+                hour.Temp = ForecastWeather.TempToInt(hour.Temp);
+                hour.Feels_Like = ForecastWeather.TempToInt(hour.Feels_Like);
             }
 
             WelcomeText = SetMessageByTime();
