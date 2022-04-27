@@ -11,156 +11,265 @@
              mc:Ignorable="d" 
              d:DesignHeight="850" d:DesignWidth="800">
 
-    <Grid HorizontalAlignment="Stretch"
-          VerticalAlignment="Stretch" 
-          Background="Transparent">
 
-        <Grid.RowDefinitions>
-            <RowDefinition Height="60"/>
-            <RowDefinition Height="250"/>
-            <RowDefinition Height="60"/>
-            <RowDefinition Height="185"/>
-            <RowDefinition/>
-        </Grid.RowDefinitions>
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <Grid HorizontalAlignment="Stretch"
+              VerticalAlignment="Stretch" 
+              Background="Transparent">
 
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition MinWidth="0" MaxWidth="200"/>
-            <ColumnDefinition MinWidth="400"/>
-            <ColumnDefinition MinWidth="0" MaxWidth="200"/>
-        </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="60"/>
+                <RowDefinition Height="250"/>
+                <RowDefinition Height="60"/>
+                <RowDefinition Height="185"/>
+                <RowDefinition Height="60"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
 
-        <TextBlock Grid.Row="0" Grid.Column="1"
-                   x:Name="WelcomeTextBlock"
-                   Text="{Binding Path=WelcomeText}" 
-                   HorizontalAlignment="Center"
-                   FontSize="24"/>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition MinWidth="0" MaxWidth="200" Width="*"/>
+                <ColumnDefinition MinWidth="400" MaxWidth="1205" Width="100*"/>
+                <ColumnDefinition MinWidth="0" MaxWidth="200" Width="*"/>
+            </Grid.ColumnDefinitions>
 
-        <Grid Grid.Row="1" Grid.Column="1"
-              MaxWidth="500"
-              Background="Transparent"
-              HorizontalAlignment="Stretch"
-              VerticalAlignment="Top">
+            <TextBlock Grid.Row="0" Grid.Column="1"
+                       x:Name="WelcomeTextBlock"
+                       Text="{Binding Path=WelcomeText}" 
+                       HorizontalAlignment="Center"
+                       FontSize="24"/>
 
+            <Grid Grid.Row="1" Grid.Column="1"
+                  MaxWidth="500"
+                  Background="Transparent"
+                  HorizontalAlignment="Stretch"
+                  VerticalAlignment="Top">
 
-            <Border Height="250"
-                    Background="AliceBlue"
-                    HorizontalAlignment="Stretch"
-                    VerticalAlignment="Top"
-                    CornerRadius="20">
+                <Border Height="250"
+                        Background="AliceBlue"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Top"
+                        CornerRadius="20">
 
-                <Grid HorizontalAlignment="Stretch"
-                      Grid.IsSharedSizeScope="True">
-                    <Grid.RowDefinitions>
-                        <RowDefinition SharedSizeGroup="Label"/>
-                        <RowDefinition Height="2*" MaxHeight="120"/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
+                    <Grid HorizontalAlignment="Stretch"
+                          Grid.IsSharedSizeScope="True">
+                        
+                        <Grid.RowDefinitions>
+                            <RowDefinition SharedSizeGroup="Label"/>
+                            <RowDefinition Height="2*" MaxHeight="120"/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
 
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                        <ColumnDefinition SharedSizeGroup="col"/>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition SharedSizeGroup="col"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
 
-                    <TextBlock Grid.Column="1" Grid.Row="0"
-                               Text="{Binding CurrentWeather.Name}"
-                               VerticalAlignment="Top"
-                               HorizontalAlignment="Center"
-                               TextWrapping="Wrap"
-                               Foreground="Black"
-                               FontSize="32"/>
+                        <TextBlock Grid.Column="1" Grid.Row="0"
+                                   Text="{Binding CurrentWeather.Name}"
+                                   VerticalAlignment="Top"
+                                   HorizontalAlignment="Center"
+                                   TextWrapping="Wrap"
+                                   Foreground="Black"
+                                   FontSize="32"/>
 
-                    <TextBlock Grid.Row="1"
-                               Grid.Column="1"
-                               Foreground="Black"
-                               VerticalAlignment="Top"
-                               HorizontalAlignment="Center"
-                               Text="{Binding CurrentWeather.Main.Temp}"
-                               FontSize="72"/>
+                        <TextBlock Grid.Row="1" Grid.Column="1"
+                                   Foreground="Black"
+                                   VerticalAlignment="Top"
+                                   HorizontalAlignment="Center"
+                                   Text="{Binding CurrentWeather.Main.Temp}"
+                                   FontSize="72"/>
 
-                    <TextBlock Grid.Row="1" 
-                               Grid.Column="1"
-                               Foreground="Black"
-                               VerticalAlignment="Bottom"
-                               HorizontalAlignment="Center"
-                               Text="{Binding CurrentWeather.Weather[0].Main}"
-                               FontSize="32"/>
+                        <TextBlock Grid.Row="1" Grid.Column="1"
+                                   Foreground="Black"
+                                   VerticalAlignment="Bottom"
+                                   HorizontalAlignment="Center"
+                                   Text="{Binding CurrentWeather.Weather[0].Main}"
+                                   FontSize="32"/>
 
-                    <StackPanel Grid.Column="0"
-                                Grid.ColumnSpan="3"
-                                Grid.Row="2"
-                                Orientation="Horizontal">
+                        <StackPanel Grid.Column="0" Grid.Row="2"
+                                    Grid.ColumnSpan="3"
+                                    Orientation="Horizontal">
 
-                        <TextBlock Text="По ощущениям:"
-                                   FontSize="16"
-                                   Margin="0 0 5 0"/>
-                        <TextBlock Text="{Binding CurrentWeather.Main.Feels_Like}"
-                                   FontSize="19"
-                                   Margin="0 0 5 0"/>
-                        <TextBlock Text="Описание:"
-                                   FontSize="16"
-                                   Margin="0 0 5 0"/>
-                        <TextBlock Text="{Binding CurrentWeather.Weather[0].Description}"
-                                   FontSize="19"
-                                   Margin="0 0 5 0"/>
+                            <TextBlock Text="По ощущениям:"
+                                       FontSize="16"
+                                       Margin="0 0 5 0"/>
+                            <TextBlock Text="{Binding CurrentWeather.Main.Feels_Like}"
+                                       FontSize="19"
+                                       Margin="0 0 5 0"/>
+                            <TextBlock Text="Описание:"
+                                       FontSize="16"
+                                       Margin="0 0 5 0"/>
+                            <TextBlock Text="{Binding CurrentWeather.Weather[0].Description}"
+                                       FontSize="19"
+                                       Margin="0 0 5 0"/>
 
-                    </StackPanel>
+                        </StackPanel>
 
-                </Grid>
-            </Border>
+                    </Grid>
+                </Border>
+            </Grid>
+
+            <TextBlock Grid.Row="2" Grid.Column="1"
+                       Text="По дням" 
+                       Margin="5"
+                       FontSize="24"/>
+
+            <ListBox x:Name="ForecastList"
+                     Grid.Row="3" Grid.Column="1" 
+                     VerticalAlignment="Top"
+                     Height="180"
+                     Background="Transparent"
+                     ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                     ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                     BorderBrush="Transparent"
+                     ItemsSource="{Binding ForecastWeather.Daily}">
+
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="ListBoxItem">
+                        <Setter Property="Height" Value="150"/>
+                        <Setter Property="Width" Value="150"/>
+                        <Setter Property="Background" Value="AliceBlue"/>
+                    </Style>
+                </ListBox.ItemContainerStyle>
+
+                <ListBox.ItemsPanel >
+                    <ItemsPanelTemplate >
+                        <WrapPanel IsItemsHost="True"/>
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+
+                        <StackPanel Orientation="Vertical">
+
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding Date.DayOfWeek}"
+                                           FontSize="20"
+                                           HorizontalAlignment="Left"
+                                           VerticalAlignment="Bottom"
+                                           Margin="3"/>
+                            
+                                <TextBlock Text="{Binding Date.Day}"
+                                           FontSize="23"
+                                           HorizontalAlignment="Left"
+                                           VerticalAlignment="Bottom"
+                                           Margin="2"/>
+                            </StackPanel>
+
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding Temp.Day}"
+                                           FontSize="32"
+                                           VerticalAlignment="Bottom" />
+                            
+                                <TextBlock Text="{Binding Temp.Night}"
+                                           FontSize="17"
+                                           VerticalAlignment="Bottom"
+                                           Opacity="0.6"
+                                           Margin="4"/>
+                            </StackPanel>
+                        
+                            <TextBlock Text="{Binding Weather[0].Main}"
+                                       FontSize="19"
+                                       Margin="3"/>
+                        
+                            <TextBlock Text="{Binding Weather[0].Description}"
+                                       FontSize="15"
+                                       TextAlignment="Left"
+                                       Margin="3"/>
+                        </StackPanel>
+
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+
+            <StackPanel Grid.Row="4" Grid.Column="1"
+                        Orientation="Horizontal">
+                
+                <TextBlock Text="По часам на" 
+                           Margin="5"
+                           FontSize="24"/>
+
+                <TextBlock Text="{Binding ForecastWeather.Daily[0].Date.Day}" 
+                           Margin="5"
+                           FontSize="24"/>
+                
+            </StackPanel>
+
+            <ListView Grid.Row="5" Grid.Column="1" 
+                      VerticalAlignment="Top"
+                      Height="180"
+                      Background="Transparent"
+                      ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                      ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                      BorderBrush="Transparent"
+                      ItemsSource="{Binding ForecastWeather.ForecastFor24Hours}">
+
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListBoxItem">
+                        <Setter Property="Height" Value="150"/>
+                        <Setter Property="Width" Value="150"/>
+                        <Setter Property="Background" Value="AliceBlue"/>
+                    </Style>
+                </ListView.ItemContainerStyle>
+
+                <ListView.ItemsPanel >
+                    <ItemsPanelTemplate >
+                        <WrapPanel IsItemsHost="True"/>
+                    </ItemsPanelTemplate>
+                </ListView.ItemsPanel>
+
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Vertical">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding Date.Hour}"
+                                           FontSize="24"
+                                           HorizontalAlignment="Left"
+                                           VerticalAlignment="Bottom" />
+
+                                <TextBlock Text=":00"
+                                           FontSize="22"
+                                           HorizontalAlignment="Left"
+                                           VerticalAlignment="Center"
+                                           Margin="0 0 6 0"/>
+                            </StackPanel>
+
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding Temp}"
+                                           FontSize="32"
+                                           VerticalAlignment="Bottom" />
+
+                                <TextBlock Text="{Binding Feels_Like}"
+                                           FontSize="17"
+                                           VerticalAlignment="Bottom"
+                                           Opacity="0.6"
+                                           Margin="4"/>
+                            </StackPanel>
+
+                            <TextBlock Text="{Binding Weather[0].Main}"
+                                       FontSize="19"
+                                       Margin="0 3 3 3"/>
+
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding Wind_Speed}"
+                                           FontSize="15"
+                                           TextAlignment="Left"
+                                           Opacity="0.6"/>
+
+                                <TextBlock Text="м/с"
+                                           FontSize="12"
+                                           VerticalAlignment="Bottom" 
+                                           Margin="3 0 0 1"
+                                           Opacity="0.6"/>
+                            </StackPanel>
+
+                        </StackPanel>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            
         </Grid>
-
-        <TextBlock Grid.Row="2" Grid.Column="1"
-                   Text="По дням" 
-                   Margin="5"
-                   FontSize="24"/>
-
-        <ListBox x:Name="ForecastList"
-                 Grid.Row="3" Grid.Column="1" 
-                 VerticalAlignment="Top"
-                 Height="180"
-                 Background="Transparent"
-                 ScrollViewer.HorizontalScrollBarVisibility="Auto"
-                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                 BorderBrush="Transparent"
-                 ItemsSource="{Binding ForecastWeather.Daily}">
-
-            <ListBox.ItemContainerStyle>
-                <Style TargetType="ListBoxItem">
-                    <Setter Property="Height" Value="150"/>
-                    <Setter Property="Width" Value="150"/>
-                    <Setter Property="Background" Value="AliceBlue"/>
-                </Style>
-            </ListBox.ItemContainerStyle>
-
-            <ListBox.ItemsPanel >
-                <ItemsPanelTemplate >
-                    <WrapPanel IsItemsHost="True"/>
-                </ItemsPanelTemplate>
-            </ListBox.ItemsPanel>
-
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-
-                    <StackPanel Orientation="Vertical">
-
-                        <TextBlock Text="{Binding Date.DayOfWeek}"
-                               FontSize="23"
-                               Margin="3"/>
-                        <TextBlock Text="{Binding Temp.DayInt}"
-                               FontSize="32"
-                               Margin="3"/>
-                        <TextBlock Text="{Binding Weather[0].Main}"
-                               FontSize="19"
-                               Margin="3"/>
-                        <TextBlock Text="{Binding Clouds}"
-                               FontSize="19"
-                               Margin="3"/>
-                    </StackPanel>
-
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
-
-    </Grid>
+    </ScrollViewer>
 </UserControl>
