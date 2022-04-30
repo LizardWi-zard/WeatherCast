@@ -9,7 +9,7 @@
              d:DataContext="{d:DesignInstance Type=viewmodel:HomeViewModel}"
              
              mc:Ignorable="d" 
-             d:DesignHeight="850" d:DesignWidth="800">
+             d:DesignHeight="1450" d:DesignWidth="800">
 
 
     <ScrollViewer VerticalScrollBarVisibility="Auto">
@@ -23,12 +23,14 @@
                 <RowDefinition Height="60"/>
                 <RowDefinition Height="185"/>
                 <RowDefinition Height="60"/>
+                <RowDefinition Height="185"/>
+                <RowDefinition Height="20"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
 
             <Grid.ColumnDefinitions>
                 <ColumnDefinition MinWidth="0" MaxWidth="200" Width="*"/>
-                <ColumnDefinition MinWidth="400" MaxWidth="1205" Width="100*"/>
+                <ColumnDefinition MinWidth="400" MaxWidth="1220" Width="100*"/>
                 <ColumnDefinition MinWidth="0" MaxWidth="200" Width="*"/>
             </Grid.ColumnDefinitions>
 
@@ -45,10 +47,9 @@
                   VerticalAlignment="Top">
 
                 <Border Height="250"
-                        Background="AliceBlue"
                         HorizontalAlignment="Stretch"
                         VerticalAlignment="Top"
-                        CornerRadius="20">
+                        CornerRadius="10">
 
                     <Grid HorizontalAlignment="Stretch"
                           Grid.IsSharedSizeScope="True">
@@ -87,24 +88,57 @@
                                    Text="{Binding CurrentWeather.Weather[0].Main}"
                                    FontSize="32"/>
 
-                        <StackPanel Grid.Column="0" Grid.Row="2"
-                                    Grid.ColumnSpan="3"
-                                    Orientation="Horizontal">
+                        <WrapPanel Grid.Column="0" Grid.Row="2"
+                                   Grid.ColumnSpan="3"
+                                   Width="240"
+                                   HorizontalAlignment="Center"
+                                   Orientation="Horizontal">
 
-                            <TextBlock Text="По ощущениям:"
-                                       FontSize="16"
-                                       Margin="0 0 5 0"/>
-                            <TextBlock Text="{Binding CurrentWeather.Main.Feels_Like}"
-                                       FontSize="19"
-                                       Margin="0 0 5 0"/>
-                            <TextBlock Text="Описание:"
-                                       FontSize="16"
-                                       Margin="0 0 5 0"/>
-                            <TextBlock Text="{Binding CurrentWeather.Weather[0].Description}"
-                                       FontSize="19"
-                                       Margin="0 0 5 0"/>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="По ощущениям"
+                                           VerticalAlignment="Bottom"
+                                           FontSize="15"
+                                           Margin="0 0 5 0"/>
+                                <TextBlock Text="{Binding CurrentWeather.Main.Feels_Like}"
+                                           VerticalAlignment="Bottom"
+                                           FontSize="17"
+                                           Margin="0 0 10 0"/>
+                            </StackPanel>
 
-                        </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Ветер"
+                                           VerticalAlignment="Bottom"
+                                           FontSize="15"
+                                           Margin="0 0 5 0"/>
+                                <TextBlock Text="{Binding CurrentWeather.Wind.Speed}"
+                                           VerticalAlignment="Bottom"
+                                           FontSize="17"
+                                           Margin="0 0 5 0"/>
+                            </StackPanel>
+                            
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Давление"
+                                           VerticalAlignment="Bottom"
+                                           FontSize="15"
+                                           Margin="0 0 5 0"/>
+                                <TextBlock Text="{Binding CurrentWeather.Main.Pressure}"
+                                           VerticalAlignment="Bottom"
+                                           FontSize="17"
+                                           Margin="0 0 10 0"/>
+                            </StackPanel>
+
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Влажность"
+                                           VerticalAlignment="Bottom"
+                                           FontSize="15"
+                                           Margin="0 0 5 0"/>
+                                <TextBlock Text="{Binding CurrentWeather.Main.Humidity}"
+                                           VerticalAlignment="Bottom"
+                                           FontSize="17"
+                                           Margin="0 0 5 0"/>
+                            </StackPanel>
+                           
+                        </WrapPanel>
 
                     </Grid>
                 </Border>
@@ -116,6 +150,7 @@
                        FontSize="24"/>
 
             <ListBox x:Name="ForecastList"
+                     SelectionChanged="ForecastList_SelectionChanged"
                      Grid.Row="3" Grid.Column="1" 
                      VerticalAlignment="Top"
                      Height="180"
@@ -123,65 +158,15 @@
                      ScrollViewer.HorizontalScrollBarVisibility="Auto"
                      ScrollViewer.VerticalScrollBarVisibility="Disabled"
                      BorderBrush="Transparent"
-                     ItemsSource="{Binding ForecastWeather.Daily}">
-
-                <ListBox.ItemContainerStyle>
-                    <Style TargetType="ListBoxItem">
-                        <Setter Property="Height" Value="150"/>
-                        <Setter Property="Width" Value="150"/>
-                        <Setter Property="Background" Value="AliceBlue"/>
-                    </Style>
-                </ListBox.ItemContainerStyle>
-
+                     ItemsSource="{Binding ForecastWeather.Daily}"
+                     ItemContainerStyle="{StaticResource ListBoxDayItemTheme}">
+                
                 <ListBox.ItemsPanel >
                     <ItemsPanelTemplate >
                         <WrapPanel IsItemsHost="True"/>
                     </ItemsPanelTemplate>
                 </ListBox.ItemsPanel>
 
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-
-                        <StackPanel Orientation="Vertical">
-
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="{Binding Date.DayOfWeek}"
-                                           FontSize="20"
-                                           HorizontalAlignment="Left"
-                                           VerticalAlignment="Bottom"
-                                           Margin="3"/>
-                            
-                                <TextBlock Text="{Binding Date.Day}"
-                                           FontSize="23"
-                                           HorizontalAlignment="Left"
-                                           VerticalAlignment="Bottom"
-                                           Margin="2"/>
-                            </StackPanel>
-
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="{Binding Temp.Day}"
-                                           FontSize="32"
-                                           VerticalAlignment="Bottom" />
-                            
-                                <TextBlock Text="{Binding Temp.Night}"
-                                           FontSize="17"
-                                           VerticalAlignment="Bottom"
-                                           Opacity="0.6"
-                                           Margin="4"/>
-                            </StackPanel>
-                        
-                            <TextBlock Text="{Binding Weather[0].Main}"
-                                       FontSize="19"
-                                       Margin="3"/>
-                        
-                            <TextBlock Text="{Binding Weather[0].Description}"
-                                       FontSize="15"
-                                       TextAlignment="Left"
-                                       Margin="3"/>
-                        </StackPanel>
-
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
             </ListBox>
 
             <StackPanel Grid.Row="4" Grid.Column="1"
@@ -197,79 +182,76 @@
                 
             </StackPanel>
 
-            <ListView Grid.Row="5" Grid.Column="1" 
-                      VerticalAlignment="Top"
-                      Height="180"
-                      Background="Transparent"
-                      ScrollViewer.HorizontalScrollBarVisibility="Auto"
-                      ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                      BorderBrush="Transparent"
-                      ItemsSource="{Binding ForecastWeather.ForecastFor24Hours}">
+            <ListBox Grid.Row="5" Grid.Column="1" 
+                     VerticalAlignment="Top"
+                     Height="180"
+                     Background="Transparent"
+                     ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                     ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                     BorderBrush="Transparent"
+                     ItemsSource="{Binding ForecastWeather.ForecastFor24Hours}"
+                     ItemContainerStyle="{StaticResource ListBoxHourItemTheme}">
 
-                <ListView.ItemContainerStyle>
-                    <Style TargetType="ListBoxItem">
-                        <Setter Property="Height" Value="150"/>
-                        <Setter Property="Width" Value="150"/>
-                        <Setter Property="Background" Value="AliceBlue"/>
-                    </Style>
-                </ListView.ItemContainerStyle>
-
-                <ListView.ItemsPanel >
+                <ListBox.ItemsPanel>
                     <ItemsPanelTemplate >
                         <WrapPanel IsItemsHost="True"/>
                     </ItemsPanelTemplate>
-                </ListView.ItemsPanel>
+                </ListBox.ItemsPanel>
 
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel Orientation="Vertical">
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="{Binding Date.Hour}"
-                                           FontSize="24"
-                                           HorizontalAlignment="Left"
-                                           VerticalAlignment="Bottom" />
+            </ListBox>
 
-                                <TextBlock Text=":00"
-                                           FontSize="22"
-                                           HorizontalAlignment="Left"
-                                           VerticalAlignment="Center"
-                                           Margin="0 0 6 0"/>
-                            </StackPanel>
+            <Canvas Grid.Row="6" Grid.Column="1"
+                    Background="Wheat"
+                    Margin="5"/>
 
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="{Binding Temp}"
-                                           FontSize="32"
-                                           VerticalAlignment="Bottom" />
+            <WrapPanel Grid.Row="7" Grid.Column="1"
+                       Orientation="Horizontal">
+                
+                <Grid Margin="10"
+                      MaxWidth="300"
+                      Width="300">
+                    
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="10"/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    
+                    <Canvas Grid.Row="0"
+                            Background="Black"
+                            HorizontalAlignment="Stretch"/>
 
-                                <TextBlock Text="{Binding Feels_Like}"
-                                           FontSize="17"
-                                           VerticalAlignment="Bottom"
-                                           Opacity="0.6"
-                                           Margin="4"/>
-                            </StackPanel>
+                    <StackPanel Grid.Row="1">
+                        <TextBlock Grid.Row="1"
+                                   Text="День" 
+                                   
+                                   FontSize="19"/>
+                        <TextBlock Grid.Row="1"
+                                   Text="{Binding Path=DayText}" 
+                                   TextWrapping="WrapWithOverflow"
+                                   TextAlignment="Left"
+                                   FontSize="16"/>
+                        
+                    </StackPanel>
 
-                            <TextBlock Text="{Binding Weather[0].Main}"
-                                       FontSize="19"
-                                       Margin="0 3 3 3"/>
 
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="{Binding Wind_Speed}"
-                                           FontSize="15"
-                                           TextAlignment="Left"
-                                           Opacity="0.6"/>
+                    <StackPanel Grid.Row="2">
+                        <TextBlock Grid.Row="1"
+                                   Text="Ночь" 
+                                   FontSize="19"/>
+                        <TextBlock Grid.Row="1"
+                                   Text="Ночь Ночь Ночь Ночь Ночь Ночь Ночь Ночь Ночь "
+                                   TextWrapping="WrapWithOverflow"
+                                   TextAlignment="Left"
+                                   FontSize="16"/>
 
-                                <TextBlock Text="м/с"
-                                           FontSize="12"
-                                           VerticalAlignment="Bottom" 
-                                           Margin="3 0 0 1"
-                                           Opacity="0.6"/>
-                            </StackPanel>
+                    </StackPanel>
 
-                        </StackPanel>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
-            
+                </Grid>
+                
+            </WrapPanel>
+
+
         </Grid>
     </ScrollViewer>
 </UserControl>
