@@ -15,6 +15,8 @@ namespace WeatherCast
         public CurrentWeatherInfo[] Weather { get; set; }
 
         public CurrentTempInfo Main { get; set; }
+
+        public WindInfo Wind { get; set; }
     }
 
     public class CurrentTempInfo
@@ -22,6 +24,17 @@ namespace WeatherCast
         public float Temp { get; set; }
 
         public float Feels_Like { get; set; }
+
+        public int Pressure { get; set; }
+
+        public int Humidity { get; set; }
+    }
+
+    public class WindInfo
+    {
+        public float Speed { get; set; }
+           
+        public int Deg { get; set; }
     }
 
     public class CurrentWeatherInfo
