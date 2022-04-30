@@ -1,0 +1,71 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Style BasedOn="{StaticResource {x:Type ListBoxItem}}"
+           TargetType="{x:Type ListBoxItem}"
+           x:Key="ListBoxHourItemTheme">
+        <Style.Setters>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                        <Border CornerRadius="1"
+                                Background="Transparent"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch"
+                                Width="150"
+                                Height="150"
+                                Margin="1"
+                                BorderThickness="2"
+                                BorderBrush="AliceBlue">
+
+                            <StackPanel Orientation="Vertical">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding Date.Hour}"
+                                           FontSize="24"
+                                           HorizontalAlignment="Left"
+                                           VerticalAlignment="Bottom" />
+
+                                    <TextBlock Text=":00"
+                                           FontSize="22"
+                                           HorizontalAlignment="Left"
+                                           VerticalAlignment="Center"
+                                           Margin="0 0 6 0"/>
+                                </StackPanel>
+
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding Temp}"
+                                           FontSize="32"
+                                           VerticalAlignment="Bottom" />
+
+                                    <TextBlock Text="{Binding Feels_Like}"
+                                           FontSize="17"
+                                           VerticalAlignment="Bottom"
+                                           Opacity="0.6"
+                                           Margin="4"/>
+                                </StackPanel>
+
+                                <TextBlock Text="{Binding Weather[0].Main}"
+                                       FontSize="19"
+                                       Margin="0 3 3 3"/>
+
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding Wind_Speed}"
+                                           FontSize="15"
+                                           TextAlignment="Left"
+                                           Opacity="0.6"/>
+
+                                    <TextBlock Text="м/с"
+                                           FontSize="12"
+                                           VerticalAlignment="Bottom" 
+                                           Margin="3 0 0 1"
+                                           Opacity="0.6"/>
+                                </StackPanel>
+
+                            </StackPanel>
+
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style.Setters>
+    </Style>
+</ResourceDictionary>
