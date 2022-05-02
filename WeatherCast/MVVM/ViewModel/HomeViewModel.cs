@@ -27,32 +27,10 @@ namespace WeatherCast.MVVM.ViewModel
             this.Control = control;
             CurrentWeather = weather;
 
-            latitude = CurrentWeather.Coord.Lat.ToString();
-            longitude = CurrentWeather.Coord.Lon.ToString();
+            latitude = CurrentWeather.Coord.Latitude.ToString();
+            longitude = CurrentWeather.Coord.Longitude.ToString();
 
             ForecastWeather = control.GetForecastWeather(longitude, latitude);
-
-            foreach (var day in ForecastWeather.Daily)
-            {
-                day.Date = ForecastWeather.GetDate(day.Dt);
-                day.Temp.Day = ForecastWeather.TempToInt(day.Temp.Day);
-                day.Temp.Night = ForecastWeather.TempToInt(day.Temp.Night);
-            }
-
-
-            ForecastWeather.ForecastFor24Hours = new List<HourCast>(); //TODO: создать метод с тегом OnDesirialized и перенести в него
-
-            for(int i = 0; i < 24; i++)
-            {
-                ForecastWeather.ForecastFor24Hours.Add(ForecastWeather.Hourly[i]);
-            }
-
-            foreach (var hour in ForecastWeather.ForecastFor24Hours) //TODO: создать метод с тегом OnDesirialized и перенести в него
-            {
-                hour.Date = ForecastWeather.GetDate(hour.Dt);
-                hour.Temp = ForecastWeather.TempToInt(hour.Temp);
-                hour.Feels_Like = ForecastWeather.TempToInt(hour.Feels_Like);
-            }
 
             WelcomeText = SetMessageByTime();
         }

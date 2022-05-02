@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -33,7 +34,9 @@ namespace WeatherCast
 
             var forecastWeather = JsonConvert.DeserializeObject<ForecastWeather>(response);
 
-            return forecastWeather;
+            var refactoredForecastWeather = GetRefactoredDataForFurutureWeather(forecastWeather);
+
+            return refactoredForecastWeather;
         }
 
         private string CreateСurrentWeatherUrl(string cityName)
@@ -78,6 +81,35 @@ namespace WeatherCast
             }
 
             return null;
+        }
+
+        private ForecastWeather GetRefactoredDataForFurutureWeather(ForecastWeather response)
+        {
+            ForecastWeather forecastWeather = response;
+
+            foreach (var day in forecastWeather.Daily)
+            {
+                day.Date = forecastWeather.GetDate(day.Dt);
+                day.Temperature.DayTemperature = forecastWeather.TempToInt(day.Temperature.DayTemperature);
+                day.Temperature.NightTemperature = forecastWeather.TempToInt(day.Temperature.NightTemperature);
+            }
+
+
+            forecastWeather.ForecastFor24Hours = new List<HourCast>(); //TODO: создать метод с тегом OnDesirialized и перенести в него
+
+            for (int i = 0; i < 24; i++)
+            {
+                forecastWeather.ForecastFor24Hours.Add(forecastWeather.Hourly[i]);
+            }
+
+            foreach (var hour in forecastWeather.ForecastFor24Hours) //TODO: создать метод с тегом OnDesirialized и перенести в него
+            {
+                hour.Date = forecastWeather.GetDate(hour.Dt);
+                hour.Temperature = forecastWeather.TempToInt(hour.Temperature);
+                hour.Feels_Like = forecastWeather.TempToInt(hour.Feels_Like);
+            }
+
+            return forecastWeather;
         }
     }
 }
