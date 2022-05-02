@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -21,7 +22,8 @@ namespace WeatherCast
 
     public class CurrentTempInfo
     {
-        public float Temp { get; set; }
+        [JsonProperty("temp")]
+        public float Temperature { get; set; }
 
         public float Feels_Like { get; set; }
 
@@ -33,8 +35,9 @@ namespace WeatherCast
     public class WindInfo
     {
         public float Speed { get; set; }
-           
-        public int Deg { get; set; }
+
+        [JsonProperty("deg")]
+        public int Degree { get; set; }
     }
 
     public class CurrentWeatherInfo
@@ -46,8 +49,10 @@ namespace WeatherCast
 
     public class Coordinates
     {
-        public float Lon { get; set; }
+        [JsonProperty("lon")]
+        public float Longitude { get; set; }
 
-        public float Lat { get; set; }
+        [JsonProperty("lat")]
+        public float Latitude { get; set; }
     }
 }

@@ -35,11 +35,11 @@
                                 </StackPanel>
 
                                 <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="{Binding Temp.Day}"
+                                    <TextBlock Text="{Binding Temperature.DayTemperature}"
                                            FontSize="32"
                                            VerticalAlignment="Bottom" />
 
-                                    <TextBlock Text="{Binding Temp.Night}"
+                                    <TextBlock Text="{Binding Temperature.NightTemperature}"
                                            FontSize="17"
                                            VerticalAlignment="Bottom"
                                            Opacity="0.6"

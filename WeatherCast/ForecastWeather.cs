@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -41,12 +42,15 @@ namespace WeatherCast
 
         public DateTime Date { get; set; }
 
-        public FutureTempInfo Temp { get; set; }
+        [JsonProperty("temp")]
+        public FutureTempInfo Temperature { get; set; }
 
         public FutureFeelsLike Feels_Like { get; set; }
 
         public int Pressure { get; set; }
 
+        public float Wind_Speed { get; set; }
+        
         public FutureWeatherInfo[] Weather { get; set; }
 
         public int Clouds { get; set; }
@@ -58,7 +62,8 @@ namespace WeatherCast
 
         public DateTime Date { get; set; }
 
-        public float Temp { get; set; }
+        [JsonProperty("temp")]
+        public float Temperature { get; set; }
 
         public float Feels_Like { get; set; }
 
@@ -74,22 +79,28 @@ namespace WeatherCast
 
     public class FutureTempInfo
     {
-        public float Day { get; set; }
+        [JsonProperty("day")]
+        public float DayTemperature { get; set; }
 
         public int DayInt { get; set; }
 
-        public float Min { get; set; }
+        [JsonProperty("min")]
+        public float MinTemperature { get; set; }
 
-        public float Max { get; set; }
+        [JsonProperty("max")]
+        public float MaxTemperature { get; set; }
 
-        public float Night { get; set; }     
+        [JsonProperty("night")]
+        public float NightTemperature { get; set; }     
     }
 
     public class FutureFeelsLike
     {
-        public float Day { get; set; }
+        [JsonProperty("day")]
+        public float DayTemperature { get; set; }
 
-        public float Night { get; set; }
+        [JsonProperty("night")]
+        public float NightTemperature { get; set; }
     }
 
     public class FutureWeatherInfo

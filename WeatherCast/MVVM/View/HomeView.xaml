@@ -78,7 +78,7 @@
                                    Foreground="Black"
                                    VerticalAlignment="Top"
                                    HorizontalAlignment="Center"
-                                   Text="{Binding CurrentWeather.Main.Temp}"
+                                   Text="{Binding CurrentWeather.Main.Temperature}"
                                    FontSize="72"/>
 
                         <TextBlock Grid.Row="1" Grid.Column="1"
@@ -150,7 +150,7 @@
                        FontSize="24"/>
 
             <ListBox x:Name="ForecastList"
-                     SelectionChanged="ForecastList_SelectionChanged"
+                     
                      Grid.Row="3" Grid.Column="1" 
                      VerticalAlignment="Top"
                      Height="180"
@@ -160,7 +160,9 @@
                      BorderBrush="Transparent"
                      ItemsSource="{Binding ForecastWeather.Daily}"
                      ItemContainerStyle="{StaticResource ListBoxDayItemTheme}">
-                
+
+                <!--  SelectionChanged="ForecastList_SelectionChanged"  -->
+
                 <ListBox.ItemsPanel >
                     <ItemsPanelTemplate >
                         <WrapPanel IsItemsHost="True"/>
@@ -228,7 +230,7 @@
                                    
                                    FontSize="19"/>
                         <TextBlock Grid.Row="1"
-                                   Text="{Binding Path=DayText}" 
+                                   Text="" 
                                    TextWrapping="WrapWithOverflow"
                                    TextAlignment="Left"
                                    FontSize="16"/>
