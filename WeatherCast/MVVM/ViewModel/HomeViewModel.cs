@@ -9,10 +9,11 @@ namespace WeatherCast.MVVM.ViewModel
 {
     public class HomeViewModel
     {
+        WeatherService Control;
+        string longitude;
+        string latitude;
+
         public CurrentWeather Response { get; set; }
-
-        APIControl Control { get; set; }
-
         public CurrentWeather CurrentWeather { get; set; }
 
         public ForecastWeather ForecastWeather { get; set; }
@@ -21,14 +22,16 @@ namespace WeatherCast.MVVM.ViewModel
 
         public string WelcomeText { get; set; }
 
-        public HomeViewModel(APIControl control, CurrentWeather weather)
+        public HomeViewModel(WeatherService control, CurrentWeather weather)
         {
             this.Control = control;
             CurrentWeather = weather;
 
-            control.CreateFutureWeatherUrl(weather.Coord.Lon.ToString(), weather.Coord.Lat.ToString());
+            latitude = CurrentWeather.Coord.Lat.ToString();
+            longitude = CurrentWeather.Coord.Lon.ToString();
 
-            ForecastWeather = control.FutureWeather();
+            ForecastWeather = control.GetForecastWeather(longitude, latitude);
+
             foreach (var day in ForecastWeather.Daily)
             {
                 day.Date = ForecastWeather.GetDate(day.Dt);
@@ -37,14 +40,14 @@ namespace WeatherCast.MVVM.ViewModel
             }
 
 
-            ForecastWeather.ForecastFor24Hours = new List<HourCast>();
+            ForecastWeather.ForecastFor24Hours = new List<HourCast>(); //TODO: создать метод с тегом OnDesirialized и перенести в него
 
             for(int i = 0; i < 24; i++)
             {
                 ForecastWeather.ForecastFor24Hours.Add(ForecastWeather.Hourly[i]);
             }
 
-            foreach (var hour in ForecastWeather.ForecastFor24Hours)
+            foreach (var hour in ForecastWeather.ForecastFor24Hours) //TODO: создать метод с тегом OnDesirialized и перенести в него
             {
                 hour.Date = ForecastWeather.GetDate(hour.Dt);
                 hour.Temp = ForecastWeather.TempToInt(hour.Temp);
