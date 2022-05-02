@@ -29,7 +29,7 @@
             </Grid.RowDefinitions>
 
             <Grid.ColumnDefinitions>
-                <ColumnDefinition MinWidth="0" MaxWidth="200" Width="*"/>
+                <ColumnDefinition MinWidth="0" MaxWidth="210" Width="*"/>
                 <ColumnDefinition MinWidth="400" MaxWidth="1220" Width="100*"/>
                 <ColumnDefinition MinWidth="0" MaxWidth="200" Width="*"/>
             </Grid.ColumnDefinitions>
@@ -90,7 +90,7 @@
 
                         <WrapPanel Grid.Column="0" Grid.Row="2"
                                    Grid.ColumnSpan="3"
-                                   Width="240"
+                                   Width="250"
                                    HorizontalAlignment="Center"
                                    Orientation="Horizontal">
 
@@ -205,11 +205,12 @@
                     Margin="5"/>
 
             <WrapPanel Grid.Row="7" Grid.Column="1"
-                       Orientation="Horizontal">
+                       Orientation="Horizontal"
+                       Margin="0 0 0 30">
                 
                 <Grid Margin="10"
-                      MaxWidth="300"
-                      Width="300">
+                      MaxWidth="280"
+                      Width="280">
                     
                     <Grid.RowDefinitions>
                         <RowDefinition Height="10"/>
@@ -248,7 +249,166 @@
                     </StackPanel>
 
                 </Grid>
-                
+
+                <Grid Margin="10"
+                      MaxWidth="280"
+                      Width="280">
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="10"/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+
+                    <Canvas Grid.Row="0"
+                            Background="Black"
+                            HorizontalAlignment="Stretch"/>
+
+                    <StackPanel Grid.Row="1">
+                        <TextBlock Grid.Row="1"
+                                   Text="Восход" 
+                                   FontSize="19"/>
+                        
+                        <TextBlock Grid.Row="1"
+                                   Text="" 
+                                   TextWrapping="WrapWithOverflow"
+                                   TextAlignment="Left"
+                                   FontSize="16"/>
+
+                    </StackPanel>
+
+
+                    <StackPanel Grid.Row="2">
+                        <TextBlock Grid.Row="1"
+                                   Text="Закат" 
+                                   FontSize="19"/>
+                        
+                        <TextBlock Grid.Row="1"
+                                   Text=""
+                                   TextWrapping="WrapWithOverflow"
+                                   TextAlignment="Left"
+                                   FontSize="16"/>
+
+                    </StackPanel>
+
+                </Grid>
+
+                <Grid Margin="10"
+                      MaxWidth="280"
+                      Width="280">
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="10"/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+
+                    <Canvas Grid.Row="0"
+                            Background="Black"
+                            HorizontalAlignment="Stretch"/>
+
+                    <StackPanel Grid.Row="1">
+                        <TextBlock Grid.Row="1"
+                                   Text="Восход луны" 
+                                   FontSize="19"/>
+                        
+                        <TextBlock Grid.Row="1"
+                                   Text="" 
+                                   TextWrapping="WrapWithOverflow"
+                                   TextAlignment="Left"
+                                   FontSize="16"/>
+
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="2">
+                        <TextBlock Grid.Row="1"
+                                   Text="Заход луны" 
+                                   FontSize="19"/>
+                        <TextBlock Grid.Row="1"
+                                   Text="Ночь "
+                                   TextWrapping="WrapWithOverflow"
+                                   TextAlignment="Left"
+                                   FontSize="16"/>
+
+                    </StackPanel>
+
+                </Grid>
+
+                <Grid Margin="10"
+                      MaxWidth="280"
+                      Width="280">
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="10"/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+
+                    <Canvas Grid.Row="0"
+                            Grid.ColumnSpan="2"
+                            Background="Black"
+                            HorizontalAlignment="Stretch"/>
+
+                    <StackPanel Grid.Row="1">
+                        <TextBlock Grid.Row="1"
+                                   Text="Осадки" 
+                                   FontSize="19"/>
+                        
+                        <TextBlock Grid.Row="1"
+                                   Text="" 
+                                   TextWrapping="WrapWithOverflow"
+                                   TextAlignment="Left"
+                                   FontSize="16"/>
+
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="1"
+                                Grid.Column="1">
+                        <TextBlock Grid.Row="1"
+                                   Text="Ветер" 
+                                   FontSize="19"/>
+                        
+                        <TextBlock Grid.Row="1"
+                                   Text="" 
+                                   TextWrapping="WrapWithOverflow"
+                                   TextAlignment="Left"
+                                   FontSize="16"/>
+
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="2">
+                        <TextBlock Grid.Row="1"
+                                   Text="Влажность" 
+                                   FontSize="19"/>
+                        <TextBlock Grid.Row="1"
+                                   Text=""
+                                   TextWrapping="WrapWithOverflow"
+                                   TextAlignment="Left"
+                                   FontSize="16"/>
+
+                    </StackPanel>
+                    
+                    <StackPanel Grid.Row="2"
+                                Grid.Column="1">
+                        <TextBlock Grid.Row="1"
+                                   Text="УФ-индедкс" 
+                                   FontSize="19"/>
+                        
+                        <TextBlock Grid.Row="1"
+                                   Text=""
+                                   TextWrapping="WrapWithOverflow"
+                                   TextAlignment="Left"
+                                   FontSize="16"/>
+
+                    </StackPanel>
+
+                </Grid>
+
             </WrapPanel>
 
 
