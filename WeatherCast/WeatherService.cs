@@ -41,7 +41,7 @@ namespace WeatherCast
 
         private string CreateСurrentWeatherUrl(string cityName)
         {
-            return "http://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&units=metric&appid=8b946297edc5dc36bd60f3acab86dc68";
+            return "http://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&units=metric&lang=ru&appid=8b946297edc5dc36bd60f3acab86dc68";
         }
 
         private string CreateFutureWeatherUrl(string lon, string lat)
@@ -92,17 +92,21 @@ namespace WeatherCast
                 day.Date = forecastWeather.GetDate(day.Dt);
                 day.Temperature.DayTemperature = forecastWeather.TempToInt(day.Temperature.DayTemperature);
                 day.Temperature.NightTemperature = forecastWeather.TempToInt(day.Temperature.NightTemperature);
+                day.SunriseTime = forecastWeather.GetDate(day.Sunrise).ToString("HH:mm");
+                day.SunsetTime = forecastWeather.GetDate(day.Sunset).ToString("HH:mm");
+                day.MoonriseTime = forecastWeather.GetDate(day.Moonrise).ToString("HH:mm");
+                day.MoonsetTime = forecastWeather.GetDate(day.Moonset).ToString("HH:mm");
             }
 
 
-            forecastWeather.ForecastFor24Hours = new List<HourCast>(); //TODO: создать метод с тегом OnDesirialized и перенести в него
+            forecastWeather.ForecastFor24Hours = new List<HourCast>();
 
             for (int i = 0; i < 24; i++)
             {
                 forecastWeather.ForecastFor24Hours.Add(forecastWeather.Hourly[i]);
             }
 
-            foreach (var hour in forecastWeather.ForecastFor24Hours) //TODO: создать метод с тегом OnDesirialized и перенести в него
+            foreach (var hour in forecastWeather.ForecastFor24Hours)
             {
                 hour.Date = forecastWeather.GetDate(hour.Dt);
                 hour.Temperature = forecastWeather.TempToInt(hour.Temperature);

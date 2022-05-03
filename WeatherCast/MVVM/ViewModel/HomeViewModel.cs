@@ -7,16 +7,30 @@ using System.Threading.Tasks;
 
 namespace WeatherCast.MVVM.ViewModel
 {
-    public class HomeViewModel
+    public class HomeViewModel : ViewModelBase
     {
         WeatherService Control;
         string longitude;
         string latitude;
+        private DailyCast _selectedItem;
 
-        public CurrentWeather Response { get; set; }
         public CurrentWeather CurrentWeather { get; set; }
 
         public ForecastWeather ForecastWeather { get; set; }
+
+        public DailyCast SelectedItem
+        {
+            get { return _selectedItem; } 
+            set
+            {
+                _selectedItem = value;
+
+                _selectedItem.Temperature.MaxTemperatureText = "Максимальная температура днём: " + value.Temperature.MaxTemperature.ToString();
+                _selectedItem.Temperature.MinTemperatureText = "Минимальная температура ночью: " + value.Temperature.MinTemperature.ToString();
+
+                RaisePropertyChanged(nameof(SelectedItem));
+            }
+        }
 
         public string Title { get; set; }
 

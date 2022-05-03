@@ -150,7 +150,7 @@
                        FontSize="24"/>
 
             <ListBox x:Name="ForecastList"
-                     
+                     SelectedItem="{Binding SelectedItem}"
                      Grid.Row="3" Grid.Column="1" 
                      VerticalAlignment="Top"
                      Height="180"
@@ -160,8 +160,6 @@
                      BorderBrush="Transparent"
                      ItemsSource="{Binding ForecastWeather.Daily}"
                      ItemContainerStyle="{StaticResource ListBoxDayItemTheme}">
-
-                <!--  SelectionChanged="ForecastList_SelectionChanged"  -->
 
                 <ListBox.ItemsPanel >
                     <ItemsPanelTemplate >
@@ -209,17 +207,17 @@
             <WrapPanel Grid.Row="7" Grid.Column="1"
                        Orientation="Horizontal"
                        Margin="0 0 0 30">
-                
+
                 <Grid Margin="10"
                       MaxWidth="280"
                       Width="280">
-                    
+
                     <Grid.RowDefinitions>
                         <RowDefinition Height="10"/>
                         <RowDefinition/>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
-                    
+
                     <Canvas Grid.Row="0"
                             Background="Black"
                             HorizontalAlignment="Stretch"/>
@@ -227,14 +225,14 @@
                     <StackPanel Grid.Row="1">
                         <TextBlock Grid.Row="1"
                                    Text="День" 
-                                   
                                    FontSize="19"/>
+
                         <TextBlock Grid.Row="1"
-                                   Text="" 
+                                   Text="{Binding SelectedItem.Temperature.MaxTemperatureText, UpdateSourceTrigger=PropertyChanged}"
                                    TextWrapping="WrapWithOverflow"
                                    TextAlignment="Left"
                                    FontSize="16"/>
-                        
+
                     </StackPanel>
 
 
@@ -242,8 +240,9 @@
                         <TextBlock Grid.Row="1"
                                    Text="Ночь" 
                                    FontSize="19"/>
+
                         <TextBlock Grid.Row="1"
-                                   Text="Ночь Ночь Ночь Ночь Ночь Ночь Ночь Ночь Ночь "
+                                   Text="{Binding SelectedItem.Temperature.MinTemperatureText, UpdateSourceTrigger=PropertyChanged}"
                                    TextWrapping="WrapWithOverflow"
                                    TextAlignment="Left"
                                    FontSize="16"/>
@@ -270,9 +269,9 @@
                         <TextBlock Grid.Row="1"
                                    Text="Восход" 
                                    FontSize="19"/>
-                        
+
                         <TextBlock Grid.Row="1"
-                                   Text="" 
+                                   Text="{Binding SelectedItem.SunriseTime, UpdateSourceTrigger=PropertyChanged}" 
                                    TextWrapping="WrapWithOverflow"
                                    TextAlignment="Left"
                                    FontSize="16"/>
@@ -284,9 +283,9 @@
                         <TextBlock Grid.Row="1"
                                    Text="Закат" 
                                    FontSize="19"/>
-                        
+
                         <TextBlock Grid.Row="1"
-                                   Text=""
+                                   Text="{Binding SelectedItem.SunsetTime, UpdateSourceTrigger=PropertyChanged}"
                                    TextWrapping="WrapWithOverflow"
                                    TextAlignment="Left"
                                    FontSize="16"/>
@@ -313,9 +312,9 @@
                         <TextBlock Grid.Row="1"
                                    Text="Восход луны" 
                                    FontSize="19"/>
-                        
+
                         <TextBlock Grid.Row="1"
-                                   Text="" 
+                                   Text="{Binding SelectedItem.MoonriseTime, UpdateSourceTrigger=PropertyChanged}" 
                                    TextWrapping="WrapWithOverflow"
                                    TextAlignment="Left"
                                    FontSize="16"/>
@@ -326,8 +325,9 @@
                         <TextBlock Grid.Row="1"
                                    Text="Заход луны" 
                                    FontSize="19"/>
+
                         <TextBlock Grid.Row="1"
-                                   Text="Ночь "
+                                   Text="{Binding SelectedItem.MoonsetTime, UpdateSourceTrigger=PropertyChanged}"
                                    TextWrapping="WrapWithOverflow"
                                    TextAlignment="Left"
                                    FontSize="16"/>
@@ -360,9 +360,9 @@
                         <TextBlock Grid.Row="1"
                                    Text="Осадки" 
                                    FontSize="19"/>
-                        
+
                         <TextBlock Grid.Row="1"
-                                   Text="" 
+                                   Text="{Binding SelectedItem.ProbabilityOfPrecipitation, UpdateSourceTrigger=PropertyChanged}" 
                                    TextWrapping="WrapWithOverflow"
                                    TextAlignment="Left"
                                    FontSize="16"/>
@@ -374,9 +374,9 @@
                         <TextBlock Grid.Row="1"
                                    Text="Ветер" 
                                    FontSize="19"/>
-                        
+
                         <TextBlock Grid.Row="1"
-                                   Text="" 
+                                   Text="{Binding SelectedItem.Wind_Speed, UpdateSourceTrigger=PropertyChanged}" 
                                    TextWrapping="WrapWithOverflow"
                                    TextAlignment="Left"
                                    FontSize="16"/>
@@ -388,21 +388,21 @@
                                    Text="Влажность" 
                                    FontSize="19"/>
                         <TextBlock Grid.Row="1"
-                                   Text=""
+                                   Text="{Binding SelectedItem.Humidity, UpdateSourceTrigger=PropertyChanged}"
                                    TextWrapping="WrapWithOverflow"
                                    TextAlignment="Left"
                                    FontSize="16"/>
 
                     </StackPanel>
-                    
+
                     <StackPanel Grid.Row="2"
                                 Grid.Column="1">
                         <TextBlock Grid.Row="1"
                                    Text="УФ-индедкс" 
                                    FontSize="19"/>
-                        
+
                         <TextBlock Grid.Row="1"
-                                   Text=""
+                                   Text="{Binding SelectedItem.UVindex, UpdateSourceTrigger=PropertyChanged}"
                                    TextWrapping="WrapWithOverflow"
                                    TextAlignment="Left"
                                    FontSize="16"/>
@@ -412,7 +412,6 @@
                 </Grid>
 
             </WrapPanel>
-
 
         </Grid>
     </ScrollViewer>

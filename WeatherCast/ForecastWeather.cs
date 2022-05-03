@@ -42,6 +42,22 @@ namespace WeatherCast
 
         public DateTime Date { get; set; }
 
+        public int Sunrise { get; set; }
+
+        public string SunriseTime { get; set; }
+
+        public int Sunset { get; set; }
+
+        public string SunsetTime { get; set; }
+
+        public int Moonrise { get; set; }
+
+        public string MoonriseTime { get; set; }
+
+        public int Moonset { get; set; }
+
+        public string MoonsetTime { get; set; }
+
         [JsonProperty("temp")]
         public FutureTempInfo Temperature { get; set; }
 
@@ -49,11 +65,19 @@ namespace WeatherCast
 
         public int Pressure { get; set; }
 
+        public int Humidity { get; set; }
+
         public float Wind_Speed { get; set; }
         
         public FutureWeatherInfo[] Weather { get; set; }
 
         public int Clouds { get; set; }
+
+        [JsonProperty("pop")]
+        public float ProbabilityOfPrecipitation { get; set; }
+
+        [JsonProperty("uvi")]
+        public float UVindex { get; set; }
     }
 
     public class HourCast
@@ -87,11 +111,15 @@ namespace WeatherCast
         [JsonProperty("min")]
         public float MinTemperature { get; set; }
 
+        public string MinTemperatureText { get; set; }
+
         [JsonProperty("max")]
         public float MaxTemperature { get; set; }
+        
+        public string MaxTemperatureText { get; set; }
 
         [JsonProperty("night")]
-        public float NightTemperature { get; set; }     
+        public float NightTemperature { get; set; }
     }
 
     public class FutureFeelsLike
