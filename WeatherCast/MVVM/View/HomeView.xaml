@@ -5,12 +5,16 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              
              xmlns:local="clr-namespace:WeatherCast.MVVM.View" 
+             xmlns:converters="clr-namespace:WeatherCast.Converters"
              xmlns:viewmodel="clr-namespace:WeatherCast.MVVM.ViewModel" 
              d:DataContext="{d:DesignInstance Type=viewmodel:HomeViewModel}"
              
              mc:Ignorable="d" 
              d:DesignHeight="1450" d:DesignWidth="800">
 
+    <UserControl.Resources>
+        <converters:DateToStringConverter x:Key="DateToString"/>
+    </UserControl.Resources>
 
     <ScrollViewer VerticalScrollBarVisibility="Auto">
         <Grid HorizontalAlignment="Stretch"
@@ -271,7 +275,7 @@
                                    FontSize="19"/>
 
                         <TextBlock Grid.Row="1"
-                                   Text="{Binding SelectedItem.SunriseTime, UpdateSourceTrigger=PropertyChanged}" 
+                                   Text="{Binding SelectedItem.Sunrise, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource DateToString}}" 
                                    TextWrapping="WrapWithOverflow"
                                    TextAlignment="Left"
                                    FontSize="16"/>
@@ -285,7 +289,7 @@
                                    FontSize="19"/>
 
                         <TextBlock Grid.Row="1"
-                                   Text="{Binding SelectedItem.SunsetTime, UpdateSourceTrigger=PropertyChanged}"
+                                   Text="{Binding SelectedItem.Sunset, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource DateToString}}"
                                    TextWrapping="WrapWithOverflow"
                                    TextAlignment="Left"
                                    FontSize="16"/>
@@ -314,7 +318,7 @@
                                    FontSize="19"/>
 
                         <TextBlock Grid.Row="1"
-                                   Text="{Binding SelectedItem.MoonriseTime, UpdateSourceTrigger=PropertyChanged}" 
+                                   Text="{Binding SelectedItem.Moonrise, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource DateToString}}" 
                                    TextWrapping="WrapWithOverflow"
                                    TextAlignment="Left"
                                    FontSize="16"/>
@@ -327,7 +331,7 @@
                                    FontSize="19"/>
 
                         <TextBlock Grid.Row="1"
-                                   Text="{Binding SelectedItem.MoonsetTime, UpdateSourceTrigger=PropertyChanged}"
+                                   Text="{Binding SelectedItem.Moonset, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource DateToString}}"
                                    TextWrapping="WrapWithOverflow"
                                    TextAlignment="Left"
                                    FontSize="16"/>

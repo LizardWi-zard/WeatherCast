@@ -92,10 +92,6 @@ namespace WeatherCast
                 day.Date = forecastWeather.GetDate(day.Dt);
                 day.Temperature.DayTemperature = forecastWeather.TempToInt(day.Temperature.DayTemperature);
                 day.Temperature.NightTemperature = forecastWeather.TempToInt(day.Temperature.NightTemperature);
-                day.SunriseTime = forecastWeather.GetDate(day.Sunrise).ToString("HH:mm");
-                day.SunsetTime = forecastWeather.GetDate(day.Sunset).ToString("HH:mm");
-                day.MoonriseTime = forecastWeather.GetDate(day.Moonrise).ToString("HH:mm");
-                day.MoonsetTime = forecastWeather.GetDate(day.Moonset).ToString("HH:mm");
             }
 
 

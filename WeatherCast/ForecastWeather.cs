@@ -44,19 +44,11 @@ namespace WeatherCast
 
         public int Sunrise { get; set; }
 
-        public string SunriseTime { get; set; }
-
         public int Sunset { get; set; }
-
-        public string SunsetTime { get; set; }
 
         public int Moonrise { get; set; }
 
-        public string MoonriseTime { get; set; }
-
         public int Moonset { get; set; }
-
-        public string MoonsetTime { get; set; }
 
         [JsonProperty("temp")]
         public FutureTempInfo Temperature { get; set; }
@@ -98,7 +90,6 @@ namespace WeatherCast
         public float Wind_Speed { get; set; }
 
         public FutureWeatherInfo[] Weather { get; set; }
-
     }
 
     public class FutureTempInfo
