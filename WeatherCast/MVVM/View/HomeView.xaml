@@ -14,6 +14,11 @@
 
     <UserControl.Resources>
         <converters:DateToStringConverter x:Key="DateToString"/>
+        <converters:FloatTempToIntTempConverter x:Key="FloatToInt"/>
+        <converters:PressureConverter x:Key="PressureFormat"/>
+        <converters:WindSpeedConverter x:Key="WindFormat"/>
+        <converters:HumidityConverter x:Key="HumidityFormat"/>
+        <converters:ProbabilityOfPrecipitationConverter x:Key="POPFormat"/>
     </UserControl.Resources>
 
     <ScrollViewer VerticalScrollBarVisibility="Auto">
@@ -57,7 +62,7 @@
 
                     <Grid HorizontalAlignment="Stretch"
                           Grid.IsSharedSizeScope="True">
-                        
+
                         <Grid.RowDefinitions>
                             <RowDefinition SharedSizeGroup="Label"/>
                             <RowDefinition Height="2*" MaxHeight="120"/>
@@ -94,7 +99,7 @@
 
                         <WrapPanel Grid.Column="0" Grid.Row="2"
                                    Grid.ColumnSpan="3"
-                                   Width="250"
+                                   Width="285"
                                    HorizontalAlignment="Center"
                                    Orientation="Horizontal">
 
@@ -114,18 +119,18 @@
                                            VerticalAlignment="Bottom"
                                            FontSize="15"
                                            Margin="0 0 5 0"/>
-                                <TextBlock Text="{Binding CurrentWeather.Wind.Speed}"
+                                <TextBlock Text="{Binding CurrentWeather.Wind.Speed, Converter={StaticResource WindFormat}}"
                                            VerticalAlignment="Bottom"
                                            FontSize="17"
                                            Margin="0 0 5 0"/>
                             </StackPanel>
-                            
+
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="Давление"
                                            VerticalAlignment="Bottom"
                                            FontSize="15"
                                            Margin="0 0 5 0"/>
-                                <TextBlock Text="{Binding CurrentWeather.Main.Pressure}"
+                                <TextBlock Text="{Binding CurrentWeather.Main.Pressure, Converter={StaticResource PressureFormat}}"
                                            VerticalAlignment="Bottom"
                                            FontSize="17"
                                            Margin="0 0 10 0"/>
@@ -136,12 +141,12 @@
                                            VerticalAlignment="Bottom"
                                            FontSize="15"
                                            Margin="0 0 5 0"/>
-                                <TextBlock Text="{Binding CurrentWeather.Main.Humidity}"
+                                <TextBlock Text="{Binding CurrentWeather.Main.Humidity, Converter={StaticResource HumidityFormat}}"
                                            VerticalAlignment="Bottom"
                                            FontSize="17"
                                            Margin="0 0 5 0"/>
                             </StackPanel>
-                           
+
                         </WrapPanel>
 
                     </Grid>
@@ -175,7 +180,7 @@
 
             <StackPanel Grid.Row="4" Grid.Column="1"
                         Orientation="Horizontal">
-                
+
                 <TextBlock Text="По часам на" 
                            Margin="5"
                            FontSize="24"/>
@@ -183,7 +188,7 @@
                 <TextBlock Text="{Binding ForecastWeather.Daily[0].Date.Day}" 
                            Margin="5"
                            FontSize="24"/>
-                
+
             </StackPanel>
 
             <ListBox Grid.Row="5" Grid.Column="1" 
@@ -362,11 +367,11 @@
 
                     <StackPanel Grid.Row="1">
                         <TextBlock Grid.Row="1"
-                                   Text="Осадки" 
+                                   Text="Шанс осадков" 
                                    FontSize="19"/>
 
                         <TextBlock Grid.Row="1"
-                                   Text="{Binding SelectedItem.ProbabilityOfPrecipitation, UpdateSourceTrigger=PropertyChanged}" 
+                                   Text="{Binding SelectedItem.ProbabilityOfPrecipitation, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource POPFormat}}" 
                                    TextWrapping="WrapWithOverflow"
                                    TextAlignment="Left"
                                    FontSize="16"/>
@@ -380,7 +385,7 @@
                                    FontSize="19"/>
 
                         <TextBlock Grid.Row="1"
-                                   Text="{Binding SelectedItem.Wind_Speed, UpdateSourceTrigger=PropertyChanged}" 
+                                   Text="{Binding SelectedItem.Wind_Speed, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource WindFormat}}" 
                                    TextWrapping="WrapWithOverflow"
                                    TextAlignment="Left"
                                    FontSize="16"/>
@@ -392,7 +397,7 @@
                                    Text="Влажность" 
                                    FontSize="19"/>
                         <TextBlock Grid.Row="1"
-                                   Text="{Binding SelectedItem.Humidity, UpdateSourceTrigger=PropertyChanged}"
+                                   Text="{Binding SelectedItem.Humidity, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource HumidityFormat}}"
                                    TextWrapping="WrapWithOverflow"
                                    TextAlignment="Left"
                                    FontSize="16"/>
