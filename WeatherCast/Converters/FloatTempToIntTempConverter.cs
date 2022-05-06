@@ -14,7 +14,7 @@ namespace WeatherCast.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            int temperature = (int)value;
+            int temperature = System.Convert.ToInt32(value);
             return temperature;
         }
 

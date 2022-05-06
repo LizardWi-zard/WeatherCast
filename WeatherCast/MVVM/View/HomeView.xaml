@@ -185,7 +185,7 @@
                            Margin="5"
                            FontSize="24"/>
 
-                <TextBlock Text="{Binding ForecastWeather.Daily[0].Date.Day}" 
+                <TextBlock Text="{Binding ForecastWeather.Daily[0].Dt, Converter={StaticResource DateFormat}, ConverterParameter=DayDate}" 
                            Margin="5"
                            FontSize="24"/>
 
@@ -280,7 +280,7 @@
                                    FontSize="19"/>
 
                         <TextBlock Grid.Row="1"
-                                   Text="{Binding SelectedItem.Sunrise, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource DateToString}}" 
+                                   Text="{Binding SelectedItem.Sunrise, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource DateToString}, ConverterParameter=HourMinutes}" 
                                    TextWrapping="WrapWithOverflow"
                                    TextAlignment="Left"
                                    FontSize="16"/>
@@ -294,7 +294,7 @@
                                    FontSize="19"/>
 
                         <TextBlock Grid.Row="1"
-                                   Text="{Binding SelectedItem.Sunset, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource DateToString}}"
+                                   Text="{Binding SelectedItem.Sunset, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource DateToString}, ConverterParameter=HourMinutes}"
                                    TextWrapping="WrapWithOverflow"
                                    TextAlignment="Left"
                                    FontSize="16"/>
@@ -323,7 +323,7 @@
                                    FontSize="19"/>
 
                         <TextBlock Grid.Row="1"
-                                   Text="{Binding SelectedItem.Moonrise, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource DateToString}}" 
+                                   Text="{Binding SelectedItem.Moonrise, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource DateToString}, ConverterParameter=HourMinutes}" 
                                    TextWrapping="WrapWithOverflow"
                                    TextAlignment="Left"
                                    FontSize="16"/>
@@ -336,7 +336,7 @@
                                    FontSize="19"/>
 
                         <TextBlock Grid.Row="1"
-                                   Text="{Binding SelectedItem.Moonset, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource DateToString}}"
+                                   Text="{Binding SelectedItem.Moonset, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource DateToString}, ConverterParameter=HourMinutes}"
                                    TextWrapping="WrapWithOverflow"
                                    TextAlignment="Left"
                                    FontSize="16"/>

@@ -1,5 +1,11 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:converters="clr-namespace:WeatherCast.Converters">
+
+    <converters:FloatTempToIntTempConverter x:Key="FloatToInt"/>
+    <converters:DateToStringConverter x:Key="DateFormat"/>
+    <converters:WindSpeedConverter x:Key="WindFormat"/>
+    
     <Style BasedOn="{StaticResource {x:Type ListBoxItem}}"
            TargetType="{x:Type ListBoxItem}"
            x:Key="ListBoxHourItemTheme">
@@ -18,50 +24,35 @@
                                 BorderBrush="AliceBlue">
 
                             <StackPanel Orientation="Vertical">
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="{Binding Date.Hour}"
+
+                                <TextBlock Text="{Binding Dt, Converter={StaticResource DateFormat}, ConverterParameter=HourMinutes}"
                                            FontSize="24"
                                            HorizontalAlignment="Left"
-                                           VerticalAlignment="Bottom" />
-
-                                    <TextBlock Text=":00"
-                                           FontSize="22"
-                                           HorizontalAlignment="Left"
-                                           VerticalAlignment="Center"
-                                           Margin="0 0 6 0"/>
-                                </StackPanel>
+                                           VerticalAlignment="Bottom"/>
 
                                 <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="{Binding Temperature}"
-                                           FontSize="32"
-                                           VerticalAlignment="Bottom" />
+                                    <TextBlock Text="{Binding Temperature, Converter={StaticResource FloatToInt}}"
+                                               FontSize="32"
+                                               VerticalAlignment="Bottom" />
 
-                                    <TextBlock Text="{Binding Feels_Like}"
-                                           FontSize="17"
-                                           VerticalAlignment="Bottom"
-                                           Opacity="0.6"
-                                           Margin="4"/>
+                                    <TextBlock Text="{Binding Feels_Like, Converter={StaticResource FloatToInt}}"
+                                               FontSize="17"
+                                               VerticalAlignment="Bottom"
+                                               Opacity="0.6"
+                                               Margin="4"/>
                                 </StackPanel>
 
                                 <TextBlock Text="{Binding Weather[0].Main}"
-                                       FontSize="19"
-                                       Margin="0 3 3 3"/>
+                                           FontSize="19"
+                                           Margin="0 3 3 3"/>
 
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="{Binding Wind_Speed}"
+                                <TextBlock Text="{Binding Wind_Speed, Converter={StaticResource WindFormat}}"
                                            FontSize="15"
                                            TextAlignment="Left"
                                            Opacity="0.6"/>
-
-                                    <TextBlock Text="м/с"
-                                           FontSize="12"
-                                           VerticalAlignment="Bottom" 
-                                           Margin="3 0 0 1"
-                                           Opacity="0.6"/>
-                                </StackPanel>
-
+                                
                             </StackPanel>
-
+                            
                         </Border>
                     </ControlTemplate>
                 </Setter.Value>

@@ -15,8 +15,21 @@ namespace WeatherCast.Converters
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             DateTime date = GetDate((int)value);
-            string outputText = date.ToString("HH:mm");
-            return outputText;
+            string outputText;
+
+            switch (parameter)
+            {
+                case "DayDate":
+                    outputText = date.DayOfWeek.ToString() + " " + date.Day.ToString();
+                    return outputText;
+                
+                case "HourMinutes":
+                    outputText = date.ToString("HH:mm");
+                    return outputText;
+
+                default:
+                    return value;
+            }
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

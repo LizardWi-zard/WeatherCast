@@ -1,5 +1,10 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:converters="clr-namespace:WeatherCast.Converters">
+
+    <converters:FloatTempToIntTempConverter x:Key="FloatToInt"/>
+    <converters:DateToStringConverter x:Key="DateFormat"/>
+
     <Style BasedOn="{StaticResource {x:Type ListBoxItem}}"
            TargetType="{x:Type ListBoxItem}"
            x:Key="ListBoxDayItemTheme">
@@ -20,40 +25,32 @@
 
                             <StackPanel Orientation="Vertical">
 
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="{Binding Date.DayOfWeek}"
+                                <TextBlock Text="{Binding Dt, Converter={StaticResource DateFormat}, ConverterParameter=DayDate}"
                                            FontSize="20"
                                            HorizontalAlignment="Left"
                                            VerticalAlignment="Bottom"
                                            Margin="3"/>
 
-                                    <TextBlock Text="{Binding Date.Day}"
-                                           FontSize="23"
-                                           HorizontalAlignment="Left"
-                                           VerticalAlignment="Bottom"
-                                           Margin="2"/>
-                                </StackPanel>
-
                                 <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="{Binding Temperature.DayTemperature}"
-                                           FontSize="32"
-                                           VerticalAlignment="Bottom" />
+                                    <TextBlock Text="{Binding Temperature.DayTemperature, Converter={StaticResource FloatToInt}}"
+                                               FontSize="32"
+                                               VerticalAlignment="Bottom" />
 
-                                    <TextBlock Text="{Binding Temperature.NightTemperature}"
-                                           FontSize="17"
-                                           VerticalAlignment="Bottom"
-                                           Opacity="0.6"
-                                           Margin="4"/>
+                                    <TextBlock Text="{Binding Temperature.NightTemperature, Converter={StaticResource FloatToInt}}"
+                                               FontSize="17"
+                                               VerticalAlignment="Bottom"
+                                               Opacity="0.6"
+                                               Margin="4"/>
                                 </StackPanel>
 
                                 <TextBlock Text="{Binding Weather[0].Main}"
-                                       FontSize="19"
-                                       Margin="3"/>
+                                           FontSize="19"
+                                           Margin="3"/>
 
                                 <TextBlock Text="{Binding Weather[0].Description}"
-                                       FontSize="15"
-                                       TextAlignment="Left"
-                                       Margin="3"/>
+                                           FontSize="15"
+                                           TextAlignment="Left"
+                                           Margin="3"/>
                             </StackPanel>
                         </Border>
 
@@ -69,8 +66,5 @@
                 </Setter.Value>
             </Setter>
         </Style.Setters>
-
-
-        
     </Style>
 </ResourceDictionary>
