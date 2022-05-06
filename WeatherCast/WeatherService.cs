@@ -34,9 +34,9 @@ namespace WeatherCast
 
             var forecastWeather = JsonConvert.DeserializeObject<ForecastWeather>(response);
 
-            var refactoredForecastWeather = GetRefactoredDataForFurutureWeather(forecastWeather);
+            forecastWeather.ForecastFor24Hours = forecastWeather.Hourly.Take(24);
 
-            return refactoredForecastWeather;
+            return forecastWeather;
         }
 
         private string CreateСurrentWeatherUrl(string cityName)
@@ -48,7 +48,6 @@ namespace WeatherCast
         {
             return $"https://api.openweathermap.org/data/2.5/onecall?lon={lon}&lat={lat}&units=metric&lang=ru&appid=8b946297edc5dc36bd60f3acab86dc68";
         }
-
 
         private string GetResponseAsString(string givenUrl)
         {
@@ -81,35 +80,6 @@ namespace WeatherCast
             }
 
             return null;
-        }
-
-        private ForecastWeather GetRefactoredDataForFurutureWeather(ForecastWeather response)
-        {
-            ForecastWeather forecastWeather = response;
-
-            foreach (var day in forecastWeather.Daily)
-            {
-                day.Date = forecastWeather.GetDate(day.Dt);
-                day.Temperature.DayTemperature = forecastWeather.TempToInt(day.Temperature.DayTemperature);
-                day.Temperature.NightTemperature = forecastWeather.TempToInt(day.Temperature.NightTemperature);
-            }
-
-
-            forecastWeather.ForecastFor24Hours = new List<HourCast>();
-
-            for (int i = 0; i < 24; i++)
-            {
-                forecastWeather.ForecastFor24Hours.Add(forecastWeather.Hourly[i]);
-            }
-
-            foreach (var hour in forecastWeather.ForecastFor24Hours)
-            {
-                hour.Date = forecastWeather.GetDate(hour.Dt);
-                hour.Temperature = forecastWeather.TempToInt(hour.Temperature);
-                hour.Feels_Like = forecastWeather.TempToInt(hour.Feels_Like);
-            }
-
-            return forecastWeather;
         }
     }
 }

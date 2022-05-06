@@ -19,28 +19,12 @@ namespace WeatherCast
 
         public HourCast[] Hourly { get; set; }
 
-        public List<HourCast> ForecastFor24Hours { get; set; }
-
-        public int TempToInt(float temp)
-        {
-            int tmp = (int)temp;
-
-            return tmp;
-        }
-
-        public DateTime GetDate(double unixTimeStamp)
-        {
-            DateTime dateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
-            dateTime = dateTime.AddSeconds(unixTimeStamp).ToLocalTime();
-            return dateTime;
-        }
+        public IEnumerable<HourCast> ForecastFor24Hours { get; set; }
     }
 
     public class DailyCast
     {
         public int Dt { get; set; }
-
-        public DateTime Date { get; set; }
 
         public int Sunrise { get; set; }
 
@@ -76,8 +60,6 @@ namespace WeatherCast
     {
         public int Dt { get; set; }
 
-        public DateTime Date { get; set; }
-
         [JsonProperty("temp")]
         public float Temperature { get; set; }
 
@@ -96,8 +78,6 @@ namespace WeatherCast
     {
         [JsonProperty("day")]
         public float DayTemperature { get; set; }
-
-        public int DayInt { get; set; }
 
         [JsonProperty("min")]
         public float MinTemperature { get; set; }
