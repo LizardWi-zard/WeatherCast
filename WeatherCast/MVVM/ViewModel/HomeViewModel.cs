@@ -34,6 +34,8 @@ namespace WeatherCast.MVVM.ViewModel
 
         public string Title { get; set; }
 
+        public string BackgroundImg { get; set; }
+
         public string WelcomeText { get; set; }
 
         public HomeViewModel(WeatherService control, CurrentWeather weather)
@@ -47,6 +49,8 @@ namespace WeatherCast.MVVM.ViewModel
             ForecastWeather = control.GetForecastWeather(longitude, latitude);
 
             WelcomeText = SetMessageByTime();
+
+            BackgroundImg = SetBackgroundImg(CurrentWeather);
         }
 
         static string SetMessageByTime()
@@ -73,6 +77,18 @@ namespace WeatherCast.MVVM.ViewModel
             }
 
             return message;
+        }
+
+        static string SetBackgroundImg(CurrentWeather CurrentWeather)
+        {
+            string link = "C:/Users/ArEf/source/repos/WeatherCast/WeatherCast/Images/Background/";
+
+            string currentWeather = CurrentWeather.Weather[0].Main.ToLower();
+
+            if (currentWeather != "rain" && currentWeather != "clouds") 
+                return link + "clouds.png";
+            else
+                return link + currentWeather + ".png";
         }
     }
 }
