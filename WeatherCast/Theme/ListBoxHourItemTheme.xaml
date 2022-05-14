@@ -25,7 +25,7 @@
 
                             <StackPanel Orientation="Vertical">
 
-                                <TextBlock Text="{Binding Dt, Converter={StaticResource DateFormat}, ConverterParameter=HourMinutes}"
+                                <TextBlock Text="{Binding Date, Converter={StaticResource DateFormat}, ConverterParameter=HourMinutes}"
                                            FontSize="24"
                                            HorizontalAlignment="Left"
                                            VerticalAlignment="Bottom"/>

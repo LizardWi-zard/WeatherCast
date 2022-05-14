@@ -24,7 +24,8 @@ namespace WeatherCast
 
     public class DailyCast
     {
-        public int Dt { get; set; }
+        [JsonProperty("dt")]
+        public int Date { get; set; }
 
         public int Sunrise { get; set; }
 
@@ -58,7 +59,8 @@ namespace WeatherCast
 
     public class HourCast
     {
-        public int Dt { get; set; }
+        [JsonProperty("dt")]
+        public int Date { get; set; }
 
         [JsonProperty("temp")]
         public float Temperature { get; set; }

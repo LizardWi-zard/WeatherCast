@@ -25,7 +25,7 @@
 
                             <StackPanel Orientation="Vertical">
 
-                                <TextBlock Text="{Binding Dt, Converter={StaticResource DateFormat}, ConverterParameter=DayDate}"
+                                <TextBlock Text="{Binding Date, Converter={StaticResource DateFormat}, ConverterParameter=DayDate}"
                                            FontSize="20"
                                            HorizontalAlignment="Left"
                                            VerticalAlignment="Bottom"
@@ -55,11 +55,18 @@
                         </Border>
 
                         <ControlTemplate.Triggers>
-                            <Trigger Property="IsSelected" Value="true">
-                                <Setter TargetName="BackgroundBorder" Property="Background" Value="AliceBlue"/>
+                            <Trigger Property="IsSelected" 
+                                     Value="true">
+                                <Setter TargetName="BackgroundBorder" 
+                                        Property="Background" 
+                                        Value="AliceBlue"/>
                             </Trigger>
-                            <Trigger Property="IsMouseOver" Value="true">
-                                <Setter TargetName="BackgroundBorder" Property="Background" Value="AliceBlue"/>
+                            
+                            <Trigger Property="IsMouseOver" 
+                                     Value="true">
+                                <Setter TargetName="BackgroundBorder" 
+                                        Property="Background" 
+                                        Value="AliceBlue"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
