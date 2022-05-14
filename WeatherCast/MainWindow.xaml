@@ -6,7 +6,7 @@
         xmlns:viewModel="clr-namespace:WeatherCast.MVVM.ViewModel"
         xmlns:local="clr-namespace:WeatherCast"
         mc:Ignorable="d"
-        Title="MainWindow" 
+        Title="WeatherCast" 
         Height="600" Width="920"
         MinHeight="600" MinWidth="670">
 
@@ -19,71 +19,64 @@
 
     <Grid Background="#E4E7E4">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition MaxWidth="220"/>
+            <ColumnDefinition MaxWidth="48"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
         <Grid Grid.Column="0">
             <Grid.RowDefinitions>
-                <RowDefinition Height="60"/>
+                <RowDefinition Height="48"/>
                 <RowDefinition />
             </Grid.RowDefinitions>
 
-            <TextBlock Text="WeatherCast"
+            <TextBlock Text="Cast"
                    Foreground="#080C2E"
                    HorizontalAlignment="Left"
                    VerticalAlignment="Center" 
                    FontSize="23" 
-                   FontWeight="DemiBold"
-                   Margin="30 0 0 0"/>
+                   FontWeight="DemiBold"/>
 
             <Grid Grid.Row="1">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="50"/>
-                    <RowDefinition Height="50"/>
-                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="48"/>
+                    <RowDefinition Height="48"/>
+                    <RowDefinition Height="48"/>
                     <RowDefinition/>
                     <RowDefinition Height="50"/>
                 </Grid.RowDefinitions>
 
-                <Button Content="Главная"
-                    Height="35"
-                    FontSize="15"
-                    Style="{StaticResource MenuButtonTheme}"
-                    Command="{Binding HomeViewCommand}"
-                    Grid.Row="0"/>
+                <RadioButton Style="{StaticResource MenuButtonTheme}"
+                        Height="48"
+                        Command="{Binding HomeViewCommand}"
+                        Grid.Row="0"
+                        Content="C:\Users\ArEf\source\repos\WeatherCast\WeatherCast\Images\Icons\home.png" 
+                        IsChecked="True" />
 
-                <Button Content="Поиск"
-                    Height="35"
-                    FontSize="15"
-                    Style="{StaticResource MenuButtonTheme}"
-                    Command="{Binding SearchViewCommand}"
-                    Grid.Row="1"/>
-
-                <TextBlock Text="Добавленные города"
-                       Foreground="#080C2E"
-                       HorizontalAlignment="Left"
-                       VerticalAlignment="Center" 
-                       FontSize="17"
-                       FontWeight="Bold"
-                       Margin="30 0 0 0"
-                       Grid.Row="2"/>
-
-                <ListBox x:Name="CityList" 
-                     Grid.Row="3">
-
-                </ListBox>
+                <RadioButton Content="Поиск"
+                             Height="48"
+                             FontSize="15"
+                             Style="{StaticResource MenuButtonTheme}"
+                             Command="{Binding SearchViewCommand}"
+                             Grid.Row="1"/>
 
             </Grid>
         </Grid>
-
+        <!--
+        <TextBlock Text="Добавленные города"
+                           Foreground="#080C2E"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center" 
+                           FontSize="17"
+                           FontWeight="Bold"
+                           Margin="30 0 0 0"
+                           Grid.Row="2"/>
+        -->
         
 
         <Grid Grid.Row="1"
               Grid.Column="1">
 
-            <ContentControl Margin="5"
-                            HorizontalAlignment="Stretch"
+            <ContentControl HorizontalAlignment="Stretch"
                             VerticalAlignment="Stretch"
                             Content="{Binding CurrentView}"/>
 

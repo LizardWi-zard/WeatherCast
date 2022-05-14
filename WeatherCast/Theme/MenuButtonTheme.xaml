@@ -1,22 +1,46 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    <Style BasedOn="{StaticResource {x:Type Button}}"
-           TargetType="{x:Type Button}"
+    <Style BasedOn="{StaticResource {x:Type RadioButton}}"
+           TargetType="{x:Type RadioButton}"
            x:Key="MenuButtonTheme">
         <Style.Setters>
             <Setter Property="Template">
                 <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Grid VerticalAlignment="Stretch"
-                              HorizontalAlignment="Stretch"
-                              Background="{TemplateBinding Background}">
-                            
-                            <TextBlock Text="{TemplateBinding Property=Content}"
-                                       Foreground="#080C2E"
-                                       VerticalAlignment="Center"
-                                       Margin="30 0 0 0"/>
+                    <ControlTemplate TargetType="RadioButton">
+                        <Border>
+                            <Grid VerticalAlignment="Stretch"
+                                  HorizontalAlignment="Stretch"
+                                  Background="{TemplateBinding Background}">
 
-                        </Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="6"/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+
+                                <Canvas x:Name="SelectionMarker" Grid.Column="0" 
+                                        Height="28"
+                                        Width="6"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Center"
+                                        Background="Transparent"/>
+
+                                <Image Grid.Column="1"
+                                       Source="C:\Users\ArEf\source\repos\WeatherCast\WeatherCast\Images\Icons\home.png"
+                                       Height="16"
+                                       Width="16"
+                                       HorizontalAlignment="Left"
+                                       VerticalAlignment="Center"
+                                       Margin="10 0 0 0"/>
+
+                            </Grid>
+                        </Border>
+
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="SelectionMarker" Property="Background" Value="#6F7283"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
@@ -27,8 +51,9 @@
 
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Background" Value="#767A89"/>
+                <Setter Property="Background" Value="#A9ADB3"/>
             </Trigger>
+            
         </Style.Triggers>
     </Style>
 </ResourceDictionary>
