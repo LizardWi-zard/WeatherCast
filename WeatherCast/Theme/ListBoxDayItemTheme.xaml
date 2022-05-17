@@ -9,21 +9,31 @@
            TargetType="{x:Type ListBoxItem}"
            x:Key="ListBoxDayItemTheme">
         <Style.Setters>
+            <Setter Property="Foreground" Value="#FFFFFF"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type ListBoxItem}">
-                        <Border x:Name="BackgroundBorder"
-                                Background="Transparent"
-                                HorizontalAlignment="Stretch"
-                                VerticalAlignment="Stretch"
+                        <Border x:Name="ItemHolder"
+                                
                                 Width="150"
                                 Height="150"
-                                Margin="1"
-                                CornerRadius="3"
+                                CornerRadius="0"
                                 BorderThickness="2"
-                                BorderBrush="AliceBlue">
+                                BorderBrush="Transparent">
 
-                            <StackPanel Orientation="Vertical">
+                            <Border.Background >
+                                <SolidColorBrush x:Name="ItemBackground"
+                                                 Color="Transparent"
+                                                 Opacity="0"/>
+                            </Border.Background>
+
+                            <!--
+                                Background="{Binding RelativeSource={RelativeSource TemplatedParent}}">
+                            
+                            -->
+
+                            <StackPanel x:Name="InnerItem" Orientation="Vertical"
+                                        Opacity="1">
 
                                 <TextBlock Text="{Binding Date, Converter={StaticResource DateFormat}, ConverterParameter=DayDate}"
                                            FontSize="20"
@@ -50,23 +60,36 @@
                                 <TextBlock Text="{Binding Weather[0].Description}"
                                            FontSize="15"
                                            TextAlignment="Left"
-                                           Margin="3"/>
+                                           TextWrapping="WrapWithOverflow"
+                                           Margin="3 3 0 0"/>
                             </StackPanel>
                         </Border>
 
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsSelected" 
                                      Value="true">
-                                <Setter TargetName="BackgroundBorder" 
+                                <Setter TargetName="ItemHolder" 
                                         Property="Background" 
-                                        Value="AliceBlue"/>
+                                        Value="#ACBFCE"/>
+                                <Setter TargetName="ItemHolder" 
+                                        Property="BorderBrush" 
+                                        Value="#7B9EB9"/>
+                                <Setter TargetName="ItemHolder" 
+                                        Property="Opacity" 
+                                        Value="1"/>
+                                <Setter TargetName="InnerItem" 
+                                        Property="Opacity" 
+                                        Value="1"/>
                             </Trigger>
                             
                             <Trigger Property="IsMouseOver" 
                                      Value="true">
-                                <Setter TargetName="BackgroundBorder" 
+                                <Setter TargetName="ItemHolder" 
+                                        Property="BorderBrush" 
+                                        Value="#7B9EB9"/>
+                                <Setter TargetName="ItemHolder" 
                                         Property="Background" 
-                                        Value="AliceBlue"/>
+                                        Value="#ACBFCE"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>

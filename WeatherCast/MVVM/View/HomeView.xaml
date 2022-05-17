@@ -10,7 +10,8 @@
              d:DataContext="{d:DesignInstance Type=viewmodel:HomeViewModel}"
              
              mc:Ignorable="d" 
-             d:DesignHeight="1450" d:DesignWidth="800">
+             d:DesignHeight="1450" d:DesignWidth="800"
+             Foreground="#FFFFFF">
 
     <UserControl.Resources>
         <converters:DateToStringConverter x:Key="DateToString"/>
@@ -22,7 +23,31 @@
     </UserControl.Resources>
 
     <ScrollViewer VerticalScrollBarVisibility="Auto">
-        <Grid HorizontalAlignment="Stretch"
+
+
+        <ScrollViewer.Background>
+            <!-- <ImageBrush ImageSource="{Binding Path=BackgroundImg}" 
+                        Stretch="UniformToFill"/> 
+            -->
+            <VisualBrush>
+                <VisualBrush.Visual>
+                    <Grid>
+                        
+                            <Image Source="{Binding Path=BackgroundImg}" 
+                                        Stretch="UniformToFill"/>
+                        
+
+                        <Rectangle Fill="#5F8EC3" 
+                                      Opacity="0.3"/>
+
+                    </Grid>
+                </VisualBrush.Visual>
+            </VisualBrush>
+                    
+                
+        </ScrollViewer.Background>
+
+        <Grid HorizontalAlignment="Center"
               VerticalAlignment="Stretch">
 
             <Grid.RowDefinitions>
@@ -42,41 +67,15 @@
                 <ColumnDefinition MinWidth="0" MaxWidth="200" Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <Grid.Background>
-                <LinearGradientBrush StartPoint="1, 0" EndPoint="1, 2">
-                    <GradientStop Offset="0" Color="Transparent"/>
-                    <GradientStop Offset="0.4" Color="#5F8EC3"/>
-                </LinearGradientBrush>
-            </Grid.Background>
-
-
-            <Image Source="{Binding Path=BackgroundImg}"
-                   VerticalAlignment="Top"
-                   HorizontalAlignment="Stretch"
-                   Grid.ColumnSpan="3"
-                   Grid.RowSpan="8"
-                   MinWidth="1200"
-                   MinHeight="500">
-                <Image.OpacityMask>
-                    <LinearGradientBrush StartPoint="1,0" EndPoint="1,2">
-                        <LinearGradientBrush.GradientStops>
-                            <GradientStop Offset="0" Color="Black"/>
-                            <GradientStop Offset="0.5" Color="Transparent"/>
-                        </LinearGradientBrush.GradientStops>
-                    </LinearGradientBrush>
-                </Image.OpacityMask>
-            </Image>
-            
-            
-
-
-            <TextBlock Grid.Row="0" Grid.Column="1"
+            <TextBlock Grid.Row="0" 
+                       Grid.Column="1"
                        x:Name="WelcomeTextBlock"
                        Text="{Binding Path=WelcomeText}" 
                        HorizontalAlignment="Center"
                        FontSize="24"/>
 
-            <Grid Grid.Row="1" Grid.Column="1"
+            <Grid Grid.Row="1" 
+                  Grid.Column="1"
                   MaxWidth="500"
                   Background="Transparent"
                   HorizontalAlignment="Stretch"
@@ -84,8 +83,7 @@
 
                 <Border Height="250"
                         HorizontalAlignment="Stretch"
-                        VerticalAlignment="Top"
-                        CornerRadius="10">
+                        VerticalAlignment="Top">
 
                     <Grid HorizontalAlignment="Stretch"
                           Grid.IsSharedSizeScope="True">
@@ -102,29 +100,30 @@
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
 
-                        <TextBlock Grid.Column="1" Grid.Row="0"
+                        <TextBlock Grid.Column="1" 
+                                   Grid.Row="0"
                                    Text="{Binding CurrentWeather.Name}"
                                    VerticalAlignment="Top"
                                    HorizontalAlignment="Center"
                                    TextWrapping="Wrap"
-                                   Foreground="Black"
                                    FontSize="32"/>
 
-                        <TextBlock Grid.Row="1" Grid.Column="1"
-                                   Foreground="Black"
+                        <TextBlock Grid.Row="1"
+                                   Grid.Column="1"
                                    VerticalAlignment="Top"
                                    HorizontalAlignment="Center"
                                    Text="{Binding CurrentWeather.Main.Temperature}"
                                    FontSize="72"/>
 
-                        <TextBlock Grid.Row="1" Grid.Column="1"
-                                   Foreground="Black"
+                        <TextBlock Grid.Row="1" 
+                                   Grid.Column="1"
                                    VerticalAlignment="Bottom"
                                    HorizontalAlignment="Center"
                                    Text="{Binding CurrentWeather.Weather[0].Main}"
                                    FontSize="32"/>
 
-                        <WrapPanel Grid.Column="0" Grid.Row="2"
+                        <WrapPanel Grid.Column="0"
+                                   Grid.Row="2"
                                    Grid.ColumnSpan="3"
                                    Width="285"
                                    HorizontalAlignment="Center"
@@ -180,7 +179,8 @@
                 </Border>
             </Grid>
 
-            <TextBlock Grid.Row="2" Grid.Column="1"
+            <TextBlock Grid.Row="2" 
+                       Grid.Column="1"
                        Text="По дням" 
                        Margin="5"
                        FontSize="24"/>
@@ -198,7 +198,7 @@
                      ItemContainerStyle="{StaticResource ListBoxDayItemTheme}"
                      SelectedIndex="0">
 
-                <ListBox.ItemsPanel >
+                <ListBox.ItemsPanel>
                     <ItemsPanelTemplate >
                         <WrapPanel IsItemsHost="True"/>
                     </ItemsPanelTemplate>
@@ -206,7 +206,8 @@
 
             </ListBox>
 
-            <StackPanel Grid.Row="4" Grid.Column="1"
+            <StackPanel Grid.Row="4" 
+                        Grid.Column="1"
                         Orientation="Horizontal">
 
                 <TextBlock Text="По часам на" 
@@ -216,10 +217,10 @@
                 <TextBlock Text="{Binding ForecastWeather.Daily[0].Date, Converter={StaticResource DateFormat}, ConverterParameter=DayDate}" 
                            Margin="5"
                            FontSize="24"/>
-
             </StackPanel>
 
-            <ListBox Grid.Row="5" Grid.Column="1" 
+            <ListBox Grid.Row="5" 
+                     Grid.Column="1" 
                      VerticalAlignment="Top"
                      Height="180"
                      Background="Transparent"
@@ -237,11 +238,8 @@
 
             </ListBox>
 
-            <Canvas Grid.Row="6" Grid.Column="1"
-                    Background="Wheat"
-                    Margin="5"/>
-
-            <WrapPanel Grid.Row="7" Grid.Column="1"
+            <WrapPanel Grid.Row="7" 
+                       Grid.Column="1"
                        Orientation="Horizontal"
                        Margin="0 0 0 30">
 
@@ -250,13 +248,13 @@
                       Width="280">
 
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="10"/>
+                        <RowDefinition Height="2"/>
                         <RowDefinition/>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
 
                     <Canvas Grid.Row="0"
-                            Background="Black"
+                            Background="#9B9EA7"
                             HorizontalAlignment="Stretch"/>
 
                     <StackPanel Grid.Row="1">
@@ -293,13 +291,13 @@
                       Width="280">
 
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="10"/>
+                        <RowDefinition Height="2"/>
                         <RowDefinition/>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
 
                     <Canvas Grid.Row="0"
-                            Background="Black"
+                            Background="#9B9EA7"
                             HorizontalAlignment="Stretch"/>
 
                     <StackPanel Grid.Row="1">
@@ -336,13 +334,13 @@
                       Width="280">
 
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="10"/>
+                        <RowDefinition Height="2"/>
                         <RowDefinition/>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
 
                     <Canvas Grid.Row="0"
-                            Background="Black"
+                            Background="#9B9EA7"
                             HorizontalAlignment="Stretch"/>
 
                     <StackPanel Grid.Row="1">
@@ -378,7 +376,7 @@
                       Width="280">
 
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="10"/>
+                        <RowDefinition Height="2"/>
                         <RowDefinition/>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
@@ -390,7 +388,7 @@
 
                     <Canvas Grid.Row="0"
                             Grid.ColumnSpan="2"
-                            Background="Black"
+                            Background="#9B9EA7"
                             HorizontalAlignment="Stretch"/>
 
                     <StackPanel Grid.Row="1">

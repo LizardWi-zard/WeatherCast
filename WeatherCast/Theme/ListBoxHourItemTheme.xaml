@@ -10,25 +10,25 @@
            TargetType="{x:Type ListBoxItem}"
            x:Key="ListBoxHourItemTheme">
         <Style.Setters>
+            <Setter Property="Foreground" Value="#FFFFFF"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type ListBoxItem}">
-                        <Border CornerRadius="1"
-                                Background="Transparent"
+                        <Border x:Name="ItemHolder"
                                 HorizontalAlignment="Stretch"
                                 VerticalAlignment="Stretch"
-                                Width="150"
+                                Width="100"
                                 Height="150"
-                                Margin="1"
-                                BorderThickness="2"
-                                BorderBrush="AliceBlue">
+                                BorderBrush="Transparent">
 
                             <StackPanel Orientation="Vertical">
 
-                                <TextBlock Text="{Binding Date, Converter={StaticResource DateFormat}, ConverterParameter=HourMinutes}"
-                                           FontSize="24"
-                                           HorizontalAlignment="Left"
-                                           VerticalAlignment="Bottom"/>
+                                <Canvas Background="#9B9EA7"
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Center"
+                                        Height="1.1"
+                                        Opacity="0.7"
+                                        Margin="0 5 0 5" />
 
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Text="{Binding Temperature, Converter={StaticResource FloatToInt}}"
@@ -50,7 +50,19 @@
                                            FontSize="15"
                                            TextAlignment="Left"
                                            Opacity="0.6"/>
-                                
+
+                                <Canvas Background="#9B9EA7"
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Center"
+                                        Height="1.1"
+                                        Opacity="0.7"
+                                        Margin="0 5 0 5" />
+
+                                <TextBlock Text="{Binding Date, Converter={StaticResource DateFormat}, ConverterParameter=HourMinutes}"
+                                           FontSize="17"
+                                           HorizontalAlignment="Left"
+                                           VerticalAlignment="Bottom"/>
+
                             </StackPanel>
                             
                         </Border>
