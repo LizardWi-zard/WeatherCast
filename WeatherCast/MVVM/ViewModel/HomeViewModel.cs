@@ -1,18 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Timers;
 
 namespace WeatherCast.MVVM.ViewModel
 {
     public class HomeViewModel : ViewModelBase
     {
-        WeatherService Control;
+        //WeatherService control;
         string longitude;
         string latitude;
         private DailyCast _selectedItem;
+        string path = @"D:\WeatherCast\requestTime.txt";
+        private Timer timer = new Timer();
+
+        //private TimerEventManager _timerEventManager;
 
         public CurrentWeather CurrentWeather { get; set; }
 
@@ -20,7 +26,7 @@ namespace WeatherCast.MVVM.ViewModel
 
         public DailyCast SelectedItem
         {
-            get { return _selectedItem; } 
+            get { return _selectedItem; }
             set
             {
                 _selectedItem = value;
@@ -38,9 +44,10 @@ namespace WeatherCast.MVVM.ViewModel
 
         public string WelcomeText { get; set; }
 
-        public HomeViewModel(WeatherService control, CurrentWeather weather)
+        public HomeViewModel(WeatherService control, CurrentWeather weather) :
+            base(control, weather)
         {
-            this.Control = control;
+            this.control = control;
             CurrentWeather = weather;
 
             latitude = CurrentWeather.Coord.Latitude.ToString();
@@ -51,6 +58,12 @@ namespace WeatherCast.MVVM.ViewModel
             WelcomeText = SetMessageByTime();
 
             BackgroundImg = SetBackgroundImg(CurrentWeather);
+
+            timer.Interval = 1000 * 60 * 2;
+            
+            timer.AutoReset = true;
+            timer.Elapsed += OnTimedEvent;
+            timer.Start();
         }
 
         static string SetMessageByTime()
@@ -85,10 +98,18 @@ namespace WeatherCast.MVVM.ViewModel
 
             string currentWeather = CurrentWeather.Weather[0].Main.ToLower();
 
-            if (currentWeather != "rain" && currentWeather != "clouds") 
+            if (currentWeather != "rain" && currentWeather != "clouds")
                 return link + "clouds.png";
             else
                 return link + currentWeather + ".png";
         }
+
+        private void OnTimedEvent(Object sourse, System.Timers.ElapsedEventArgs e)
+        {
+            CurrentWeather = updatedInfo;
+            
+            RaisePropertyChanged(nameof(updatedInfo));
+        }
+
     }
 }

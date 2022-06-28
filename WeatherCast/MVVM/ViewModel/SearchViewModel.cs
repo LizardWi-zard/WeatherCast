@@ -6,15 +6,20 @@ using System.Threading.Tasks;
 
 namespace WeatherCast.MVVM.ViewModel
 {
-    class SearchViewModel
+    public class SearchViewModel
     {
-        public APIControl Control {  get; set; }
+        public WeatherService Control { get; set; }
 
-        public WeatherResponse Response { get; set; }
+        public CurrentWeather Response { get; set; }
 
         public string Title { get; set; }
 
-        public void UpdateControlResponse(APIControl Control, WeatherResponse Response)
+        public SearchViewModel()
+        {
+           // _2timerEventManager = new TimerEventManager(@"D:\WeatherCast\seare.txt");
+        }
+
+        public void UpdateControlResponse(WeatherService Control, CurrentWeather Response)
         {
             this.Control = Control;
             this.Response = Response;

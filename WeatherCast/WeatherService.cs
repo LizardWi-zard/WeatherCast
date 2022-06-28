@@ -41,12 +41,12 @@ namespace WeatherCast
 
         private string CreateСurrentWeatherUrl(string cityName)
         {
-            return "http://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&units=metric&lang=ru&appid=8b946297edc5dc36bd60f3acab86dc68";
+            return "http://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&units=metric&lang=ru&appid=894e6bd5a5ce67550af68bcd05ead93d";
         }
 
         private string CreateFutureWeatherUrl(string lon, string lat)
         {
-            return $"https://api.openweathermap.org/data/2.5/onecall?lon={lon}&lat={lat}&units=metric&lang=ru&appid=8b946297edc5dc36bd60f3acab86dc68";
+            return $"https://api.openweathermap.org/data/2.5/onecall?lon={lon}&lat={lat}&units=metric&lang=ru&appid=894e6bd5a5ce67550af68bcd05ead93d";
         }
 
         private string GetResponseAsString(string givenUrl)

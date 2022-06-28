@@ -11,7 +11,8 @@
              
              mc:Ignorable="d" 
              d:DesignHeight="1450" d:DesignWidth="800"
-             Foreground="#FFFFFF">
+             Foreground="#FFFFFF"
+             FontFamily="Segoe UI">
 
     <UserControl.Resources>
         <converters:DateToStringConverter x:Key="DateToString"/>
@@ -187,7 +188,8 @@
 
             <ListBox x:Name="ForecastList"
                      SelectedItem="{Binding SelectedItem}"
-                     Grid.Row="3" Grid.Column="1" 
+                     Grid.Row="3"
+                     Grid.Column="1" 
                      VerticalAlignment="Top"
                      Height="180"
                      Background="Transparent"

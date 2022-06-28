@@ -9,105 +9,126 @@
              d:DataContext="{d:DesignInstance Type=viewmodel:MainViewModel}"
              
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="650" d:DesignWidth="800"
+             FontFamily="Segoe UI">
+
     
     <Grid>
 
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="2*"/>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
-
         <Grid.RowDefinitions>
-            <RowDefinition Height="60"/>
-            <RowDefinition Height="1.5*"/>
+            <RowDefinition Height="48"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        
-        <TextBlock Text="Результат поиска" 
-                   Grid.Row="0"
-                   Margin="10 0 10 0"
-                   FontSize="24"/>
 
-        <Border Grid.Row="1"
-                Grid.Column="0"
-                Background="AliceBlue"
-                HorizontalAlignment="Stretch"
-                VerticalAlignment="Stretch"
-                Margin="0 0 0 0"
-                CornerRadius="20" >
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition MinWidth="0" MaxWidth="210" Width="*"/>
+            <ColumnDefinition MinWidth="400" MaxWidth="1450" Width="100*"/>
+            <ColumnDefinition MinWidth="0" MaxWidth="210" Width="*"/>
+        </Grid.ColumnDefinitions>
 
-            <Grid>
+        <Canvas Grid.ColumnSpan="3"
+            Grid.Row="0"
+            Background="#C7CBD3">
 
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition Width="5*"/>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
+            <TextBlock 
+               Text="Избранное"
+               FontSize="17"
+               FontWeight="Bold"
+              
+               VerticalAlignment="Center"
+               HorizontalAlignment="Left"
+               Margin="20 15 0 0" />
+
+        </Canvas>
+
+        <ScrollViewer VerticalScrollBarVisibility="Auto"
+                      Grid.Row="1"
+                      Grid.ColumnSpan="2"
+                      Grid.Column="1"
+                      Margin="0 5 0 5">
+
+            <Grid Grid.Column="1"
+              Grid.Row="1">
 
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="60"/>
-                    <RowDefinition Height="2*"/>
+                    <RowDefinition Height="192"/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
 
-                <TextBlock Grid.Column="1"
-                           Foreground="Black"
-                           VerticalAlignment="Center"
-                           HorizontalAlignment="Center"
-                           FontSize="25"
-                           FontWeight="Bold"
-                           Text="{Binding Response.Name}"/>
 
-                <Grid Grid.Row="1"
-                      Grid.Column="1">
+                <Grid Grid.Row="0">
+                    <TextBlock Text="Показывать при запуске"
+                       FontSize="26"
+                       FontWeight="Normal"
+                       VerticalAlignment="Top"
+                       HorizontalAlignment="Left"
+                       Margin="20 10 0 0" />
 
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
+                    <Button 
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Bottom"
+                            Margin="20 0 0 20"
+                            Style="{StaticResource MarkedCity}">
+
+
+                    </Button>
+
+
+                </Grid>
+
+                <Grid Grid.Row="2">
 
                     <Grid.RowDefinitions>
-                        <RowDefinition/>
+                        <RowDefinition Height="55"/>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
 
                     <TextBlock Grid.Row="0"
-                               Grid.Column="0"
-                               HorizontalAlignment="Center"
-                               VerticalAlignment="Bottom"
-                               TextWrapping="WrapWithOverflow"
-                               Foreground="Black"
-                               FontSize="20"
-                               Text="Температура"/>
-
-                    <TextBlock Grid.Row="1"
-                               Grid.Column="0"
-                               Foreground="Black"
-                               FontSize="20"
-                               HorizontalAlignment="Center"
+                               Text="Избранное"
+                               FontSize="26"
+                               FontWeight="Normal"
                                VerticalAlignment="Top"
-                               Text="{Binding Response.Main.Temp}"/>
+                               HorizontalAlignment="Left"
+                               Margin="20 10 0 0" />
 
-                    <TextBlock Grid.Row="0"
-                               Grid.Column="1"
-                               HorizontalAlignment="Center"
-                               VerticalAlignment="Bottom"
-                               TextWrapping="WrapWithOverflow"
-                               Foreground="Black"
-                               FontSize="20"
-                               Text="Ощущается как"/>
+                    <ListBox Grid.Row="1"
+                             Margin="20 10 20 10"
+                             ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                             ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                             Background="Transparent"
+                             BorderThickness="0">
 
-                    <TextBlock Grid.Row="1"
-                               Grid.Column="1"
-                               Foreground="Black"
-                               FontSize="20"
-                               HorizontalAlignment="Center"
-                               VerticalAlignment="Top"
-                               Text="{Binding Response.Main.Feels_Like}"/>
+                        <ListBox.ItemsPanel>
+                            <ItemsPanelTemplate >
+                                <WrapPanel IsItemsHost="True"/>
+                            </ItemsPanelTemplate>
+                        </ListBox.ItemsPanel>
+
+                        <ListBoxItem >
+                            <Button Style="{StaticResource MarkedCity}" />
+                        </ListBoxItem>
+
+                        <ListBoxItem >
+                            <Button Style="{StaticResource MarkedCity}" />
+                        </ListBoxItem>
+
+                        <ListBoxItem >
+                            <Button Style="{StaticResource MarkedCity}" />
+                        </ListBoxItem>
+
+                        <ListBoxItem >
+                            <Button Style="{StaticResource MarkedCity}" />
+                        </ListBoxItem>
+
+                    </ListBox>
 
                 </Grid>
+
             </Grid>
-        </Border>
+        </ScrollViewer>
+
+
     </Grid>
+        
+    
 </UserControl>

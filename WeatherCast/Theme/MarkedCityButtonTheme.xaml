@@ -1,0 +1,83 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:converters="clr-namespace:WeatherCast.Converters">
+
+    <Style BasedOn="{StaticResource {x:Type Button}}"
+           TargetType="{x:Type Button}"
+           x:Key="MarkedCity">
+        <Style.Setters>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Grid HorizontalAlignment="Center"
+                              VerticalAlignment="Center" 
+                              Width="292"
+                              Height="120">
+
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="71*"/>
+                                <ColumnDefinition Width="73*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="31*"/>
+                                <RowDefinition Height="85*"/>
+                            </Grid.RowDefinitions>
+
+
+                            <TextBlock Background="AliceBlue"
+                                       Text="Иваново" 
+                                       Grid.ColumnSpan="2"
+                                       FontSize="23"/>
+
+                            <TextBlock Grid.Column="0" 
+                                       Grid.Row="1" 
+                                       Text="18" 
+                                       FontSize="58" 
+                                       Background="White"
+                                       TextAlignment="Left"
+                                       FontWeight="Light"/>
+
+                            <Grid Grid.Row="1"
+                                      Grid.Column="1"
+                                      Background="LightBlue">
+
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="50"/>
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="20"/>
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+
+                                <TextBlock Text="19" 
+                                           Grid.Row="0"
+                                           Grid.Column="0"/>
+
+                                <TextBlock Text="9"
+                                           Grid.Row="1" 
+                                           Grid.Column="0"/>
+
+                                <TextBlock Text="19" 
+                                           Grid.Row="0" 
+                                           Grid.Column="1"/>
+
+                                <TextBlock Text="9" 
+                                           Grid.Row="1" 
+                                           Grid.Column="1"/>
+
+                            </Grid>
+
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+        </Style.Setters>
+
+    </Style>
+</ResourceDictionary>

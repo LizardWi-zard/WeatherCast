@@ -11,6 +11,7 @@
            x:Key="ListBoxHourItemTheme">
         <Style.Setters>
             <Setter Property="Foreground" Value="#FFFFFF"/>
+            <Setter Property="FontFamily" Value="Segoe UI"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type ListBoxItem}">

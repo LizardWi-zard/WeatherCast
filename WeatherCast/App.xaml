@@ -13,6 +13,7 @@
                 <ResourceDictionary Source="\Theme\ListBoxDayItemTheme.xaml"/>
                 <ResourceDictionary Source="\Theme\ListBoxHourItemTheme.xaml"/>
                 <ResourceDictionary Source="\Theme\ScrollBarTheme.xaml"/>
+                <ResourceDictionary Source="\Theme\MarkedCityButtonTheme.xaml"/>
             </ResourceDictionary.MergedDictionaries>
 
             <DataTemplate DataType="{x:Type viewModel:HomeViewModel}">
