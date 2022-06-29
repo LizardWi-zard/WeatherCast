@@ -5,17 +5,16 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Timers;
+using WeatherCast.Model;
 
 namespace WeatherCast
 {
     public class ViewModelBase : INotifyPropertyChanged
     {
-        Timer timer = new Timer();
-        string homeCity = "Берлин";
-        DateTime lastRequestTime;
+        private Timer timer = new Timer();
+        private const string homeCity = "Берлин";
+        private DateTime lastRequestTime;
         
         protected CurrentWeather updatedInfo;
         protected WeatherService control;
@@ -29,8 +28,6 @@ namespace WeatherCast
             timer.Elapsed += OnTimedEvent;
             timer.Start();
         }
-
-
 
         public event PropertyChangedEventHandler PropertyChanged;
 

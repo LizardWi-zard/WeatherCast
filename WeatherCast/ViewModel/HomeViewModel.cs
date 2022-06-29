@@ -1,48 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Timers;
+using WeatherCast.Model;
 
-namespace WeatherCast.MVVM.ViewModel
+namespace WeatherCast.ViewModel
 {
     public class HomeViewModel : ViewModelBase
     {
-        //WeatherService control;
-        string longitude;
-        string latitude;
+        private string longitude;
+        private string latitude;
         private DailyCast _selectedItem;
-        string path = @"D:\WeatherCast\requestTime.txt";
+        private string path = @"D:\WeatherCast\requestTime.txt";
         private Timer timer = new Timer();
-
         //private TimerEventManager _timerEventManager;
-
-        public CurrentWeather CurrentWeather { get; set; }
-
-        public ForecastWeather ForecastWeather { get; set; }
-
-        public DailyCast SelectedItem
-        {
-            get { return _selectedItem; }
-            set
-            {
-                _selectedItem = value;
-
-                _selectedItem.Temperature.MaxTemperatureText = "Максимальная температура днём: " + value.Temperature.MaxTemperature.ToString();
-                _selectedItem.Temperature.MinTemperatureText = "Минимальная температура ночью: " + value.Temperature.MinTemperature.ToString();
-
-                RaisePropertyChanged(nameof(SelectedItem));
-            }
-        }
-
-        public string Title { get; set; }
-
-        public string BackgroundImg { get; set; }
-
-        public string WelcomeText { get; set; }
 
         public HomeViewModel(WeatherService control, CurrentWeather weather) :
             base(control, weather)
@@ -60,10 +29,34 @@ namespace WeatherCast.MVVM.ViewModel
             BackgroundImg = SetBackgroundImg(CurrentWeather);
 
             timer.Interval = 1000 * 60 * 2;
-            
+
             timer.AutoReset = true;
             timer.Elapsed += OnTimedEvent;
             timer.Start();
+        }
+
+        public CurrentWeather CurrentWeather { get; set; }
+
+        public ForecastWeather ForecastWeather { get; set; }
+
+        public string Title { get; set; }
+
+        public string BackgroundImg { get; set; }
+
+        public string WelcomeText { get; set; }
+
+        public DailyCast SelectedItem
+        {
+            get { return _selectedItem; }
+            set
+            {
+                _selectedItem = value;
+
+                _selectedItem.Temperature.MaxTemperatureText = "Максимальная температура днём: " + value.Temperature.MaxTemperature.ToString();
+                _selectedItem.Temperature.MinTemperatureText = "Минимальная температура ночью: " + value.Temperature.MinTemperature.ToString();
+
+                RaisePropertyChanged(nameof(SelectedItem));
+            }
         }
 
         static string SetMessageByTime()
@@ -99,12 +92,16 @@ namespace WeatherCast.MVVM.ViewModel
             string currentWeather = CurrentWeather.Weather[0].Main.ToLower();
 
             if (currentWeather != "rain" && currentWeather != "clouds")
+            {
                 return link + "clouds.png";
+            }
             else
+            {
                 return link + currentWeather + ".png";
+            }
         }
 
-        private void OnTimedEvent(Object sourse, System.Timers.ElapsedEventArgs e)
+        private void OnTimedEvent(object sourse, ElapsedEventArgs e)
         {
             CurrentWeather = updatedInfo;
             

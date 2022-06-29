@@ -8,32 +8,38 @@
     <Style BasedOn="{StaticResource {x:Type ListBoxItem}}"
            TargetType="{x:Type ListBoxItem}"
            x:Key="ListBoxDayItemTheme">
+        
         <Style.Setters>
-            <Setter Property="Foreground" Value="#FFFFFF"/>
-            <Setter Property="FontFamily" Value="Segoe UI"/>
+            
+            <Setter Property="Foreground"
+                    Value="#FFFFFF"/>
+            
+            <Setter Property="FontFamily"
+                    Value="Segoe UI"/>
+            
             <Setter Property="Template">
+                
                 <Setter.Value>
+                    
                     <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                        
                         <Border x:Name="ItemHolder"
-                                
                                 Width="150"
                                 Height="150"
                                 CornerRadius="0"
                                 BorderThickness="2"
                                 BorderBrush="Transparent">
 
-                            <Border.Background >
+                            <Border.Background>
+
                                 <SolidColorBrush x:Name="ItemBackground"
                                                  Color="Transparent"
                                                  Opacity="0"/>
+
                             </Border.Background>
 
-                            <!--
-                                Background="{Binding RelativeSource={RelativeSource TemplatedParent}}">
-                            
-                            -->
-
-                            <StackPanel x:Name="InnerItem" Orientation="Vertical"
+                            <StackPanel x:Name="InnerItem"
+                                        Orientation="Vertical"
                                         Opacity="1">
 
                                 <TextBlock Text="{Binding Date, Converter={StaticResource DateFormat}, ConverterParameter=DayDate}"
@@ -43,6 +49,7 @@
                                            Margin="3"/>
 
                                 <StackPanel Orientation="Horizontal">
+                                    
                                     <TextBlock Text="{Binding Temperature.DayTemperature, Converter={StaticResource FloatToInt}}"
                                                FontSize="32"
                                                VerticalAlignment="Bottom" />
@@ -52,6 +59,7 @@
                                                VerticalAlignment="Bottom"
                                                Opacity="0.6"
                                                Margin="4"/>
+                                    
                                 </StackPanel>
 
                                 <TextBlock Text="{Binding Weather[0].Main}"
@@ -63,39 +71,57 @@
                                            TextAlignment="Left"
                                            TextWrapping="WrapWithOverflow"
                                            Margin="3 3 0 0"/>
+                                
                             </StackPanel>
+                            
                         </Border>
 
                         <ControlTemplate.Triggers>
+                            
                             <Trigger Property="IsSelected" 
                                      Value="true">
+                                
                                 <Setter TargetName="ItemHolder" 
                                         Property="Background" 
                                         Value="#ACBFCE"/>
+                                
                                 <Setter TargetName="ItemHolder" 
                                         Property="BorderBrush" 
                                         Value="#7B9EB9"/>
+                                
                                 <Setter TargetName="ItemHolder" 
                                         Property="Opacity" 
                                         Value="1"/>
+                                
                                 <Setter TargetName="InnerItem" 
                                         Property="Opacity" 
                                         Value="1"/>
+                                
                             </Trigger>
                             
                             <Trigger Property="IsMouseOver" 
                                      Value="true">
+                                
                                 <Setter TargetName="ItemHolder" 
                                         Property="BorderBrush" 
                                         Value="#7B9EB9"/>
+                                
                                 <Setter TargetName="ItemHolder" 
                                         Property="Background" 
                                         Value="#ACBFCE"/>
+                                
                             </Trigger>
+                            
                         </ControlTemplate.Triggers>
+                        
                     </ControlTemplate>
+                    
                 </Setter.Value>
+                
             </Setter>
+            
         </Style.Setters>
+        
     </Style>
+    
 </ResourceDictionary>

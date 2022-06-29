@@ -5,10 +5,15 @@
     <Style BasedOn="{StaticResource {x:Type Button}}"
            TargetType="{x:Type Button}"
            x:Key="MarkedCity">
+        
         <Style.Setters>
+            
             <Setter Property="Template">
+                
                 <Setter.Value>
+                    
                     <ControlTemplate TargetType="Button">
+                        
                         <Grid HorizontalAlignment="Center"
                               VerticalAlignment="Center" 
                               Width="292"
@@ -24,7 +29,6 @@
                                 <RowDefinition Height="85*"/>
                             </Grid.RowDefinitions>
 
-
                             <TextBlock Background="AliceBlue"
                                        Text="Иваново" 
                                        Grid.ColumnSpan="2"
@@ -39,8 +43,8 @@
                                        FontWeight="Light"/>
 
                             <Grid Grid.Row="1"
-                                      Grid.Column="1"
-                                      Background="LightBlue">
+                                  Grid.Column="1"
+                                  Background="LightBlue">
 
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="50"/>
@@ -71,13 +75,21 @@
                             </Grid>
 
                         </Grid>
+                        
                     </ControlTemplate>
+                    
                 </Setter.Value>
+                
             </Setter>
 
-            <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Background"
+                    Value="Transparent"/>
+            
+            <Setter Property="BorderThickness"
+                    Value="0"/>
+            
         </Style.Setters>
 
     </Style>
+    
 </ResourceDictionary>

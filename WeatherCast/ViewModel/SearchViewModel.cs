@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using WeatherCast.Model;
 
-namespace WeatherCast.MVVM.ViewModel
+namespace WeatherCast.ViewModel
 {
     public class SearchViewModel
     {
@@ -13,11 +9,6 @@ namespace WeatherCast.MVVM.ViewModel
         public CurrentWeather Response { get; set; }
 
         public string Title { get; set; }
-
-        public SearchViewModel()
-        {
-           // _2timerEventManager = new TimerEventManager(@"D:\WeatherCast\seare.txt");
-        }
 
         public void UpdateControlResponse(WeatherService Control, CurrentWeather Response)
         {

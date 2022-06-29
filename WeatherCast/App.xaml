@@ -2,11 +2,14 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:WeatherCast"
-             xmlns:viewModel="clr-namespace:WeatherCast.MVVM.ViewModel"
-             xmlns:view="clr-namespace:WeatherCast.MVVM.View"
+             xmlns:viewModel="clr-namespace:WeatherCast.ViewModel"
+             xmlns:view="clr-namespace:WeatherCast.View"
              StartupUri="MainWindow.xaml">
+    
     <Application.Resources>
+        
         <ResourceDictionary>
+            
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="\Theme\MenuButtonTheme.xaml"/>
                 <ResourceDictionary Source="\Theme\TextBoxTheme.xaml"/>
@@ -25,5 +28,7 @@
             </DataTemplate>
             
         </ResourceDictionary>
+        
     </Application.Resources>
+    
 </Application>

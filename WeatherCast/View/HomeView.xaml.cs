@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace WeatherCast.MVVM.View
+namespace WeatherCast.View
 {
     /// <summary>
     /// Логика взаимодействия для HomeView.xaml

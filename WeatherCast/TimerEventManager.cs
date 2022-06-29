@@ -3,8 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Timers;
 
 namespace WeatherCast
@@ -16,12 +14,7 @@ namespace WeatherCast
         FileInfo fileInf;
         DateTime dateTime;
 
-        public TimerEventManager(string path)
-        {
-            
-        }
-
-        private void OnTimedEvent(Object sourse, System.Timers.ElapsedEventArgs e)
+        private void OnTimedEvent(object sourse, ElapsedEventArgs e)
         {
             if (!fileInf.Exists)
             {
@@ -40,8 +33,6 @@ namespace WeatherCast
                 arrLine = File.ReadAllLines(path).ToList();
                 arrLine[1] = dateTime.ToString();
                 File.WriteAllLines(path, arrLine);
-
-
             }
         }
 

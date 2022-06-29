@@ -3,11 +3,10 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using WeatherCast.Core;
+using WeatherCast.Model;
 
-namespace WeatherCast.MVVM.ViewModel
+namespace WeatherCast.ViewModel
 {
     class MainViewModel : ObservableObject
     {
@@ -16,30 +15,6 @@ namespace WeatherCast.MVVM.ViewModel
         private WeatherService control;
         private DateTime lastRequestTime;
         private string homeCity = "Иваново";
-
-        public ViewModelBase VMBase { get; set; }
-
-        public HomeViewModel HomeVM { get; set; }
-
-        public SearchViewModel SearchVM { get; set; }
-
-        public RelayCommand HomeViewCommand { get; set; }
-
-        public RelayCommand SearchViewCommand { get; set; }
-
-        public RelayCommand SearchCommand { get; set; }
-
-        public CurrentWeather Response { get; set; }
-
-        public object CurrentView
-        {
-            get { return _currentView; }
-            set
-            {
-                _currentView = value;
-                OnPropertyChanged();
-            }
-        }
 
         public MainViewModel()
         {
@@ -71,6 +46,30 @@ namespace WeatherCast.MVVM.ViewModel
             {
                 CurrentView = SearchVM;
             });
+        }
+
+        public ViewModelBase VMBase { get; set; }
+
+        public HomeViewModel HomeVM { get; set; }
+
+        public SearchViewModel SearchVM { get; set; }
+
+        public RelayCommand HomeViewCommand { get; set; }
+
+        public RelayCommand SearchViewCommand { get; set; }
+
+        public RelayCommand SearchCommand { get; set; }
+
+        public CurrentWeather Response { get; set; }
+
+        public object CurrentView
+        {
+            get { return _currentView; }
+            set
+            {
+                _currentView = value;
+                OnPropertyChanged();
+            }
         }
 
         public void SaveData(WeatherService control)
