@@ -3,6 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
+using System.Windows;
 using WeatherCast.Core;
 using WeatherCast.Model;
 
@@ -101,6 +103,10 @@ namespace WeatherCast.ViewModel
                 lastRequestTime= DateTime.Now;
 
                 File.Create(@"D:\WeatherCast\requestTime.txt").Close();
+                //сделать универсальный относительный путь рядом с приложением, пример:
+                //string currentDirectory = Assembly.GetEntryAssembly().Location;
+                //string pathToSave = Path.Combine(currentDirectory, "requestTime.txt");
+
                 File.WriteAllLines(@"D:\WeatherCast\requestTime.txt", arrLine);
             }
 
