@@ -13,9 +13,9 @@ namespace WeatherCast
     public class ViewModelBase : INotifyPropertyChanged
     {
         private Timer timer = new Timer();
-        private const string homeCity = "Берлин";
+        private string homeCity = "Берлин";
+        private string currentDirectory = Directory.GetCurrentDirectory();
         private DateTime lastRequestTime;
-        
         protected CurrentWeather updatedInfo;
         protected WeatherService control;
 
@@ -39,74 +39,53 @@ namespace WeatherCast
 
         private void OnTimedEvent(Object sourse, System.Timers.ElapsedEventArgs e)
         {
-            //string path = @"D:\WeatherCast\requestTime.txt"; //TODO: Сдеать обработку исключений для некоректных данных
-            FileInfo fileInf = new FileInfo(@"D:\WeatherCast\requestTime.txt");
+            string pathToSave = currentDirectory + @"\\requestTime.txt";
+            FileInfo fileInf = new FileInfo(pathToSave);
+
             List<string> arrLine = new List<string>();
 
             if (fileInf.Exists)
             {
-                string line;
-                string[] Lines = File.ReadAllLines(@"D:\WeatherCast\requestTime.txt");
-                arrLine = Lines.ToList();
-                
-                //homeCity = arrLine[0];
-                
-                
-
-                //foreach (string line in System.IO.File.ReadLines(path))
-                //{
-                //    arrLine.Add(line);
-                //}
-
-                //homeCity = arrLine[0];
-                //lastRequestTime = DateTime.Parse(arrLine[1]);
-
-                //if ((DateTime.Now - lastRequestTime).TotalMinutes >= 1)
-                //{
-                //    arrLine[1] = DateTime.Now.ToString();
-                //}
-
-                using (StreamReader reader = new StreamReader(@"D:\WeatherCast\requestTime.txt"))
-                {
-                    line = reader.ReadToEnd();
-                    reader.Close();
-                }
-
-                arrLine = line.Split(" ").ToList();
+                arrLine = File.ReadAllLines(pathToSave).ToList();
+                homeCity = arrLine[0];
+                lastRequestTime = DateTime.Parse(arrLine[1]);
+                arrLine[0] = "Ярославль";
 
                 if ((DateTime.Now - lastRequestTime).TotalMinutes >= 1)
                 {
                     arrLine[1] = DateTime.Now.ToString();
-                    lastRequestTime = DateTime.Parse(arrLine[1]);
                 }
 
-
-                File.WriteAllLines(@"D:\WeatherCast\requestTime.txt", arrLine);
+                File.WriteAllLines(pathToSave, arrLine);
             }
             else
             {
-                arrLine.Add(homeCity);
+                arrLine.Add("Москва");
                 arrLine.Add(DateTime.Now.ToString());
-               
+
+                homeCity = "Москва";
                 lastRequestTime = DateTime.Now;
 
-                File.Create(@"D:\WeatherCast\requestTime.txt").Close();
-                File.WriteAllLines(@"D:\WeatherCast\requestTime.txt", arrLine);
+                File.Create(pathToSave).Close();;
+
+                File.WriteAllLines(pathToSave, arrLine);
             }
 
-            string path = @"D:\WeatherCast\SelectedCityInfo.txt";
-            fileInf = new FileInfo(path);
+            pathToSave = currentDirectory + @"\\SelectedCityInfo.txt";
+
+            fileInf = new FileInfo(pathToSave);
 
             if (!fileInf.Exists)
             {
-                File.Create(path).Close();
+                File.Create(pathToSave).Close();
 
                 updatedInfo = control.GetCurrentWeather(homeCity);
 
-                using (StreamWriter sw = File.CreateText(path))
+                using (StreamWriter sw = File.CreateText(pathToSave))
                 {
                     JsonSerializer serializer = new JsonSerializer();
                     serializer.Serialize(sw, updatedInfo);
+                    sw.Close();
                 }
             }
             else
@@ -117,7 +96,7 @@ namespace WeatherCast
                 {
                     updatedInfo = control.GetCurrentWeather(homeCity);
 
-                    using (StreamWriter sw = File.CreateText(path))
+                    using (StreamWriter sw = File.CreateText(pathToSave))
                     {
                         JsonSerializer serializer = new JsonSerializer();
                         serializer.Serialize(sw, updatedInfo);
@@ -125,9 +104,10 @@ namespace WeatherCast
                 }
                 else
                 {
-                    using (StreamReader streamReader = new StreamReader(path))
+                    using (StreamReader streamReader = new StreamReader(pathToSave))
                     {
                         response = streamReader.ReadToEnd();
+                        streamReader.Close();
                     }
 
                     updatedInfo = JsonConvert.DeserializeObject<CurrentWeather>(response);

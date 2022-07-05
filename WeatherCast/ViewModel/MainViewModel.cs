@@ -17,11 +17,14 @@ namespace WeatherCast.ViewModel
         private WeatherService control;
         private DateTime lastRequestTime;
         private string homeCity = "Иваново";
+        private string currentDirectory;
 
         public MainViewModel()
         {
             WeatherService control = new WeatherService();
 
+            currentDirectory = Directory.GetCurrentDirectory();
+            
             SaveData(control);
 
             VMBase = new ViewModelBase(control, currentWeather);
@@ -48,6 +51,7 @@ namespace WeatherCast.ViewModel
             {
                 CurrentView = SearchVM;
             });
+
         }
 
         public ViewModelBase VMBase { get; set; }
@@ -76,23 +80,26 @@ namespace WeatherCast.ViewModel
 
         public void SaveData(WeatherService control)
         {
-            string path; // = @"D:\WeatherCast\requestTime.txt"; //TODO: Сдеать обработку исключений для некоректных данных
-            FileInfo fileInf = new FileInfo(@"D:\WeatherCast\requestTime.txt");
+            // = @"D:\WeatherCast\requestTime.txt"; //TODO: Сдеать обработку исключений для некоректных данных
+            
+            string pathToSave = currentDirectory + @"\\requestTime.txt"; 
+            FileInfo fileInf = new FileInfo(pathToSave);
+            
             List<string> arrLine = new List<string>();
 
             if (fileInf.Exists)
             {
-                arrLine = File.ReadAllLines(@"D:\WeatherCast\requestTime.txt").ToList();
+                arrLine = File.ReadAllLines(pathToSave).ToList();
                 homeCity = arrLine[0];
                 lastRequestTime = DateTime.Parse(arrLine[1]);
-                arrLine[0] = "Иваново";
+                arrLine[0] = "Москва";
 
                 if ((DateTime.Now - lastRequestTime).TotalMinutes >= 1)
                 {
                     arrLine[1] = DateTime.Now.ToString();
                 }
 
-                File.WriteAllLines(@"D:\WeatherCast\requestTime.txt", arrLine);
+                File.WriteAllLines(pathToSave, arrLine);
             }
             else
             {
@@ -102,24 +109,26 @@ namespace WeatherCast.ViewModel
                 homeCity = "Москва";
                 lastRequestTime= DateTime.Now;
 
-                File.Create(@"D:\WeatherCast\requestTime.txt").Close();
+                File.Create(pathToSave).Close();
+                
                 //сделать универсальный относительный путь рядом с приложением, пример:
                 //string currentDirectory = Assembly.GetEntryAssembly().Location;
                 //string pathToSave = Path.Combine(currentDirectory, "requestTime.txt");
 
-                File.WriteAllLines(@"D:\WeatherCast\requestTime.txt", arrLine);
+                File.WriteAllLines(pathToSave, arrLine);
             }
 
-            path = @"D:\WeatherCast\SelectedCityInfo.txt";
-            fileInf = new FileInfo(path);
+            pathToSave = currentDirectory + @"\\SelectedCityInfo.txt";
+            
+            fileInf = new FileInfo(pathToSave);
 
             if (!fileInf.Exists)
             {
-                File.Create(path).Close();
+                File.Create(pathToSave).Close();
 
                 currentWeather = control.GetCurrentWeather(homeCity);
 
-                using (StreamWriter sw = File.CreateText(path))
+                using (StreamWriter sw = File.CreateText(pathToSave))
                 {
                     JsonSerializer serializer = new JsonSerializer();
                     serializer.Serialize(sw, currentWeather);
@@ -134,7 +143,7 @@ namespace WeatherCast.ViewModel
                 {
                     currentWeather = control.GetCurrentWeather(homeCity);
 
-                    using (StreamWriter sw = File.CreateText(path))
+                    using (StreamWriter sw = File.CreateText(pathToSave))
                     {
                         JsonSerializer serializer = new JsonSerializer();
                         serializer.Serialize(sw, currentWeather);
@@ -142,7 +151,7 @@ namespace WeatherCast.ViewModel
                 }
                 else
                 {
-                    using (StreamReader streamReader = new StreamReader(path))
+                    using (StreamReader streamReader = new StreamReader(pathToSave))
                     {
                         response = streamReader.ReadToEnd();
                         streamReader.Close();
