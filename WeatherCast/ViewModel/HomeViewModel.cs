@@ -87,7 +87,10 @@ namespace WeatherCast.ViewModel
 
         static string SetBackgroundImg(CurrentWeather CurrentWeather)
         {
-            string link = "C:/Users/ArEf/source/repos/WeatherCast/WeatherCast/Images/Background/";
+            // компьютеро-зависимый путь
+            // string link = "C:/Users/ArEf/source/repos/WeatherCast/WeatherCast/Images/Background/";
+            // сделать так же во всех остальных местах использования файлов
+            string link = @"..\Images\Background\";
 
             string currentWeather = CurrentWeather.Weather[0].Main.ToLower();
 

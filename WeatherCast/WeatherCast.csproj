@@ -8,6 +8,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Images\Background\Clear.png" />
+    <None Remove="Images\Background\Clouds.png" />
+    <None Remove="Images\Background\Rain.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Images\Background\Clear.png" />
+    <Resource Include="Images\Background\Clouds.png" />
+    <Resource Include="Images\Background\Rain.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
 

@@ -3,8 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
-using System.Windows;
 using WeatherCast.Core;
 using WeatherCast.Model;
 
@@ -51,7 +49,6 @@ namespace WeatherCast.ViewModel
             {
                 CurrentView = SearchVM;
             });
-
         }
 
         public ViewModelBase VMBase { get; set; }
@@ -82,6 +79,7 @@ namespace WeatherCast.ViewModel
         {
             // = @"D:\WeatherCast\requestTime.txt"; //TODO: Сдеать обработку исключений для некоректных данных
             
+            // ты можешь использовать Path.Combine для безопасного "склеивания" частей пути
             string pathToSave = currentDirectory + @"\\requestTime.txt"; 
             FileInfo fileInf = new FileInfo(pathToSave);
             
