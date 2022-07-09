@@ -48,9 +48,10 @@ namespace WeatherCast.MVVM.ViewModel
             SaveData(control);
 
             VMBase = new ViewModelBase(control, currentWeather);
-
+            
             HomeVM = new HomeViewModel(control, currentWeather);
             SearchVM = new SearchViewModel();
+            SettingsVM = new SettingsViewModel();
 
             CurrentView = HomeVM;
 
@@ -71,12 +72,51 @@ namespace WeatherCast.MVVM.ViewModel
             {
                 CurrentView = SearchVM;
             });
+
+            SettingsViewCommand = new RelayCommand(o =>
+            {
+                CurrentView = SettingsVM;
+            });
+        }
+
+        public ViewModelBase VMBase { get; set; }
+
+        public HomeViewModel HomeVM { get; set; }
+
+        public SearchViewModel SearchVM { get; set; }
+
+        public SettingsViewModel SettingsVM { get; set; }
+
+        public RelayCommand HomeViewCommand { get; set; }
+
+        public RelayCommand SearchViewCommand { get; set; }
+
+        public RelayCommand SettingsViewCommand { get; set; }
+
+        public RelayCommand SearchCommand { get; set; }
+
+        public CurrentWeather Response { get; set; }
+
+        public object CurrentView
+        {
+            get { return _currentView; }
+            set
+            {
+                _currentView = value;
+                OnPropertyChanged();
+            }
         }
 
         public void SaveData(WeatherService control)
         {
-            string path; // = @"D:\WeatherCast\requestTime.txt"; //TODO: Сдеать обработку исключений для некоректных данных
-            FileInfo fileInf = new FileInfo(@"D:\WeatherCast\requestTime.txt");
+            // = @"D:\WeatherCast\requestTime.txt"; //TODO: Сдеать обработку исключений для некоректных данных
+            
+            // ты можешь использовать Path.Combine для безопасного "склеивания" частей пути
+            //string pathToSave = currentDirectory + @"\\requestTime.txt";
+
+            string pathToSave = Path.Combine(currentDirectory, "requestTime.txt");
+            FileInfo fileInf = new FileInfo(pathToSave);
+            
             List<string> arrLine = new List<string>();
 
             if (fileInf.Exists)
@@ -95,18 +135,19 @@ namespace WeatherCast.MVVM.ViewModel
             }
             else
             {
-                arrLine.Add("Москва");
+                arrLine.Add("Иваново");
                 arrLine.Add(DateTime.Now.ToString());
                 
-                homeCity = "Москва";
+                homeCity = "Иваново";
                 lastRequestTime= DateTime.Now;
 
                 File.Create(@"D:\WeatherCast\requestTime.txt").Close();
                 File.WriteAllLines(@"D:\WeatherCast\requestTime.txt", arrLine);
             }
 
-            path = @"D:\WeatherCast\SelectedCityInfo.txt";
-            fileInf = new FileInfo(path);
+            pathToSave = Path.Combine(currentDirectory, "SelectedCityInfo.txt");
+            
+            fileInf = new FileInfo(pathToSave);
 
             if (!fileInf.Exists)
             {
@@ -133,6 +174,7 @@ namespace WeatherCast.MVVM.ViewModel
                     {
                         JsonSerializer serializer = new JsonSerializer();
                         serializer.Serialize(sw, currentWeather);
+                        sw.Close();
                     }
                 }
                 else
