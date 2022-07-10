@@ -17,7 +17,6 @@ namespace WeatherCast.ViewModel
         private DateTime lastRequestTime;
         protected CurrentWeather updatedInfo;
         protected WeatherService control;
-        private string currentDirectory = Directory.GetCurrentDirectory();
 
         public ViewModelBase(WeatherService control, CurrentWeather weather)
         {

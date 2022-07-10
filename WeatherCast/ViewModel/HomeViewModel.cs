@@ -10,7 +10,6 @@ namespace WeatherCast.ViewModel
         private string latitude;
         private DailyCast _selectedItem;
         private Timer timer = new Timer();
-        //private TimerEventManager _timerEventManager;
 
         public HomeViewModel(WeatherService control, CurrentWeather weather) :
             base(control, weather)

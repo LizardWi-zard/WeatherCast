@@ -12,16 +12,12 @@ namespace WeatherCast.ViewModel
     {
         private CurrentWeather currentWeather;
         private object _currentView;
-        private WeatherService control;
         private DateTime lastRequestTime;
         private string homeCity = "Иваново";
-        private string currentDirectory = Directory.GetCurrentDirectory();
 
         public MainViewModel()
         {
             WeatherService control = new WeatherService();
-
-            currentDirectory = Directory.GetCurrentDirectory();
             
             SaveData(control);
 
