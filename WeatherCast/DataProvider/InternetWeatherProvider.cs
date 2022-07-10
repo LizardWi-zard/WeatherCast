@@ -5,9 +5,9 @@ using System.Linq;
 using System.Net;
 using WeatherCast.Model;
 
-namespace WeatherCast
+namespace WeatherCast.DataProvider
 {
-    public class WeatherService
+    internal class InternetWeatherProvider : IDataProvider
     {
         private HttpWebResponse httpWebResponse;
 
