@@ -10,11 +10,12 @@
         Height="600" Width="920"
         MinHeight="600" MinWidth="670">
 
-    
     <Window.DataContext>
         <viewModel:MainViewModel/>
     </Window.DataContext>
-    
+
+
+   
 
     <Grid Background="#E4E7E4">
         <Grid.ColumnDefinitions>
@@ -41,29 +42,22 @@
                     <RowDefinition Height="48"/>
                     <RowDefinition Height="48"/>
                     <RowDefinition/>
-                    <RowDefinition Height="48"/>
+                    <RowDefinition Height="50"/>
                 </Grid.RowDefinitions>
 
-                <RadioButton Grid.Row="0"
-                              
-                             Tag="C:\Users\ArEf\source\repos\WeatherCast\WeatherCast\Images\Icons\home.png"
-                             Style="{StaticResource MenuButtonTheme}"
-                             Command="{Binding HomeViewCommand}"
-                             IsChecked="True" />
+                <RadioButton Style="{StaticResource MenuButtonTheme}"
+                        Height="48"
+                        Command="{Binding HomeViewCommand}"
+                        Grid.Row="0"
+                        Content="C:\Users\ArEf\source\repos\WeatherCast\WeatherCast\Images\Icons\home.png" 
+                        IsChecked="True" />
 
-                <RadioButton Grid.Row="1"
-                             
-                             Tag="C:\Users\ArEf\source\repos\WeatherCast\WeatherCast\Images\Icons\star.png"
+                <RadioButton Content="Поиск"
+                             Height="48"
+                             FontSize="15"
                              Style="{StaticResource MenuButtonTheme}"
-                             Command="{Binding SearchViewCommand}"/>
-
-                <RadioButton Grid.Row="4"
-                             
-                             
-                             Tag="C:\Users\ArEf\source\repos\WeatherCast\WeatherCast\Images\Icons\settings.png"
-                             Style="{StaticResource MenuButtonTheme}"
-                             Command="{Binding SettingsViewCommand}"/>
-
+                             Command="{Binding SearchViewCommand}"
+                             Grid.Row="1"/>
 
             </Grid>
         </Grid>
@@ -77,6 +71,7 @@
                            Margin="30 0 0 0"
                            Grid.Row="2"/>
         -->
+        
 
         <Grid Grid.Row="1"
               Grid.Column="1">

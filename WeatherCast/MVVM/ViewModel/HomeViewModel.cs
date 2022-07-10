@@ -15,7 +15,7 @@ namespace WeatherCast.MVVM.ViewModel
         string longitude;
         string latitude;
         private DailyCast _selectedItem;
-        //private string path = @"D:\WeatherCast\requestTime.txt";
+        string path = @"D:\WeatherCast\requestTime.txt";
         private Timer timer = new Timer();
 
         //private TimerEventManager _timerEventManager;
@@ -63,7 +63,7 @@ namespace WeatherCast.MVVM.ViewModel
             
             timer.AutoReset = true;
             timer.Elapsed += OnTimedEvent;
-            //timer.Start();
+            timer.Start();
         }
 
         static string SetMessageByTime()
@@ -98,8 +98,7 @@ namespace WeatherCast.MVVM.ViewModel
 
             string currentWeather = CurrentWeather.Weather[0].Main.ToLower();
 
-            if (currentWeather == "clouds")
-            {
+            if (currentWeather != "rain" && currentWeather != "clouds")
                 return link + "clouds.png";
             else
                 return link + currentWeather + ".png";
@@ -111,5 +110,6 @@ namespace WeatherCast.MVVM.ViewModel
             
             RaisePropertyChanged(nameof(updatedInfo));
         }
+
     }
 }
