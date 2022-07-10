@@ -15,7 +15,7 @@ namespace WeatherCast.ViewModel
         private WeatherService control;
         private DateTime lastRequestTime;
         private string homeCity = "Иваново";
-        private string currentDirectory;
+        private string currentDirectory = Directory.GetCurrentDirectory();
 
         public MainViewModel()
         {
@@ -29,6 +29,7 @@ namespace WeatherCast.ViewModel
 
             HomeVM = new HomeViewModel(control, currentWeather);
             SearchVM = new SearchViewModel();
+            SettingsVM = new SettingsViewModel();
 
             CurrentView = HomeVM;
 
@@ -49,6 +50,11 @@ namespace WeatherCast.ViewModel
             {
                 CurrentView = SearchVM;
             });
+
+            SettingsViewCommand = new RelayCommand(o =>
+            {
+                CurrentView = SettingsVM;
+            });
         }
 
         public ViewModelBase VMBase { get; set; }
@@ -57,9 +63,13 @@ namespace WeatherCast.ViewModel
 
         public SearchViewModel SearchVM { get; set; }
 
+        public SettingsViewModel SettingsVM { get; set; }
+
         public RelayCommand HomeViewCommand { get; set; }
 
         public RelayCommand SearchViewCommand { get; set; }
+
+        public RelayCommand SettingsViewCommand { get; set; }
 
         public RelayCommand SearchCommand { get; set; }
 
@@ -78,9 +88,8 @@ namespace WeatherCast.ViewModel
         public void SaveData(WeatherService control)
         {
             // = @"D:\WeatherCast\requestTime.txt"; //TODO: Сдеать обработку исключений для некоректных данных
-            
-            // ты можешь использовать Path.Combine для безопасного "склеивания" частей пути
-            string pathToSave = currentDirectory + @"\\requestTime.txt"; 
+
+            string pathToSave = Path.Combine(currentDirectory, "requestTime.txt"); 
             FileInfo fileInf = new FileInfo(pathToSave);
             
             List<string> arrLine = new List<string>();
@@ -108,15 +117,12 @@ namespace WeatherCast.ViewModel
                 lastRequestTime= DateTime.Now;
 
                 File.Create(pathToSave).Close();
-                
-                //сделать универсальный относительный путь рядом с приложением, пример:
-                //string currentDirectory = Assembly.GetEntryAssembly().Location;
-                //string pathToSave = Path.Combine(currentDirectory, "requestTime.txt");
+
 
                 File.WriteAllLines(pathToSave, arrLine);
             }
 
-            pathToSave = currentDirectory + @"\\SelectedCityInfo.txt";
+            pathToSave = Path.Combine(currentDirectory, "SelectedCityInfo.txt");
             
             fileInf = new FileInfo(pathToSave);
 

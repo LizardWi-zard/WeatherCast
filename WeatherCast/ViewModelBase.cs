@@ -8,8 +8,10 @@ using System.Runtime.CompilerServices;
 using System.Timers;
 using WeatherCast.Model;
 
+
 namespace WeatherCast
 {
+/*
     public class ViewModelBase : INotifyPropertyChanged
     {
         private Timer timer = new Timer();
@@ -120,4 +122,5 @@ namespace WeatherCast
             }
         }
     }
+ */
 }

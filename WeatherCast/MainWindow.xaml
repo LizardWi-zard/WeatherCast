@@ -13,10 +13,7 @@
     <Window.DataContext>
         <viewModel:MainViewModel/>
     </Window.DataContext>
-
-
-   
-
+    
     <Grid Background="#E4E7E4">
         <Grid.ColumnDefinitions>
             <ColumnDefinition MaxWidth="48"/>
@@ -45,33 +42,24 @@
                     <RowDefinition Height="50"/>
                 </Grid.RowDefinitions>
 
-                <RadioButton Style="{StaticResource MenuButtonTheme}"
-                        Height="48"
-                        Command="{Binding HomeViewCommand}"
-                        Grid.Row="0"
-                        Content="C:\Users\ArEf\source\repos\WeatherCast\WeatherCast\Images\Icons\home.png" 
-                        IsChecked="True" />
-
-                <RadioButton Content="Поиск"
-                             Height="48"
-                             FontSize="15"
+                <RadioButton Grid.Row="0" 
+                             Tag="C:\Users\ArEf\source\repos\WeatherCast\WeatherCast\Images\Icons\home.png"
                              Style="{StaticResource MenuButtonTheme}"
-                             Command="{Binding SearchViewCommand}"
-                             Grid.Row="1"/>
+                             Command="{Binding HomeViewCommand}"
+                             IsChecked="True" />
+
+                <RadioButton Grid.Row="1"
+                             Tag="C:\Users\ArEf\source\repos\WeatherCast\WeatherCast\Images\Icons\star.png"
+                             Style="{StaticResource MenuButtonTheme}"
+                             Command="{Binding SearchViewCommand}"/>
+
+                <RadioButton Grid.Row="4"
+                             Tag="C:\Users\ArEf\source\repos\WeatherCast\WeatherCast\Images\Icons\settings.png"
+                             Style="{StaticResource MenuButtonTheme}"
+                             Command="{Binding SettingsViewCommand}"/>
 
             </Grid>
         </Grid>
-        <!--
-        <TextBlock Text="Добавленные города"
-                           Foreground="#080C2E"
-                           HorizontalAlignment="Left"
-                           VerticalAlignment="Center" 
-                           FontSize="17"
-                           FontWeight="Bold"
-                           Margin="30 0 0 0"
-                           Grid.Row="2"/>
-        -->
-        
 
         <Grid Grid.Row="1"
               Grid.Column="1">
