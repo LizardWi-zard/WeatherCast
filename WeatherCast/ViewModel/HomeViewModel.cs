@@ -9,7 +9,6 @@ namespace WeatherCast.ViewModel
         private string longitude;
         private string latitude;
         private DailyCast _selectedItem;
-        private string path = @"D:\WeatherCast\requestTime.txt";
         private Timer timer = new Timer();
         //private TimerEventManager _timerEventManager;
 
