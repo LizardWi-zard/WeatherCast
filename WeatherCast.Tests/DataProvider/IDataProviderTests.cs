@@ -20,6 +20,7 @@ namespace WeatherCast.Tests.DataProvider
         }
 
         [Test]
+        [Ignore("Not unit test (integration)")]
         public void GetCurrentWeatherTest()
         {
             var target = CreateTestTarget();
@@ -65,6 +66,7 @@ namespace WeatherCast.Tests.DataProvider
         }
 
         [Test]
+        [Ignore("Not unit test (integration)")]
         public void GetForecastWeatherTest()
         {
             var target = CreateTestTarget();
