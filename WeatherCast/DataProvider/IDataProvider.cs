@@ -2,7 +2,7 @@
 
 namespace WeatherCast.DataProvider
 {
-    internal interface IDataProvider
+    public interface IDataProvider
     {
         CurrentWeather GetCurrentWeather(string cityName);
 

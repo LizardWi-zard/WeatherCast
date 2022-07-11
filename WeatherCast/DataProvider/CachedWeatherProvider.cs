@@ -7,13 +7,10 @@ namespace WeatherCast.DataProvider
         private readonly IDataProvider internetDataProvider;
         private readonly IDataProvider fileDataProvider;
 
-        public CachedWeatherProvider(IDataProvider internetDataProvider, IDataProvider fileDataProvider)
+        public CachedWeatherProvider()
         {
-            Guard.NotNull(internetDataProvider, nameof(internetDataProvider));
-            Guard.NotNull(fileDataProvider, nameof(fileDataProvider));
-
-            this.internetDataProvider = internetDataProvider;
-            this.fileDataProvider = fileDataProvider;
+            internetDataProvider = new InternetWeatherProvider();
+            fileDataProvider = new FileWeatherProvider();
         }
 
         public CurrentWeather GetCurrentWeather(string cityName)
