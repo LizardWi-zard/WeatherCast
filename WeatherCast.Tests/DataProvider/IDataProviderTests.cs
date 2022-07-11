@@ -5,7 +5,7 @@ namespace WeatherCast.Tests.DataProvider
     [TestFixture]
     public abstract class IDataProviderTests
     {
-        protected abstract IDataProvider CreateTarget();
+        protected abstract IDataProvider CreateTestTarget();
 
         [TestCase(null)]
         [TestCase("")]
@@ -14,9 +14,24 @@ namespace WeatherCast.Tests.DataProvider
         [TestCase("💩")]
         public void GetCurrentWeather_InvalidArgumentTest(string invalidArgument)
         {
-            var target = CreateTarget();
+            var target = CreateTestTarget();
 
             Assert.Throws<ArgumentException>(() => target.GetCurrentWeather(invalidArgument));
+        }
+
+        [Test]
+        public void GetCurrentWeatherTest()
+        {
+            var target = CreateTestTarget();
+
+            var result = target.GetCurrentWeather("Москва");
+
+            Assert.NotNull(result);
+            Assert.IsFalse(string.IsNullOrEmpty(result.Name));
+            Assert.NotNull(result.Wind);
+            CollectionAssert.IsNotEmpty(result.Weather);
+            Assert.NotNull(result.Main);
+            Assert.NotNull(result.Coord);
         }
 
         // example of correctly latitude and longitude: 54.196291,37.621648
@@ -29,7 +44,7 @@ namespace WeatherCast.Tests.DataProvider
         [TestCase("💩", "37.621648")]
         public void GetForecastWeather_FirstArgumentIsInvalidTest(string invalidLongitude, string invalidLatitude)
         {
-            var target = CreateTarget();
+            var target = CreateTestTarget();
 
             Assert.Throws<ArgumentException>(() => target.GetForecastWeather(invalidLongitude, invalidLatitude));
         }
@@ -44,9 +59,25 @@ namespace WeatherCast.Tests.DataProvider
         [TestCase("54.196291", "💩")]
         public void GetForecastWeather_SecondArgumentIsInvalidTest(string invalidLongitude, string invalidLatitude)
         {
-            var target = CreateTarget();
+            var target = CreateTestTarget();
 
             Assert.Throws<ArgumentException>(() => target.GetForecastWeather(invalidLongitude, invalidLatitude));
+        }
+
+        [Test]
+        public void GetForecastWeatherTest()
+        {
+            var target = CreateTestTarget();
+
+            var result = target.GetForecastWeather("54.196291", "37.621648");
+
+            Assert.NotNull(result);
+            CollectionAssert.IsNotEmpty(result.Daily);
+            CollectionAssert.IsNotEmpty(result.Hourly);
+            CollectionAssert.IsNotEmpty(result.ForecastFor24Hours);
+            Assert.IsFalse(string.IsNullOrEmpty(result.TimeZone));
+            Assert.IsTrue(result.Lat >= 0F);
+            Assert.NotNull(result.Lon >= 0F);
         }
     }
 }

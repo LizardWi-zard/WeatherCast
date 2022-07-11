@@ -5,7 +5,7 @@ namespace WeatherCast.Tests.DataProvider
     [TestFixture]
     internal class InternetWeatherProviderTests : IDataProviderTests
     {
-        protected override IDataProvider CreateTarget()
+        protected override IDataProvider CreateTestTarget()
         {
             return new InternetWeatherProvider();
         }

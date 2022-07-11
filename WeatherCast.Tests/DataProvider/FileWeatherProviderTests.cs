@@ -4,7 +4,7 @@ namespace WeatherCast.Tests.DataProvider
 {
     internal class FileWeatherProviderTests : IDataProviderTests
     {
-        protected override IDataProvider CreateTarget()
+        protected override IDataProvider CreateTestTarget()
         {
             return new FileWeatherProvider();
         }
