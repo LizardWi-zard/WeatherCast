@@ -11,7 +11,8 @@ namespace WeatherCast.Tests.DataProvider
         [TestCase("")]
         [TestCase(" ")]
         [TestCase("        ")]
-        [TestCase("🎄🎄")]
+        [TestCase("🎄")]
+        [TestCase(".,")]
         [TestCase("🎄🎄City")]
         public void GetCurrentWeather_InvalidArgumentTest(string invalidArgument)
         {
@@ -43,7 +44,8 @@ namespace WeatherCast.Tests.DataProvider
         [TestCase("        ", "37.621648")]
         [TestCase("-1", "37.621648")]
         [TestCase("abc", "37.621648")]
-        [TestCase("🎄🎄", "37.621648")]
+        [TestCase(".,", "37.621648")]
+        [TestCase("🎄", "37.621648")]
         [TestCase("🎄🎄37.621648", "37.621648")]
         public void GetForecastWeather_FirstArgumentIsInvalidTest(string invalidLongitude, string invalidLatitude)
         {
@@ -59,7 +61,8 @@ namespace WeatherCast.Tests.DataProvider
         [TestCase("54.196291", "       ")]
         [TestCase("54.196291", "-1")]
         [TestCase("54.196291", "abc")]
-        [TestCase("54.196291", "🎄🎄")]
+        [TestCase("54.196291", "🎄")]
+        [TestCase("54.196291", ".,")]
         [TestCase("54.196291", "37.621648🎄🎄")]
         public void GetForecastWeather_SecondArgumentIsInvalidTest(string invalidLongitude, string invalidLatitude)
         {
