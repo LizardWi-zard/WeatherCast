@@ -3,6 +3,7 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Text.RegularExpressions;
 using WeatherCast.Model;
 
 namespace WeatherCast.DataProvider
@@ -13,6 +14,13 @@ namespace WeatherCast.DataProvider
 
         public CurrentWeather GetCurrentWeather(string cityName)
         {
+            Regex rgx = new Regex(@"\p{Cs}");
+           
+            if (string.IsNullOrWhiteSpace(cityName) || rgx.IsMatch(cityName))
+            {
+                throw new ArgumentException();
+            }
+
             var requestUrl = CreateСurrentWeatherUrl(cityName);
 
             var response = GetResponseAsString(requestUrl);
@@ -24,7 +32,23 @@ namespace WeatherCast.DataProvider
 
         public ForecastWeather GetForecastWeather(string lon, string lat)
         {
-            var requestUrl = CreateFutureWeatherUrl(lon, lat);
+            Regex rgx = new Regex(@"\p{Cs}");
+
+            if (string.IsNullOrWhiteSpace(lon) || string.IsNullOrWhiteSpace(lat) ||
+                rgx.IsMatch(lon) || rgx.IsMatch(lat)) 
+            {
+                throw new ArgumentException();
+            }
+
+            double latitude;
+            double longitude;
+
+            if (!double.TryParse(lon, out longitude) || !double.TryParse(lat, out latitude))
+            {
+                throw new ArgumentException();
+            }
+
+            var requestUrl = CreateFutureWeatherUrl(longitude.ToString(), latitude.ToString());
 
             var response = GetResponseAsString(requestUrl);
 

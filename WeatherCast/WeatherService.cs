@@ -13,10 +13,15 @@ namespace WeatherCast
 
         public CurrentWeather GetCurrentWeather(string cityName)
         {
+            if (string.IsNullOrEmpty(cityName))
+            {
+                throw new ArgumentException();
+            }
+
             var requestUrl = CreateСurrentWeatherUrl(cityName);
 
             var response = GetResponseAsString(requestUrl);
-
+            
             var currentWeather = JsonConvert.DeserializeObject<CurrentWeather>(response);
 
             return currentWeather;
