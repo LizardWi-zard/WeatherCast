@@ -18,9 +18,8 @@ namespace WeatherCast.ViewModel
         protected CurrentWeather updatedInfo;
         protected WeatherService control;
 
-        public ViewModelBase(WeatherService control, CurrentWeather weather)
+        public ViewModelBase(WeatherService control)
         {
-            updatedInfo = weather;
             this.control = control;
             timer.Interval = 1000 * 60 * 1;
             timer.AutoReset = true;
@@ -38,6 +37,12 @@ namespace WeatherCast.ViewModel
 
         private void OnTimedEvent(Object sourse, System.Timers.ElapsedEventArgs e)
         {
+            updatedInfo = SaveData(control);
+        }
+
+        public CurrentWeather SaveData(WeatherService control)
+        {
+            //TODO: Сдеать обработку исключений для некоректных данных
             FileInfo fileInf = new FileInfo(Definitions.RequestTimePath);
 
             List<string> arrLine = new List<string>();
@@ -64,7 +69,7 @@ namespace WeatherCast.ViewModel
                 homeCity = "Москва";
                 lastRequestTime = DateTime.Now;
 
-                File.Create(Definitions.RequestTimePath).Close(); ;
+                File.Create(Definitions.RequestTimePath).Close();
 
                 File.WriteAllLines(Definitions.RequestTimePath, arrLine);
             }
@@ -83,12 +88,14 @@ namespace WeatherCast.ViewModel
                     serializer.Serialize(sw, updatedInfo);
                     sw.Close();
                 }
+
+                return updatedInfo;
             }
             else
             {
                 string response;
 
-                if ((DateTime.Now - lastRequestTime).TotalMinutes >= 30)
+                if ((DateTime.Now - lastRequestTime).TotalMinutes >= 1)
                 {
                     updatedInfo = control.GetCurrentWeather(homeCity);
 
@@ -96,7 +103,10 @@ namespace WeatherCast.ViewModel
                     {
                         JsonSerializer serializer = new JsonSerializer();
                         serializer.Serialize(sw, updatedInfo);
+                        sw.Close();
                     }
+
+                    return updatedInfo;
                 }
                 else
                 {
@@ -112,6 +122,8 @@ namespace WeatherCast.ViewModel
                     {
                         updatedInfo = control.GetCurrentWeather(homeCity);
                     }
+
+                    return updatedInfo;
                 }
             }
         }

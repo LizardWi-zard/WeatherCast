@@ -12,7 +12,7 @@ namespace WeatherCast.ViewModel
         private Timer timer = new Timer();
 
         public HomeViewModel(WeatherService control, CurrentWeather weather) :
-            base(control, weather)
+            base(control)
         {
             this.control = control;
             CurrentWeather = weather;
@@ -108,6 +108,5 @@ namespace WeatherCast.ViewModel
             
             RaisePropertyChanged(nameof(updatedInfo));
         }
-
     }
 }
