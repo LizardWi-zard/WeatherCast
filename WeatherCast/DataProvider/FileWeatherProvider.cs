@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
+using System.IO;
 using WeatherCast.Model;
 
 namespace WeatherCast.DataProvider
@@ -7,12 +9,32 @@ namespace WeatherCast.DataProvider
     {
         public CurrentWeather GetCurrentWeather(string cityName)
         {
-            throw new NotImplementedException();
+            string fileData;
+
+            using (StreamReader streamReader = new StreamReader(Definitions.SelectedCityCurrentInfoPath))
+            {
+                fileData = streamReader.ReadToEnd();
+                streamReader.Close();
+            }
+
+            var currentWeather = JsonConvert.DeserializeObject<CurrentWeather>(fileData);
+
+            return currentWeather;
         }
 
         public ForecastWeather GetForecastWeather(string longitude, string latitude)
         {
-            throw new NotImplementedException();
+            string fileData;
+
+            using (StreamReader streamReader = new StreamReader(Definitions.SelectedCityFutureInfoPath))
+            {
+                fileData = streamReader.ReadToEnd();
+                streamReader.Close();
+            }
+
+            var futureWeather = JsonConvert.DeserializeObject<ForecastWeather>(fileData);
+
+            return futureWeather;
         }
     }
 }

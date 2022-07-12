@@ -74,15 +74,15 @@ namespace WeatherCast.ViewModel
                 File.WriteAllLines(Definitions.RequestTimePath, arrLine);
             }
 
-            fileInf = new FileInfo(Definitions.SelectedCityInfoPath);
+            fileInf = new FileInfo(Definitions.SelectedCityCurrentInfoPath);
 
             if (!fileInf.Exists)
             {
-                File.Create(Definitions.SelectedCityInfoPath).Close();
+                File.Create(Definitions.SelectedCityCurrentInfoPath).Close();
 
                 updatedInfo = control.GetCurrentWeather(homeCity);
 
-                using (StreamWriter sw = File.CreateText(Definitions.SelectedCityInfoPath))
+                using (StreamWriter sw = File.CreateText(Definitions.SelectedCityCurrentInfoPath))
                 {
                     JsonSerializer serializer = new JsonSerializer();
                     serializer.Serialize(sw, updatedInfo);
@@ -99,7 +99,7 @@ namespace WeatherCast.ViewModel
                 {
                     updatedInfo = control.GetCurrentWeather(homeCity);
 
-                    using (StreamWriter sw = File.CreateText(Definitions.SelectedCityInfoPath))
+                    using (StreamWriter sw = File.CreateText(Definitions.SelectedCityCurrentInfoPath))
                     {
                         JsonSerializer serializer = new JsonSerializer();
                         serializer.Serialize(sw, updatedInfo);
@@ -110,7 +110,7 @@ namespace WeatherCast.ViewModel
                 }
                 else
                 {
-                    using (StreamReader streamReader = new StreamReader(Definitions.SelectedCityInfoPath))
+                    using (StreamReader streamReader = new StreamReader(Definitions.SelectedCityCurrentInfoPath))
                     {
                         response = streamReader.ReadToEnd();
                         streamReader.Close();
