@@ -69,6 +69,8 @@ namespace WeatherCast.ViewModel
                 homeCity = "Москва";
                 lastRequestTime = DateTime.Now;
 
+                // TODO добавить проверку на существование папки, при первом запуске её нет и она в этом случае никем не создаётся
+
                 File.Create(Definitions.RequestTimePath).Close();
 
                 File.WriteAllLines(Definitions.RequestTimePath, arrLine);
