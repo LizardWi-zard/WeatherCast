@@ -43,19 +43,19 @@
                 </Grid.RowDefinitions>
 
                 <RadioButton Grid.Row="0" 
-                             Tag="C:\Users\ArEf\source\repos\WeatherCast\WeatherCast\Images\Icons\home.png"
                              Style="{StaticResource MenuButtonTheme}"
+                             Content="../Images/Icons/home.png"
                              Command="{Binding HomeViewCommand}"
                              IsChecked="True" />
 
                 <RadioButton Grid.Row="1"
-                             Tag="C:\Users\ArEf\source\repos\WeatherCast\WeatherCast\Images\Icons\star.png"
                              Style="{StaticResource MenuButtonTheme}"
+                             Content="../Images/Icons/star.png"
                              Command="{Binding SearchViewCommand}"/>
 
                 <RadioButton Grid.Row="4"
-                             Tag="C:\Users\ArEf\source\repos\WeatherCast\WeatherCast\Images\Icons\settings.png"
                              Style="{StaticResource MenuButtonTheme}"
+                             Content="../Images/Icons/settings.png"
                              Command="{Binding SettingsViewCommand}"/>
 
             </Grid>

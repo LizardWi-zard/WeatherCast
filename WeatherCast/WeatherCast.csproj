@@ -11,12 +11,26 @@
     <None Remove="Images\Background\Clear.png" />
     <None Remove="Images\Background\Clouds.png" />
     <None Remove="Images\Background\Rain.png" />
+    <None Remove="Images\Icons\home.png" />
+    <None Remove="Images\Icons\search.png" />
+    <None Remove="Images\Icons\settings.png" />
+    <None Remove="Images\Icons\star.png" />
   </ItemGroup>
 
   <ItemGroup>
     <Resource Include="Images\Background\Clear.png" />
     <Resource Include="Images\Background\Clouds.png" />
     <Resource Include="Images\Background\Rain.png" />
+    <Resource Include="Images\Icons\home.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Icons\search.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Icons\settings.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Icons\star.png" />
   </ItemGroup>
 
   <ItemGroup>
