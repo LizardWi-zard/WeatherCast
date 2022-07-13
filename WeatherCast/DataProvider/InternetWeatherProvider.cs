@@ -14,8 +14,6 @@ namespace WeatherCast.DataProvider
 
         public CurrentWeather GetCurrentWeather(string cityName)
         {
-            Regex rgx = new Regex(@"\p{Cs}");
-
             if (string.IsNullOrWhiteSpace(cityName) || !(cityName.All(c => Char.IsLetter(c) || c == '-') && cityName.Count(f => f == '-') < 2 && cityName.Length > 1))
             {
                 throw new ArgumentException();
