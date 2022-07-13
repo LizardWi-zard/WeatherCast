@@ -11,8 +11,11 @@ namespace WeatherCast.Tests.DataProvider
         [TestCase("")]
         [TestCase(" ")]
         [TestCase("        ")]
-        [TestCase("🎄")]
         [TestCase(".,")]
+        [TestCase("-")]
+        [TestCase("-----")]
+        [TestCase("123-[]s1")]
+        [TestCase("🎄")]
         [TestCase("🎄🎄City")]
         public void GetCurrentWeather_InvalidArgumentTest(string invalidArgument)
         {
