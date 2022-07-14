@@ -39,7 +39,7 @@ namespace WeatherCast.DataProvider
             {
                 CurrentWeather weather;
 
-                if ((DateTime.Now - lastRequestTime).TotalMinutes >= 1)
+                if ((DateTime.Now - lastRequestTime).TotalMinutes >= 30)
                 {
                     weather = internetDataProvider.GetCurrentWeather(selectedCity);
 
@@ -57,28 +57,28 @@ namespace WeatherCast.DataProvider
             return CurrentWeather.Empty;
         }
 
-        // пофиксь по агалогии с GetCurrentWeather
         public ForecastWeather GetForecastWeather(string longitude, string latitude)
         {
-            List<string> fileData = TryGetCityNameAndRequestTime();
-
-            selectedCity = fileData[0];
-            lastRequestTime = DateTime.Parse(fileData[1]);
-
-            ForecastWeather weather;
-
-            if ((DateTime.Now - lastRequestTime).TotalMinutes >= 1)
+            if (TryGetCityNameAndRequestTime(out LastRequestInfo lastRequestInfo))
             {
-                weather = internetDataProvider.GetForecastWeather(longitude, latitude);
+                ForecastWeather weather;
 
-                OverWriteFutureWeatherData(weather);
-            }
-            else
-            {
-                weather = fileDataProvider.GetForecastWeather(longitude, latitude);
+                if ((DateTime.Now - lastRequestTime).TotalMinutes >= 30)
+                {
+                    weather = internetDataProvider.GetForecastWeather(longitude, latitude);
+
+                    SaveFutureWeatherData(weather);
+                    SaveLastRequestInfo(lastRequestInfo);
+                }
+                else
+                {
+                    weather = fileDataProvider.GetForecastWeather(longitude, latitude);
+                }
+
+                return weather;
             }
 
-            return weather;
+            return ForecastWeather.Empty;
         }
 
         private void OnTimedEvent(Object sourse, System.Timers.ElapsedEventArgs e)
@@ -131,19 +131,15 @@ namespace WeatherCast.DataProvider
             File.AppendAllLines(Definitions.RequestTimePath, lastRequestInfo.ToArray());
         }
 
-        private void OverWriteFutureWeatherData(ForecastWeather weather)
+        private void SaveFutureWeatherData(ForecastWeather weather)
         {
-            if (!File.Exists(Definitions.SelectedCityFutureWeatherInfoPath))
-            {
-                File.Create(Definitions.SelectedCityFutureWeatherInfoPath).Close();
-            }
+            CreateIfNotExist(Path.GetDirectoryName(Definitions.SelectedCityFutureWeatherInfoPath));
+            CreateIfNotExist(Definitions.SelectedCityFutureWeatherInfoPath);
 
-            var data = weather;
-
-            using (StreamWriter sw = File.CreateText(Definitions.SelectedCityFutureWeatherInfoPath))
+            using (StreamWriter sw = File.CreateText(Definitions.SelectedCityCurrenWeatherInfoPath))
             {
                 JsonSerializer serializer = new JsonSerializer();
-                serializer.Serialize(sw, data);
+                serializer.Serialize(sw, weather);
                 sw.Close();
             }
         }
