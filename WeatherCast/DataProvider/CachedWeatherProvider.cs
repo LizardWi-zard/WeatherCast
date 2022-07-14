@@ -17,10 +17,10 @@ namespace WeatherCast.DataProvider
         private string selectedCity = "Москва";
         private DateTime lastRequestTime = DateTime.Now;
 
-        public CachedWeatherProvider()
+        public CachedWeatherProvider(IDataProvider internetDataProvider, IDataProvider fileDataProvider)
         {
-            internetDataProvider = new InternetWeatherProvider();
-            fileDataProvider = new FileWeatherProvider();
+            this.internetDataProvider = internetDataProvider ?? throw new ArgumentNullException(nameof(internetDataProvider));
+            this.fileDataProvider = fileDataProvider ?? throw new ArgumentNullException(nameof(fileDataProvider));
 
             timer.Interval = 1000 * 60 * 30;
             timer.AutoReset = true;
