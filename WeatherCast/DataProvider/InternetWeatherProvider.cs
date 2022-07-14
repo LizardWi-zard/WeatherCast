@@ -3,7 +3,6 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Text.RegularExpressions;
 using WeatherCast.Model;
 
 namespace WeatherCast.DataProvider
@@ -30,14 +29,6 @@ namespace WeatherCast.DataProvider
 
         public ForecastWeather GetForecastWeather(string lon, string lat)
         {
-            Regex rgx = new Regex(@"\p{Cs}");
-
-            if (string.IsNullOrWhiteSpace(lon) || string.IsNullOrWhiteSpace(lat) ||
-                rgx.IsMatch(lon) || rgx.IsMatch(lat)) 
-            {
-                throw new ArgumentException();
-            }
-
             double latitude;
             double longitude;
 

@@ -1,7 +1,9 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Timers;
 using WeatherCast.Model;
 
 namespace WeatherCast.DataProvider
@@ -10,6 +12,7 @@ namespace WeatherCast.DataProvider
     {
         private readonly IDataProvider internetDataProvider;
         private readonly IDataProvider fileDataProvider;
+        private Timer timer = new Timer();
 
         private const string homeCity = "Москва";
         private string selectedCity = "Москва";
@@ -19,6 +22,16 @@ namespace WeatherCast.DataProvider
         {
             internetDataProvider = new InternetWeatherProvider();
             fileDataProvider = new FileWeatherProvider();
+
+            timer.Interval = 1000 * 60 * 30;
+            timer.AutoReset = true;
+            timer.Elapsed += OnTimedEvent;
+            timer.Start();
+
+            if (!Directory.Exists(Definitions.DirectoryPath))
+            {
+                Directory.CreateDirectory(Definitions.DirectoryPath);
+            }
         }
 
         public CurrentWeather GetCurrentWeather(string cityName)
@@ -28,19 +41,48 @@ namespace WeatherCast.DataProvider
             selectedCity = fileData[0];
             lastRequestTime = DateTime.Parse(fileData[1]);
 
+            CurrentWeather weather;
+
             if ((DateTime.Now - lastRequestTime).TotalMinutes >= 1)
             {
-                return internetDataProvider.GetCurrentWeather(selectedCity);
+                weather = internetDataProvider.GetCurrentWeather(selectedCity);
+
+                OverWriteCurrentWeatherData(weather);
             }
             else
             {
-                return fileDataProvider.GetCurrentWeather(selectedCity);
+                weather =  fileDataProvider.GetCurrentWeather(selectedCity);
             }
+
+            return weather;
         }
 
         public ForecastWeather GetForecastWeather(string longitude, string latitude)
         {
-            throw new System.NotImplementedException();
+            List<string> fileData = GetCityAndRequestTime();
+
+            selectedCity = fileData[0];
+            lastRequestTime = DateTime.Parse(fileData[1]);
+
+            ForecastWeather weather;
+
+            if ((DateTime.Now - lastRequestTime).TotalMinutes >= 1)
+            {
+                weather = internetDataProvider.GetForecastWeather(longitude, latitude);
+
+                OverWriteFutureWeatherData(weather);
+            }
+            else
+            {
+                weather = fileDataProvider.GetForecastWeather(longitude, latitude);
+            }
+
+            return weather;
+        }
+
+        private void OnTimedEvent(Object sourse, System.Timers.ElapsedEventArgs e)
+        {
+
         }
 
         private List<string> GetCityAndRequestTime()
@@ -67,11 +109,43 @@ namespace WeatherCast.DataProvider
                 arrLine.Add(homeCity);
                 arrLine.Add(DateTime.Now.ToString());
 
-                // TODO добавить проверку на существование папки, при первом запуске её нет и она в этом случае никем не создаётся
-
                 File.WriteAllLines(Definitions.RequestTimePath, arrLine);
 
                 return arrLine;
+            }
+        }
+
+        public void OverWriteCurrentWeatherData(CurrentWeather weather) 
+        {
+            if (!File.Exists(Definitions.SelectedCityCurrentInfoPath))
+            {
+                File.Create(Definitions.SelectedCityCurrentInfoPath).Close();
+            }
+
+            var data = weather;
+
+            using (StreamWriter sw = File.CreateText(Definitions.SelectedCityCurrentInfoPath))
+            {
+                JsonSerializer serializer = new JsonSerializer();
+                serializer.Serialize(sw, data);
+                sw.Close();
+            }
+        }
+
+        public void OverWriteFutureWeatherData(ForecastWeather weather)
+        {
+            if (!File.Exists(Definitions.SelectedCityFutureInfoPath))
+            {
+                File.Create(Definitions.SelectedCityFutureInfoPath).Close();
+            }
+
+            var data = weather;
+
+            using (StreamWriter sw = File.CreateText(Definitions.SelectedCityFutureInfoPath))
+            {
+                JsonSerializer serializer = new JsonSerializer();
+                serializer.Serialize(sw, data);
+                sw.Close();
             }
         }
     }

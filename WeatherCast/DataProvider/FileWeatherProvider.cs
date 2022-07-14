@@ -2,7 +2,6 @@
 using System;
 using System.IO;
 using System.Linq;
-using System.Text.RegularExpressions;
 using WeatherCast.Model;
 
 namespace WeatherCast.DataProvider
@@ -11,11 +10,14 @@ namespace WeatherCast.DataProvider
     {
         public CurrentWeather GetCurrentWeather(string cityName)
         {
-            Regex rgx = new Regex(@"\p{Cs}");
-
             if (string.IsNullOrWhiteSpace(cityName) || !(cityName.All(c => Char.IsLetter(c) || c == '-') && cityName.Count(f => f == '-') < 2 && cityName.Length > 1))
             {
                 throw new ArgumentException();
+            }
+
+            if (!File.Exists(Definitions.SelectedCityCurrentInfoPath))
+            {
+                throw new FileNotFoundException();
             }
 
             string fileData;
@@ -39,6 +41,11 @@ namespace WeatherCast.DataProvider
             if (!double.TryParse(lon, out longitude) || !double.TryParse(lat, out latitude))
             {
                 throw new ArgumentException();
+            }
+
+            if (!File.Exists(Definitions.SelectedCityFutureInfoPath))
+            {
+                throw new FileNotFoundException();
             }
 
             string fileData;
