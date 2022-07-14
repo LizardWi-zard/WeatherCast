@@ -15,14 +15,14 @@ namespace WeatherCast.DataProvider
                 throw new ArgumentException();
             }
 
-            if (!File.Exists(Definitions.SelectedCityCurrentInfoPath))
+            if (!File.Exists(Definitions.SelectedCityCurrenWeatherInfoPath))
             {
                 throw new FileNotFoundException();
             }
 
             string fileData;
 
-            using (StreamReader streamReader = new StreamReader(Definitions.SelectedCityCurrentInfoPath))
+            using (StreamReader streamReader = new StreamReader(Definitions.SelectedCityCurrenWeatherInfoPath))
             {
                 fileData = streamReader.ReadToEnd();
                 streamReader.Close();
@@ -43,14 +43,14 @@ namespace WeatherCast.DataProvider
                 throw new ArgumentException();
             }
 
-            if (!File.Exists(Definitions.SelectedCityFutureInfoPath))
+            if (!File.Exists(Definitions.SelectedCityFutureWeatherInfoPath))
             {
                 throw new FileNotFoundException();
             }
 
             string fileData;
 
-            using (StreamReader streamReader = new StreamReader(Definitions.SelectedCityFutureInfoPath))
+            using (StreamReader streamReader = new StreamReader(Definitions.SelectedCityFutureWeatherInfoPath))
             {
                 fileData = streamReader.ReadToEnd();
                 streamReader.Close();

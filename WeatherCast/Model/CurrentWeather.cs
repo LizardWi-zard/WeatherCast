@@ -11,5 +11,13 @@
         public CurrentTempInfo Main { get; set; }
 
         public WindInfo Wind { get; set; }
+
+        public static CurrentWeather Empty { get; } = new CurrentWeather()
+        {
+            Coord = new Coordinates(),
+            Weather = new CurrentWeatherInfo[0],
+            Main = new CurrentTempInfo(),
+            Wind = new WindInfo(),
+        };
     }
 }

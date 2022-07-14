@@ -14,7 +14,7 @@ namespace WeatherCast.DataProvider
         private readonly IDataProvider fileDataProvider;
         private Timer timer = new Timer();
 
-        private const string homeCity = "Москва";
+        private const string defaultCity = "Москва";
         private string selectedCity = "Москва";
         private DateTime lastRequestTime = DateTime.Now;
 
@@ -36,30 +36,32 @@ namespace WeatherCast.DataProvider
 
         public CurrentWeather GetCurrentWeather(string cityName)
         {
-            List<string> fileData = GetCityAndRequestTime();
-
-            selectedCity = fileData[0];
-            lastRequestTime = DateTime.Parse(fileData[1]);
-
-            CurrentWeather weather;
-
-            if ((DateTime.Now - lastRequestTime).TotalMinutes >= 1)
+            if (TryGetCityNameAndRequestTime(out LastRequestInfo lastRequestInfo))
             {
-                weather = internetDataProvider.GetCurrentWeather(selectedCity);
+                CurrentWeather weather;
 
-                OverWriteCurrentWeatherData(weather);
-            }
-            else
-            {
-                weather =  fileDataProvider.GetCurrentWeather(selectedCity);
+                if ((DateTime.Now - lastRequestTime).TotalMinutes >= 1)
+                {
+                    weather = internetDataProvider.GetCurrentWeather(selectedCity);
+
+                    SaveCurrentWeatherData(weather);
+                    SaveLastRequestInfo(lastRequestInfo);
+                }
+                else
+                {
+                    weather = fileDataProvider.GetCurrentWeather(selectedCity);
+                }
+
+                return weather;
             }
 
-            return weather;
+            return CurrentWeather.Empty;
         }
 
+        // пофиксь по агалогии с GetCurrentWeather
         public ForecastWeather GetForecastWeather(string longitude, string latitude)
         {
-            List<string> fileData = GetCityAndRequestTime();
+            List<string> fileData = TryGetCityNameAndRequestTime();
 
             selectedCity = fileData[0];
             lastRequestTime = DateTime.Parse(fileData[1]);
@@ -85,46 +87,61 @@ namespace WeatherCast.DataProvider
 
         }
 
-        private List<string> GetCityAndRequestTime()
+        private bool TryGetCityNameAndRequestTime(out LastRequestInfo lastRequestInfo)
         {
-            FileInfo fileInf = new FileInfo(Definitions.RequestTimePath);
+            FileInfo requestTimeFileInfo = new FileInfo(Definitions.RequestTimePath);
+            string cityName;
+            DateTime lastRequestTime;
 
-            List<string> arrLine = new List<string>();
+            string[] fileStrings = new string[2];
 
-            if (fileInf.Exists)
+            if (requestTimeFileInfo.Exists)
             {
-                arrLine = File.ReadAllLines(Definitions.RequestTimePath).ToList();
-                DateTime lastRequestTime = DateTime.Parse(arrLine[1]);
-                if ((DateTime.Now - lastRequestTime).TotalMinutes >= 1)
-                {
-                    arrLine[1] = DateTime.Now.ToString();
-                }
-
-                File.WriteAllLines(Definitions.RequestTimePath, arrLine);
-
-                return arrLine;
+                fileStrings = File.ReadAllLines(Definitions.RequestTimePath);
+                cityName = fileStrings[0];
+                lastRequestTime = DateTime.Parse(fileStrings[1]);
             }
             else
             {
-                arrLine.Add(homeCity);
-                arrLine.Add(DateTime.Now.ToString());
+                lastRequestInfo = new LastRequestInfo(defaultCity, DateTime.MinValue);
+                return false;
+            }
 
-                File.WriteAllLines(Definitions.RequestTimePath, arrLine);
+            lastRequestInfo = new LastRequestInfo(cityName, lastRequestTime);
+            return true;
+        }
 
-                return arrLine;
+        private void SaveCurrentWeatherData(CurrentWeather weather) 
+        {
+            CreateIfNotExist(Path.GetDirectoryName(Definitions.SelectedCityCurrenWeatherInfoPath));
+            CreateIfNotExist(Definitions.SelectedCityCurrenWeatherInfoPath);
+
+            using (StreamWriter sw = File.CreateText(Definitions.SelectedCityCurrenWeatherInfoPath))
+            {
+                JsonSerializer serializer = new JsonSerializer();
+                serializer.Serialize(sw, weather);
+                sw.Close();
             }
         }
 
-        public void OverWriteCurrentWeatherData(CurrentWeather weather) 
+        private void SaveLastRequestInfo(LastRequestInfo lastRequestInfo)
         {
-            if (!File.Exists(Definitions.SelectedCityCurrentInfoPath))
+            CreateIfNotExist(Path.GetDirectoryName(Definitions.RequestTimePath));
+            CreateIfNotExist(Definitions.RequestTimePath);
+
+            File.AppendAllLines(Definitions.RequestTimePath, lastRequestInfo.ToArray());
+        }
+
+        private void OverWriteFutureWeatherData(ForecastWeather weather)
+        {
+            if (!File.Exists(Definitions.SelectedCityFutureWeatherInfoPath))
             {
-                File.Create(Definitions.SelectedCityCurrentInfoPath).Close();
+                File.Create(Definitions.SelectedCityFutureWeatherInfoPath).Close();
             }
 
             var data = weather;
 
-            using (StreamWriter sw = File.CreateText(Definitions.SelectedCityCurrentInfoPath))
+            using (StreamWriter sw = File.CreateText(Definitions.SelectedCityFutureWeatherInfoPath))
             {
                 JsonSerializer serializer = new JsonSerializer();
                 serializer.Serialize(sw, data);
@@ -132,21 +149,23 @@ namespace WeatherCast.DataProvider
             }
         }
 
-        public void OverWriteFutureWeatherData(ForecastWeather weather)
+        private void CreateIfNotExist(string path)
         {
-            if (!File.Exists(Definitions.SelectedCityFutureInfoPath))
+            FileAttributes fileSystemItemattributes = File.GetAttributes(path);
+
+            var isDirectory = (fileSystemItemattributes & FileAttributes.Directory) == FileAttributes.Directory;
+
+            if (isDirectory)
             {
-                File.Create(Definitions.SelectedCityFutureInfoPath).Close();
+
+                if (!Directory.Exists(path))
+                {
+                    Directory.CreateDirectory(path);
+                }
             }
 
-            var data = weather;
-
-            using (StreamWriter sw = File.CreateText(Definitions.SelectedCityFutureInfoPath))
-            {
-                JsonSerializer serializer = new JsonSerializer();
-                serializer.Serialize(sw, data);
-                sw.Close();
-            }
+            File.Create(path).Close();
+            return;
         }
     }
 }
