@@ -24,10 +24,22 @@ namespace WeatherCast.ViewModel
             currentWeather = VMBase.SaveData(control);
 
             HomeVM = new HomeViewModel(control, currentWeather);
-            SearchVM = new SearchViewModel();
             SettingsVM = new SettingsViewModel();
 
             CurrentView = HomeVM;
+
+            HomeViewCommand = new RelayCommand(o =>
+            {
+                CurrentView = HomeVM;
+            });
+
+            SettingsViewCommand = new RelayCommand(o =>
+            {
+                CurrentView = SettingsVM;
+            });
+
+            /*
+            SearchVM = new SearchViewModel();
 
             SearchCommand = new RelayCommand(o =>
             {
@@ -36,21 +48,12 @@ namespace WeatherCast.ViewModel
 
                 CurrentView = SearchVM;
             });
-
-            HomeViewCommand = new RelayCommand(o =>
-            {
-                CurrentView = HomeVM;
-            });
-
+            
             SearchViewCommand = new RelayCommand(o =>
             {
                 CurrentView = SearchVM;
             });
-
-            SettingsViewCommand = new RelayCommand(o =>
-            {
-                CurrentView = SettingsVM;
-            });
+            */
         }
 
         public ViewModelBase VMBase { get; set; }
