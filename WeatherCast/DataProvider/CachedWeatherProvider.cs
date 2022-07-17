@@ -1,6 +1,5 @@
 ﻿using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Timers;
 using WeatherCast.Model;
@@ -11,16 +10,17 @@ namespace WeatherCast.DataProvider
     {
         private readonly IDataProvider internetDataProvider;
         private readonly IDataProvider fileDataProvider;
+        private readonly TimeSpan upadteCacheInterval;
         private Timer timer = new Timer();
 
         private const string defaultCity = "Москва";
         private string selectedCity = "Москва";
-        private DateTime lastRequestTime = DateTime.Now;
 
-        public CachedWeatherProvider(IDataProvider internetDataProvider, IDataProvider fileDataProvider)
+        public CachedWeatherProvider(IDataProvider internetDataProvider, IDataProvider fileDataProvider, TimeSpan upadteCacheInterval)
         {
             this.internetDataProvider = internetDataProvider ?? throw new ArgumentNullException(nameof(internetDataProvider));
             this.fileDataProvider = fileDataProvider ?? throw new ArgumentNullException(nameof(fileDataProvider));
+            this.upadteCacheInterval = upadteCacheInterval;
 
             timer.Interval = 1000 * 60 * 30;
             timer.AutoReset = true;
@@ -35,50 +35,52 @@ namespace WeatherCast.DataProvider
 
         public CurrentWeather GetCurrentWeather(string cityName)
         {
+            CurrentWeather weather;
+            DateTime lastRequestTime = DateTime.Now;
+
             if (TryGetCityNameAndRequestTime(out LastRequestInfo lastRequestInfo))
             {
-                CurrentWeather weather;
+                if (lastRequestInfo.CityName == cityName)
+                {
+                    lastRequestTime = lastRequestInfo.RequestTime;
+                }
+            }
 
-                if ((DateTime.Now - lastRequestTime).TotalMinutes >= 30)
+            if (DateTime.Now.Subtract(lastRequestTime) >= upadteCacheInterval)
+            {
+                try
                 {
                     weather = internetDataProvider.GetCurrentWeather(selectedCity);
 
                     SaveCurrentWeatherData(weather);
-                    SaveLastRequestInfo(lastRequestInfo);
+                    SaveLastRequestInfo(new LastRequestInfo(cityName, DateTime.Now));
                 }
-                else
+                catch
+                {
+                    // some logging
+                    weather = CurrentWeather.Empty;
+                }
+            }
+            else
+            {
+                try
                 {
                     weather = fileDataProvider.GetCurrentWeather(selectedCity);
                 }
-
-                return weather;
+                catch
+                {
+                    // some logging
+                    weather = CurrentWeather.Empty;
+                }
             }
 
-            return CurrentWeather.Empty;
+            return weather;
         }
 
+        // TODO: need implement
         public ForecastWeather GetForecastWeather(string longitude, string latitude)
         {
-            if (TryGetCityNameAndRequestTime(out LastRequestInfo lastRequestInfo))
-            {
-                ForecastWeather weather;
-
-                if ((DateTime.Now - lastRequestTime).TotalMinutes >= 30)
-                {
-                    weather = internetDataProvider.GetForecastWeather(longitude, latitude);
-
-                    SaveFutureWeatherData(weather);
-                    SaveLastRequestInfo(lastRequestInfo);
-                }
-                else
-                {
-                    weather = fileDataProvider.GetForecastWeather(longitude, latitude);
-                }
-
-                return weather;
-            }
-
-            return ForecastWeather.Empty;
+            throw new NotImplementedException();
         }
 
         private void OnTimedEvent(Object sourse, System.Timers.ElapsedEventArgs e)
