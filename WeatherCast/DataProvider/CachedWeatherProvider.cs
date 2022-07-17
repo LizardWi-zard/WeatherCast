@@ -146,6 +146,7 @@ namespace WeatherCast.DataProvider
 
             if (requestTimeFileInfo.Exists)
             {
+                // TODO need improve parsing
                 fileStrings = File.ReadAllLines(Definitions.RequestTimePath);
                 cityName = string.IsNullOrEmpty(fileStrings[0]) ? defaultCity : fileStrings[0];
                 longitude = string.IsNullOrEmpty(fileStrings[1]) ? defaultLongitude : fileStrings[1];
