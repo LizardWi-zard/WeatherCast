@@ -12,9 +12,20 @@ namespace WeatherCast.Tests.DataProvider
     [TestFixture]
     internal class CachedWeatherProviderTests : IDataProviderTests
     {
+        private readonly string fileCacheDirectory = Path.Combine(Directory.GetCurrentDirectory(), "SavedData");
+
         protected override IDataProvider CreateTestTarget()
         {
             return new CachedWeatherProvider(new MockDataProvider(), new MockDataProvider(), TimeSpan.FromSeconds(2));
+        }
+
+        [TearDown]
+        public void CleanUp()
+        {
+            if (Directory.Exists(fileCacheDirectory))
+            {
+                Directory.Delete(fileCacheDirectory, recursive: true);
+            }
         }
 
         [Test]
@@ -47,6 +58,7 @@ namespace WeatherCast.Tests.DataProvider
             // assertion
             Assert.IsFalse(internetProviderMock.GetCurrentWeatherIsCalled);
             Assert.IsTrue(fileProviderMock.GetCurrentWeatherIsCalled);
+            Assert.That(CurrentWeather.Empty, Is.SameAs(result));
         }
 
         [Test]
@@ -64,6 +76,40 @@ namespace WeatherCast.Tests.DataProvider
             Assert.IsTrue(internetProviderMock.GetCurrentWeatherIsCalled);
             Assert.IsFalse(fileProviderMock.GetCurrentWeatherIsCalled);
             Assert.That(CurrentWeather.Empty, Is.SameAs(result));
+        }
+
+        [Test]
+        public void GetForecastWeather_CacheCallIfNotTimedOutTest()
+        {
+            // setup
+            var internetProviderMock = new MockDataProvider();
+            var fileProviderMock = new MockDataProvider();
+            var target = new CachedWeatherProvider(internetProviderMock, fileProviderMock, TimeSpan.FromSeconds(5));
+
+            // action
+            var result = target.GetForecastWeather("54.196291", "37.621648");
+
+            // assertion
+            Assert.IsFalse(internetProviderMock.GetCurrentWeatherIsCalled);
+            Assert.IsTrue(fileProviderMock.GetCurrentWeatherIsCalled);
+            Assert.That(ForecastWeather.Empty, Is.SameAs(result));
+        }
+
+        [Test]
+        public void GetForecastWeather_InternetServiceCallIfTimedOutTest()
+        {
+            // setup
+            var internetProviderMock = new MockDataProvider();
+            var fileProviderMock = new MockDataProvider();
+            var target = new CachedWeatherProvider(internetProviderMock, fileProviderMock, TimeSpan.Zero);
+
+            // action
+            var result = target.GetForecastWeather("54.196291", "37.621648");
+
+            // assertion
+            Assert.IsTrue(internetProviderMock.GetCurrentWeatherIsCalled);
+            Assert.IsFalse(fileProviderMock.GetCurrentWeatherIsCalled);
+            Assert.That(ForecastWeather.Empty, Is.SameAs(result));
         }
     }
 }
