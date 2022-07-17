@@ -90,8 +90,8 @@ namespace WeatherCast.Tests.DataProvider
             var result = target.GetForecastWeather("54.196291", "37.621648");
 
             // assertion
-            Assert.IsFalse(internetProviderMock.GetCurrentWeatherIsCalled);
-            Assert.IsTrue(fileProviderMock.GetCurrentWeatherIsCalled);
+            Assert.IsFalse(internetProviderMock.GetForecastWeatherIsCalled);
+            Assert.IsTrue(fileProviderMock.GetForecastWeatherIsCalled);
             Assert.That(ForecastWeather.Empty, Is.SameAs(result));
         }
 
@@ -107,8 +107,8 @@ namespace WeatherCast.Tests.DataProvider
             var result = target.GetForecastWeather("54.196291", "37.621648");
 
             // assertion
-            Assert.IsTrue(internetProviderMock.GetCurrentWeatherIsCalled);
-            Assert.IsFalse(fileProviderMock.GetCurrentWeatherIsCalled);
+            Assert.IsTrue(internetProviderMock.GetForecastWeatherIsCalled);
+            Assert.IsFalse(fileProviderMock.GetForecastWeatherIsCalled);
             Assert.That(ForecastWeather.Empty, Is.SameAs(result));
         }
     }
