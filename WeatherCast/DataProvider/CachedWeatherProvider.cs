@@ -14,6 +14,8 @@ namespace WeatherCast.DataProvider
         private Timer timer = new Timer();
 
         private const string defaultCity = "Москва";
+        private const string defaultLongitude = "37.618423";
+        private const string defaultLatitude = "55.751244";
         private string selectedCity = "Москва";
 
         public CachedWeatherProvider(IDataProvider internetDataProvider, IDataProvider fileDataProvider, TimeSpan upadteCacheInterval)
@@ -53,7 +55,7 @@ namespace WeatherCast.DataProvider
                     weather = internetDataProvider.GetCurrentWeather(selectedCity);
 
                     SaveCurrentWeatherData(weather);
-                    SaveLastRequestInfo(new LastRequestInfo(cityName, DateTime.Now));
+                    SaveLastRequestInfo(new LastRequestInfo(cityName, string.Empty, string.Empty, DateTime.Now));
                 }
                 catch
                 {
@@ -77,10 +79,48 @@ namespace WeatherCast.DataProvider
             return weather;
         }
 
-        // TODO: need implement
         public ForecastWeather GetForecastWeather(string longitude, string latitude)
         {
-            throw new NotImplementedException();
+            ForecastWeather weather;
+            DateTime lastRequestTime = DateTime.Now;
+
+            if (TryGetCityNameAndRequestTime(out LastRequestInfo lastRequestInfo))
+            {
+                if (lastRequestInfo.Longitude == longitude && lastRequestInfo.Latitude == latitude)
+                {
+                    lastRequestTime = lastRequestInfo.RequestTime;
+                }
+            }
+
+            if (DateTime.Now.Subtract(lastRequestTime) >= upadteCacheInterval)
+            {
+                try
+                {
+                    weather = internetDataProvider.GetForecastWeather(longitude, latitude);
+
+                    SaveFutureWeatherData(weather);
+                    SaveLastRequestInfo(new LastRequestInfo(string.Empty, longitude, latitude, DateTime.Now));
+                }
+                catch
+                {
+                    // some logging
+                    weather = ForecastWeather.Empty;
+                }
+            }
+            else
+            {
+                try
+                {
+                    weather = fileDataProvider.GetForecastWeather(longitude, latitude);
+                }
+                catch
+                {
+                    // some logging
+                    weather = ForecastWeather.Empty;
+                }
+            }
+
+            return weather;
         }
 
         private void OnTimedEvent(Object sourse, System.Timers.ElapsedEventArgs e)
@@ -91,7 +131,9 @@ namespace WeatherCast.DataProvider
         private bool TryGetCityNameAndRequestTime(out LastRequestInfo lastRequestInfo)
         {
             FileInfo requestTimeFileInfo = new FileInfo(Definitions.RequestTimePath);
-            string cityName;
+            string cityName = string.Empty;
+            string longitude = string.Empty;
+            string latitude = string.Empty;
             DateTime lastRequestTime;
 
             string[] fileStrings = new string[2];
@@ -99,16 +141,21 @@ namespace WeatherCast.DataProvider
             if (requestTimeFileInfo.Exists)
             {
                 fileStrings = File.ReadAllLines(Definitions.RequestTimePath);
-                cityName = fileStrings[0];
-                lastRequestTime = DateTime.Parse(fileStrings[1]);
+                cityName = string.IsNullOrEmpty(fileStrings[0]) ? defaultCity : fileStrings[0];
+                longitude = string.IsNullOrEmpty(fileStrings[1]) ? defaultLongitude : fileStrings[1];
+                latitude = string.IsNullOrEmpty(fileStrings[2]) ? defaultLatitude : fileStrings[2];
+                if (!DateTime.TryParse(fileStrings[3], out lastRequestTime))
+                {
+                    lastRequestTime = DateTime.MinValue;
+                }
             }
             else
             {
-                lastRequestInfo = new LastRequestInfo(defaultCity, DateTime.MinValue);
+                lastRequestInfo = new LastRequestInfo(string.Empty, string.Empty, string.Empty, DateTime.MinValue);
                 return false;
             }
 
-            lastRequestInfo = new LastRequestInfo(cityName, lastRequestTime);
+            lastRequestInfo = new LastRequestInfo(cityName, longitude, latitude, lastRequestTime);
             return true;
         }
 
