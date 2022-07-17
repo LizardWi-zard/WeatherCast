@@ -2,6 +2,7 @@
 using System;
 using System.IO;
 using System.Timers;
+using WeatherCast.Helpers;
 using WeatherCast.Model;
 
 namespace WeatherCast.DataProvider
@@ -14,8 +15,8 @@ namespace WeatherCast.DataProvider
         private Timer timer = new Timer();
 
         private const string defaultCity = "Москва";
-        private const string defaultLongitude = "37.618423";
-        private const string defaultLatitude = "55.751244";
+        private const string defaultLongitude = "37,618423";
+        private const string defaultLatitude = "55,751244";
         private string selectedCity = "Москва";
 
         public CachedWeatherProvider(IDataProvider internetDataProvider, IDataProvider fileDataProvider, TimeSpan upadteCacheInterval)
@@ -37,6 +38,8 @@ namespace WeatherCast.DataProvider
 
         public CurrentWeather GetCurrentWeather(string cityName)
         {
+            Validate.CityName(cityName, nameof(cityName));
+
             CurrentWeather weather;
             DateTime lastRequestTime = DateTime.Now;
 
@@ -81,6 +84,9 @@ namespace WeatherCast.DataProvider
 
         public ForecastWeather GetForecastWeather(string longitude, string latitude)
         {
+            Validate.GeographicCoordinateValue(longitude, "longitude");
+            Validate.GeographicCoordinateValue(latitude, "latitude");
+
             ForecastWeather weather;
             DateTime lastRequestTime = DateTime.Now;
 

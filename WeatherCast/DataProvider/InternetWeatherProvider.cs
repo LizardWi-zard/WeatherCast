@@ -3,6 +3,7 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Net;
+using WeatherCast.Helpers;
 using WeatherCast.Model;
 
 namespace WeatherCast.DataProvider
@@ -13,10 +14,7 @@ namespace WeatherCast.DataProvider
 
         public CurrentWeather GetCurrentWeather(string cityName)
         {
-            if (string.IsNullOrWhiteSpace(cityName) || !(cityName.All(c => Char.IsLetter(c) || c == '-') && cityName.Count(f => f == '-') < 2 && cityName.Length > 1))
-            {
-                throw new ArgumentException();
-            }
+            Validate.CityName(cityName, nameof(cityName));
 
             var requestUrl = CreateСurrentWeatherUrl(cityName);
 
@@ -29,13 +27,11 @@ namespace WeatherCast.DataProvider
 
         public ForecastWeather GetForecastWeather(string lon, string lat)
         {
-            double latitude;
-            double longitude;
+            Validate.GeographicCoordinateValue(lon, "longitude");
+            Validate.GeographicCoordinateValue(lat, "latitude");
 
-            if (!double.TryParse(lon, out longitude) || !double.TryParse(lat, out latitude))
-            {
-                throw new ArgumentException();
-            }
+            double longitude = double.Parse(lon);
+            double latitude = double.Parse(lat);
 
             var requestUrl = CreateFutureWeatherUrl(longitude.ToString(), latitude.ToString());
 
