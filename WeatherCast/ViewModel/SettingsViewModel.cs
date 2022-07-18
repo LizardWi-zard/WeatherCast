@@ -1,26 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
+using WeatherCast.Core;
+using WeatherCast.Model;
 
 namespace WeatherCast.ViewModel
 {
     public class SettingsViewModel
     {
-        private string selectedCity;
-
-        public string SelectedCity
+        public SettingsViewModel()
         {
-            get { return this.selectedCity; }
-            set
+            SendTextCommand = new RelayCommand(o =>
             {
-                if (!string.Equals(this.selectedCity, value))
-                {
-                    this.selectedCity = value;
-                }
-            }
+                SelectedCity = InputText;
+            });
         }
+
+        public string SelectedCity { get; set; }
+
+        public string InputText { get; set; }
+
+        public RelayCommand SendTextCommand { get; set; } 
 
     }
 }

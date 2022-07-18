@@ -3,7 +3,7 @@ using System.Windows.Input;
 
 namespace WeatherCast.Core
 {
-    internal class RelayCommand : ICommand
+    public class RelayCommand : ICommand  //TODO: Должно быть internal, но при нём появляется ошибка доступности в SettingsViewModel
     {
         private Action<object> _execute;
         private Func<object, bool> _canExecute;
