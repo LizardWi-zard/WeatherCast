@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using WeatherCast.DataProvider;
+﻿using WeatherCast.DataProvider;
 using WeatherCast.Model;
 using WeatherCast.Tests.Mocks;
 
@@ -50,17 +45,17 @@ namespace WeatherCast.Tests.DataProvider
             // setup
             var internetProviderMock = new MockDataProvider();
             var fileProviderMock = new MockDataProvider();
+            var expectedResult = CurrentWeather.Empty;
+            fileProviderMock.ReturnForGetCurrentWeather = expectedResult;
             var target = new CachedWeatherProvider(internetProviderMock, fileProviderMock, TimeSpan.FromSeconds(5));
-            CurrentWeather result = new CurrentWeather(); 
 
             // action
-            result = target.GetCurrentWeather("Москва");
+            var actualResult = target.GetCurrentWeather("Москва");
 
             // assertion
             Assert.IsFalse(internetProviderMock.GetCurrentWeatherWasCalled);
             Assert.IsTrue(fileProviderMock.GetCurrentWeatherWasCalled);
-            Assert.IsInstanceOf(typeof(CurrentWeather), result);
-            Assert.That(CurrentWeather.Empty, Is.SameAs(result));
+            Assert.AreSame(expectedResult, actualResult);
             
         }
 
@@ -69,18 +64,18 @@ namespace WeatherCast.Tests.DataProvider
         {
             // setup
             var internetProviderMock = new MockDataProvider();
+            var expectedResult = CurrentWeather.Empty;
+            internetProviderMock.ReturnForGetCurrentWeather = expectedResult;
             var fileProviderMock = new MockDataProvider();
             var target = new CachedWeatherProvider(internetProviderMock, fileProviderMock, TimeSpan.Zero);
-            CurrentWeather result = new CurrentWeather();
 
             // action
-            result = target.GetCurrentWeather("Москва");
+            var actualResult = target.GetCurrentWeather("Москва");
 
             // assertion
             Assert.IsTrue(internetProviderMock.GetCurrentWeatherWasCalled);
             Assert.IsFalse(fileProviderMock.GetCurrentWeatherWasCalled);
-            Assert.IsInstanceOf(typeof(CurrentWeather), result);
-            Assert.That(CurrentWeather.Empty, Is.SameAs(result));
+            Assert.AreSame(expectedResult, actualResult);
         }
 
         [Test]
@@ -88,18 +83,18 @@ namespace WeatherCast.Tests.DataProvider
         {
             // setup
             var internetProviderMock = new MockDataProvider();
+            var expectedResult = ForecastWeather.Empty;
             var fileProviderMock = new MockDataProvider();
+            fileProviderMock.ReturnForForecastWeather = expectedResult;
             var target = new CachedWeatherProvider(internetProviderMock, fileProviderMock, TimeSpan.FromSeconds(5));
-            ForecastWeather result = new ForecastWeather();
 
             // action
-            result = target.GetForecastWeather("54,196291", "37,621648");
+            var actualResult = target.GetForecastWeather("54,196291", "37,621648");
 
             // assertion
             Assert.IsFalse(internetProviderMock.GetForecastWeatherWasCalled);
             Assert.IsTrue(fileProviderMock.GetForecastWeatherWasCalled);
-            Assert.IsInstanceOf(typeof(ForecastWeather), result);
-            Assert.That(ForecastWeather.Empty, Is.SameAs(result));
+            Assert.AreSame(expectedResult, actualResult);
         }
 
         [Test]
@@ -107,18 +102,19 @@ namespace WeatherCast.Tests.DataProvider
         {
             // setup
             var internetProviderMock = new MockDataProvider();
+            var expectedResult = ForecastWeather.Empty;
+            internetProviderMock.ReturnForForecastWeather = expectedResult;
             var fileProviderMock = new MockDataProvider();
             var target = new CachedWeatherProvider(internetProviderMock, fileProviderMock, TimeSpan.Zero);
             ForecastWeather result = new ForecastWeather();
 
             // action
-            result = target.GetForecastWeather("54,196291", "37,621648");
+            var actualResult = target.GetForecastWeather("54,196291", "37,621648");
 
             // assertion
             Assert.IsTrue(internetProviderMock.GetForecastWeatherWasCalled);
             Assert.IsFalse(fileProviderMock.GetForecastWeatherWasCalled);
-            Assert.IsInstanceOf(typeof(ForecastWeather), result);
-            Assert.That(ForecastWeather.Empty, Is.SameAs(result));
+            Assert.AreSame(expectedResult, actualResult);
         }
     }
 }

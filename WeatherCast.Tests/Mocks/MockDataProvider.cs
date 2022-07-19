@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using WeatherCast.DataProvider;
+﻿using WeatherCast.DataProvider;
 using WeatherCast.Model;
 
 namespace WeatherCast.Tests.Mocks
@@ -14,18 +9,22 @@ namespace WeatherCast.Tests.Mocks
 
         public bool GetForecastWeatherWasCalled { get; private set; }
 
+        public CurrentWeather ReturnForGetCurrentWeather { get; set; }
+
+        public ForecastWeather ReturnForForecastWeather { get; set; }
+
         public CurrentWeather GetCurrentWeather(string cityName)
         {
             GetCurrentWeatherWasCalled = true;
 
-            return CurrentWeather.Empty;
+            return ReturnForGetCurrentWeather;
         }
 
         public ForecastWeather GetForecastWeather(string longitude, string latitude)
         {
             GetForecastWeatherWasCalled = true;
 
-            return ForecastWeather.Empty;
+            return ReturnForForecastWeather;
         }
     }
 }

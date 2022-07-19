@@ -18,6 +18,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="..\.editorconfig" Link=".editorconfig" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Resource Include="Images\Background\Clear.png" />
     <Resource Include="Images\Background\Clouds.png" />
     <Resource Include="Images\Background\Rain.png" />
