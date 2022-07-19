@@ -13,7 +13,7 @@ namespace WeatherCast.ViewModel
         private CurrentWeather currentWeather;
         private object _currentView;
         private DateTime lastRequestTime;
-        private string homeCity = "Иваново";
+        private string homeCity = "Москва";
 
         public MainViewModel()
         {
@@ -24,7 +24,7 @@ namespace WeatherCast.ViewModel
             currentWeather = VMBase.SaveData(control);
 
             HomeVM = new HomeViewModel(control, currentWeather);
-            SettingsVM = new SettingsViewModel();
+            SettingsVM = new SettingsViewModel(homeCity);
 
             CurrentView = HomeVM;
 

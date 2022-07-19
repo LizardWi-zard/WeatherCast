@@ -13,7 +13,7 @@ namespace WeatherCast.ViewModel
     public class ViewModelBase : INotifyPropertyChanged
     {
         private Timer timer = new Timer();
-        private string homeCity = "Берлин";
+        private string homeCity = "Москва";
         private DateTime lastRequestTime;
         protected CurrentWeather updatedInfo;
         protected WeatherService control;
