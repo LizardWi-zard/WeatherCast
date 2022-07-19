@@ -13,10 +13,6 @@ namespace WeatherCast.DataProvider
         private readonly IDataProvider fileDataProvider;
         private readonly TimeSpan upadteCacheInterval;
         private Timer timer = new Timer();
-
-        private const string defaultCity = "Москва";
-        private const string defaultLongitude = "37,618423";
-        private const string defaultLatitude = "55,751244";
         private string selectedCity = "Москва";
 
         public CachedWeatherProvider(IDataProvider internetDataProvider, IDataProvider fileDataProvider, TimeSpan upadteCacheInterval)
@@ -58,7 +54,14 @@ namespace WeatherCast.DataProvider
                     weather = internetDataProvider.GetCurrentWeather(selectedCity);
 
                     SaveCurrentWeatherData(weather);
-                    SaveLastRequestInfo(new LastRequestInfo(cityName, string.Empty, string.Empty, DateTime.Now));
+
+                    lastRequestInfo = new LastRequestInfo()
+                    {
+                        CityName = cityName,
+                        RequestTime = DateTime.Now
+                    };
+
+                    SaveLastRequestInfo(lastRequestInfo);
                 }
                 catch
                 {
@@ -105,7 +108,14 @@ namespace WeatherCast.DataProvider
                     weather = internetDataProvider.GetForecastWeather(longitude, latitude);
 
                     SaveFutureWeatherData(weather);
-                    SaveLastRequestInfo(new LastRequestInfo(string.Empty, longitude, latitude, DateTime.Now));
+
+                    lastRequestInfo = new LastRequestInfo()
+                    {
+                        Longitude = longitude,
+                        Latitude = latitude
+                    };
+
+                    SaveLastRequestInfo(lastRequestInfo);
                 }
                 catch
                 {
@@ -136,33 +146,20 @@ namespace WeatherCast.DataProvider
 
         private bool TryGetCityNameAndRequestTime(out LastRequestInfo lastRequestInfo)
         {
-            FileInfo requestTimeFileInfo = new FileInfo(Definitions.RequestTimePath);
-            string cityName = string.Empty;
-            string longitude = string.Empty;
-            string latitude = string.Empty;
-            DateTime lastRequestTime;
-
-            string[] fileStrings = new string[2];
-
-            if (requestTimeFileInfo.Exists)
+            if (File.Exists(Definitions.RequestTimePath))
             {
-                // TODO need improve parsing
-                fileStrings = File.ReadAllLines(Definitions.RequestTimePath);
-                cityName = string.IsNullOrEmpty(fileStrings[0]) ? defaultCity : fileStrings[0];
-                longitude = string.IsNullOrEmpty(fileStrings[1]) ? defaultLongitude : fileStrings[1];
-                latitude = string.IsNullOrEmpty(fileStrings[2]) ? defaultLatitude : fileStrings[2];
-                if (!DateTime.TryParse(fileStrings[3], out lastRequestTime))
+                using (StreamReader sr = new StreamReader(Definitions.RequestTimePath))
                 {
-                    lastRequestTime = DateTime.MinValue;
+                    JsonTextReader reader = new JsonTextReader(sr);
+                    lastRequestInfo = new JsonSerializer().Deserialize<LastRequestInfo>(reader);
                 }
             }
             else
             {
-                lastRequestInfo = new LastRequestInfo(string.Empty, string.Empty, string.Empty, DateTime.MinValue);
+                lastRequestInfo = new LastRequestInfo();
                 return false;
             }
 
-            lastRequestInfo = new LastRequestInfo(cityName, longitude, latitude, lastRequestTime);
             return true;
         }
 
@@ -184,7 +181,12 @@ namespace WeatherCast.DataProvider
             CreateIfNotExist(Path.GetDirectoryName(Definitions.RequestTimePath));
             CreateIfNotExist(Definitions.RequestTimePath);
 
-            File.AppendAllLines(Definitions.RequestTimePath, lastRequestInfo.ToArray());
+            using (StreamWriter sw = File.CreateText(Definitions.RequestTimePath))
+            {
+                JsonSerializer serializer = new JsonSerializer();
+                serializer.Serialize(sw, lastRequestInfo);
+                sw.Close();
+            }
         }
 
         private void SaveFutureWeatherData(ForecastWeather weather)

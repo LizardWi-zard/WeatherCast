@@ -4,6 +4,12 @@ namespace WeatherCast
 {
     internal static class Definitions
     {
+        internal const string DefaultCity = "Москва";
+
+        internal const string DefaultLongitude = "37,618423";
+
+        internal const string DefaultLatitude = "55,751244";
+
         internal static readonly string DirectoryPath = Path.Combine(Directory.GetCurrentDirectory(), "SavedData");
 
         internal static readonly string RequestTimePath = Path.Combine(Directory.GetCurrentDirectory(), "SavedData", "RequestTime.txt");
