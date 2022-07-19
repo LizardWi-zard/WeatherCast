@@ -10,20 +10,20 @@ namespace WeatherCast.Tests.Mocks
 {
     internal class MockDataProvider : IDataProvider
     {
-        public bool GetCurrentWeatherIsCalled { get; private set; }
+        public bool GetCurrentWeatherWasCalled { get; private set; }
 
-        public bool GetForecastWeatherIsCalled { get; private set; }
+        public bool GetForecastWeatherWasCalled { get; private set; }
 
         public CurrentWeather GetCurrentWeather(string cityName)
         {
-            GetCurrentWeatherIsCalled = true;
+            GetCurrentWeatherWasCalled = true;
 
             return CurrentWeather.Empty;
         }
 
         public ForecastWeather GetForecastWeather(string longitude, string latitude)
         {
-            GetForecastWeatherIsCalled = true;
+            GetForecastWeatherWasCalled = true;
 
             return ForecastWeather.Empty;
         }
