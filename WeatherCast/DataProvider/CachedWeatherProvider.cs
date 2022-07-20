@@ -146,7 +146,6 @@ namespace WeatherCast.DataProvider
 
         private void OnTimedEvent(object sourse, ElapsedEventArgs e)
         {
-            timer.Stop();
             TryGetCityNameAndRequestTime(out LastRequestInfo lastRequestInfo);
 
             GetCurrentWeather(lastRequestInfo.CityName);
