@@ -67,7 +67,7 @@ namespace WeatherCast.Tests.DataProvider
             var expectedResult = CurrentWeather.Empty;
             internetProviderMock.ReturnForGetCurrentWeather = expectedResult;
             var fileProviderMock = new MockDataProvider();
-            var target = new CachedWeatherProvider(internetProviderMock, fileProviderMock, TimeSpan.Zero);
+            var target = new CachedWeatherProvider(internetProviderMock, fileProviderMock, TimeSpan.FromTicks(1));
 
             // action
             var actualResult = target.GetCurrentWeather("Москва");
@@ -105,7 +105,7 @@ namespace WeatherCast.Tests.DataProvider
             var expectedResult = ForecastWeather.Empty;
             internetProviderMock.ReturnForForecastWeather = expectedResult;
             var fileProviderMock = new MockDataProvider();
-            var target = new CachedWeatherProvider(internetProviderMock, fileProviderMock, TimeSpan.Zero);
+            var target = new CachedWeatherProvider(internetProviderMock, fileProviderMock, TimeSpan.FromTicks(1));
             ForecastWeather result = new ForecastWeather();
 
             // action
@@ -121,34 +121,30 @@ namespace WeatherCast.Tests.DataProvider
         public void GetCurrentWeather_WeatherAutoUpdateWhenTimedOut()
         {
             var internetProviderMock = new MockDataProvider();
-            var expectedResult = CurrentWeather.Empty;
-            internetProviderMock.ReturnForGetCurrentWeather = expectedResult;
             var fileProviderMock = new MockDataProvider();
-            var target = new CachedWeatherProvider(internetProviderMock, fileProviderMock, TimeSpan.FromSeconds(1));
+            var timeOut = TimeSpan.FromSeconds(1);
+            var target = new CachedWeatherProvider(internetProviderMock, fileProviderMock, timeOut);
 
-            // it is auto update?
-            var actualResult = target.GetCurrentWeather("Москва");
-
-            Assert.IsTrue(internetProviderMock.GetCurrentWeatherWasCalled);
-            Assert.IsFalse(fileProviderMock.GetCurrentWeatherWasCalled);
-            Assert.AreSame(expectedResult, actualResult);
+            TestHelper.WaitAsync(timeOut).ContinueWith(_ =>
+            {
+                Assert.IsTrue(internetProviderMock.GetCurrentWeatherWasCalled);
+                Assert.IsFalse(fileProviderMock.GetCurrentWeatherWasCalled);
+            });
         }
 
         [Test]
         public void GetForecastWeather_WeatherAutoUpdateWhenTimedOut()
         {
             var internetProviderMock = new MockDataProvider();
-            var expectedResult = ForecastWeather.Empty;
-            internetProviderMock.ReturnForForecastWeather = expectedResult;
+            var timeOut = TimeSpan.FromSeconds(1);
             var fileProviderMock = new MockDataProvider();
-            var target = new CachedWeatherProvider(internetProviderMock, fileProviderMock, TimeSpan.FromSeconds(1));
+            var target = new CachedWeatherProvider(internetProviderMock, fileProviderMock, timeOut);
 
-            // it is auto update?
-            var actualResult = target.GetForecastWeather("54,196291", "37,621648");
-
-            Assert.IsTrue(internetProviderMock.GetCurrentWeatherWasCalled);
-            Assert.IsFalse(fileProviderMock.GetCurrentWeatherWasCalled);
-            Assert.AreSame(expectedResult, actualResult);
+            TestHelper.WaitAsync(timeOut).ContinueWith(_ =>
+            {
+                Assert.IsTrue(internetProviderMock.GetCurrentWeatherWasCalled);
+                Assert.IsFalse(fileProviderMock.GetCurrentWeatherWasCalled);
+            });
         }
     }
 }

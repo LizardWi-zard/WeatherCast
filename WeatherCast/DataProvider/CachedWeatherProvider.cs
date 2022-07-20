@@ -15,13 +15,17 @@ namespace WeatherCast.DataProvider
         private Timer timer = new Timer();
         private string selectedCity = "Москва";
 
+        public delegate void OnWeatherWasUpdated(object? sender, EventArgs? e);
+
+        public event OnWeatherWasUpdated WeatherWasUpdated;
+
         public CachedWeatherProvider(IDataProvider internetDataProvider, IDataProvider fileDataProvider, TimeSpan upadteCacheInterval)
         {
             this.internetDataProvider = internetDataProvider ?? throw new ArgumentNullException(nameof(internetDataProvider));
             this.fileDataProvider = fileDataProvider ?? throw new ArgumentNullException(nameof(fileDataProvider));
             this.upadteCacheInterval = upadteCacheInterval;
 
-            timer.Interval = 1000 * 60 * 30;
+            timer.Interval = upadteCacheInterval.TotalMilliseconds;
             timer.AutoReset = true;
             timer.Elapsed += OnTimedEvent;
             timer.Start();
@@ -47,7 +51,8 @@ namespace WeatherCast.DataProvider
                 }
             }
 
-            if (DateTime.Now.Subtract(lastRequestTime) >= upadteCacheInterval)
+            var difference = DateTime.Now.Subtract(lastRequestTime);
+            if (difference >= upadteCacheInterval)
             {
                 try
                 {
@@ -139,9 +144,15 @@ namespace WeatherCast.DataProvider
             return weather;
         }
 
-        private void OnTimedEvent(Object sourse, System.Timers.ElapsedEventArgs e)
+        private void OnTimedEvent(object sourse, ElapsedEventArgs e)
         {
+            timer.Stop();
+            TryGetCityNameAndRequestTime(out LastRequestInfo lastRequestInfo);
 
+            GetCurrentWeather(lastRequestInfo.CityName);
+            GetForecastWeather(lastRequestInfo.Longitude, lastRequestInfo.Latitude);
+
+            WeatherWasUpdated?.Invoke(null, null);
         }
 
         private bool TryGetCityNameAndRequestTime(out LastRequestInfo lastRequestInfo)
