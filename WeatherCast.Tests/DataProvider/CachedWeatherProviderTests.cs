@@ -47,7 +47,7 @@ namespace WeatherCast.Tests.DataProvider
             var fileProviderMock = new MockDataProvider();
             var expectedResult = CurrentWeather.Empty;
             fileProviderMock.ReturnForGetCurrentWeather = expectedResult;
-            var target = new CachedWeatherProvider(internetProviderMock, fileProviderMock, TimeSpan.FromDays(1000));
+            var target = new CachedWeatherProvider(internetProviderMock, fileProviderMock, TimeSpan.FromSeconds(5));
 
             // action
             var actualResult = target.GetCurrentWeather("Москва");

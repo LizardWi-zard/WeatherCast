@@ -37,7 +37,7 @@ namespace WeatherCast.DataProvider
             Validate.CityName(cityName, nameof(cityName));
 
             CurrentWeather weather;
-            DateTime lastRequestTime = DateTime.Parse("01.06.2022 00:00:01");
+            DateTime lastRequestTime = DateTime.Now;
 
             if (TryGetCityNameAndRequestTime(out LastRequestInfo lastRequestInfo))
             {
