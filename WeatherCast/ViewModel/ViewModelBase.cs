@@ -13,10 +13,10 @@ namespace WeatherCast.ViewModel
     public class ViewModelBase : INotifyPropertyChanged
     {
         private Timer timer = new Timer();
-        private string homeCity = "Москва";
         private DateTime lastRequestTime;
         protected CurrentWeather updatedInfo;
         protected WeatherService control;
+        public string selectedCity;
 
         public ViewModelBase(WeatherService control)
         {
@@ -50,9 +50,8 @@ namespace WeatherCast.ViewModel
             if (fileInf.Exists)
             {
                 arrLine = File.ReadAllLines(Definitions.RequestTimePath).ToList();
-                homeCity = arrLine[0];
+                selectedCity = arrLine[0];
                 lastRequestTime = DateTime.Parse(arrLine[1]);
-                arrLine[0] = "Ярославль";
 
                 if ((DateTime.Now - lastRequestTime).TotalMinutes >= 1)
                 {
@@ -63,10 +62,10 @@ namespace WeatherCast.ViewModel
             }
             else
             {
-                arrLine.Add("Москва");
+                arrLine.Add(Definitions.DefaultCity);
                 arrLine.Add(DateTime.Now.ToString());
 
-                homeCity = "Москва";
+                selectedCity = Definitions.DefaultCity;
                 lastRequestTime = DateTime.Now;
 
                 // TODO добавить проверку на существование папки, при первом запуске её нет и она в этом случае никем не создаётся
@@ -78,11 +77,13 @@ namespace WeatherCast.ViewModel
 
             fileInf = new FileInfo(Definitions.SelectedCityCurrenWeatherInfoPath);
 
+            
+
             if (!fileInf.Exists)
             {
                 File.Create(Definitions.SelectedCityCurrenWeatherInfoPath).Close();
 
-                updatedInfo = control.GetCurrentWeather(homeCity);
+                updatedInfo = control.GetCurrentWeather(selectedCity);
 
                 using (StreamWriter sw = File.CreateText(Definitions.SelectedCityCurrenWeatherInfoPath))
                 {
@@ -99,7 +100,7 @@ namespace WeatherCast.ViewModel
 
                 if ((DateTime.Now - lastRequestTime).TotalMinutes >= 1)
                 {
-                    updatedInfo = control.GetCurrentWeather(homeCity);
+                    updatedInfo = control.GetCurrentWeather(selectedCity);
 
                     using (StreamWriter sw = File.CreateText(Definitions.SelectedCityCurrenWeatherInfoPath))
                     {
@@ -120,9 +121,16 @@ namespace WeatherCast.ViewModel
 
                     updatedInfo = JsonConvert.DeserializeObject<CurrentWeather>(response);
 
-                    if (updatedInfo.Name.ToLower() != homeCity.ToLower())
+                    if (updatedInfo.Name.ToLower() != selectedCity.ToLower())
                     {
-                        updatedInfo = control.GetCurrentWeather(homeCity);
+                        updatedInfo = control.GetCurrentWeather(selectedCity);
+
+                        using (StreamWriter sw = File.CreateText(Definitions.SelectedCityCurrenWeatherInfoPath))
+                        {
+                            JsonSerializer serializer = new JsonSerializer();
+                            serializer.Serialize(sw, updatedInfo);
+                            sw.Close();
+                        }
                     }
 
                     return updatedInfo;

@@ -4,10 +4,11 @@ using System.IO;
 using System.Linq;
 using WeatherCast.Core;
 using WeatherCast.Model;
+using WeatherCast.Helpers;
 
 namespace WeatherCast.ViewModel
 {
-    public class SettingsViewModel
+    public class SettingsViewModel 
     {
         public SettingsViewModel(string city)
         {
@@ -15,9 +16,12 @@ namespace WeatherCast.ViewModel
 
             SendTextCommand = new RelayCommand(o =>
             {
-                SelectedCity = !string.IsNullOrWhiteSpace(InputText) ? InputText : "Москва";
+                if (!(string.IsNullOrWhiteSpace(InputText) || !(InputText.All(c => Char.IsLetter(c) || c == '-') && InputText.Count(f => f == '-') < 2 && InputText.Length > 1)))
+                {
+                    SelectedCity = !string.IsNullOrWhiteSpace(InputText) ? InputText : Definitions.DefaultCity;
 
-                OverWriteDefaultCity();
+                    OverWriteDefaultCity();
+                }
             });
         }
 
