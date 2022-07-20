@@ -118,7 +118,7 @@ namespace WeatherCast.Tests.DataProvider
         }
 
         [Test]
-        public void GetCurrentWeather_CallIfTimedOut()
+        public void GetCurrentWeather_WeatherAutoUpdateWhenTimedOut()
         {
             var internetProviderMock = new MockDataProvider();
             var expectedResult = CurrentWeather.Empty;
@@ -126,6 +126,7 @@ namespace WeatherCast.Tests.DataProvider
             var fileProviderMock = new MockDataProvider();
             var target = new CachedWeatherProvider(internetProviderMock, fileProviderMock, TimeSpan.FromSeconds(1));
 
+            // it is auto update?
             var actualResult = target.GetCurrentWeather("Москва");
 
             Assert.IsTrue(internetProviderMock.GetCurrentWeatherWasCalled);
@@ -134,7 +135,7 @@ namespace WeatherCast.Tests.DataProvider
         }
 
         [Test]
-        public void GetForecastWeather_CallIfTimedOut()
+        public void GetForecastWeather_WeatherAutoUpdateWhenTimedOut()
         {
             var internetProviderMock = new MockDataProvider();
             var expectedResult = ForecastWeather.Empty;
@@ -142,6 +143,7 @@ namespace WeatherCast.Tests.DataProvider
             var fileProviderMock = new MockDataProvider();
             var target = new CachedWeatherProvider(internetProviderMock, fileProviderMock, TimeSpan.FromSeconds(1));
 
+            // it is auto update?
             var actualResult = target.GetForecastWeather("54,196291", "37,621648");
 
             Assert.IsTrue(internetProviderMock.GetCurrentWeatherWasCalled);
