@@ -9,6 +9,7 @@ namespace WeatherCast.ViewModel
         private string longitude;
         private string latitude;
         private DailyCast _selectedItem;
+        private CurrentWeather _currentWeather;
         private Timer timer = new Timer();
 
         public HomeViewModel(WeatherService control, CurrentWeather weather) :
@@ -25,15 +26,18 @@ namespace WeatherCast.ViewModel
             WelcomeText = SetMessageByTime();
 
             BackgroundImg = SetBackgroundImg(CurrentWeather);
-
-            timer.Interval = 1000 * 60 * 2;
-
-            timer.AutoReset = true;
-            timer.Elapsed += OnTimedEvent;
-            timer.Start();
         }
 
-        public CurrentWeather CurrentWeather { get; set; }
+        public CurrentWeather CurrentWeather
+        {
+            get { return _currentWeather; }
+            set
+            {
+                _currentWeather = value;
+
+                RaisePropertyChanged(nameof(CurrentWeather));
+            }
+        }
 
         public ForecastWeather ForecastWeather { get; set; }
 
@@ -102,11 +106,6 @@ namespace WeatherCast.ViewModel
             }
         }
 
-        private void OnTimedEvent(object sourse, ElapsedEventArgs e)
-        {
-            CurrentWeather = updatedInfo;
-            
-            RaisePropertyChanged(nameof(updatedInfo));
-        }
+
     }
 }
