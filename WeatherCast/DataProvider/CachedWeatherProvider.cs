@@ -14,11 +14,6 @@ namespace WeatherCast.DataProvider
         private readonly TimeSpan upadteCacheInterval;
         private Timer timer = new Timer();
         private string selectedCity = "Москва";
-        public bool wasRaised = false;
-
-        public delegate void OnWeatherWasUpdated(object? sender, EventArgs? e);
-
-        public event OnWeatherWasUpdated WeatherWasUpdated;
 
         public CachedWeatherProvider(IDataProvider internetDataProvider, IDataProvider fileDataProvider, TimeSpan upadteCacheInterval)
         {
@@ -41,6 +36,10 @@ namespace WeatherCast.DataProvider
                 Directory.CreateDirectory(Definitions.DirectoryPath);
             }
         }
+
+        public delegate void OnWeatherUpdated(object? sender, WeatherUpdatedEventArgs? e);
+
+        public event OnWeatherUpdated OnWeatherAutoUpdate;
 
         public CurrentWeather GetCurrentWeather(string cityName)
         {
@@ -154,12 +153,12 @@ namespace WeatherCast.DataProvider
         {
             TryGetCityNameAndRequestTime(out LastRequestInfo lastRequestInfo);
 
-            GetCurrentWeather(lastRequestInfo.CityName);
-            GetForecastWeather(lastRequestInfo.Longitude, lastRequestInfo.Latitude);
+            var current = GetCurrentWeather(lastRequestInfo.CityName);
+            var forecast = GetForecastWeather(lastRequestInfo.Longitude, lastRequestInfo.Latitude);
 
-            WeatherWasUpdated?.Invoke(null, null);
+            var args = new WeatherUpdatedEventArgs(current, forecast);
 
-            wasRaised = true; // i don't know if it is right, because RaisePropertyChanged being called inside property 
+            OnWeatherAutoUpdate?.Invoke(this, args);
         }
 
         private bool TryGetCityNameAndRequestTime(out LastRequestInfo lastRequestInfo)

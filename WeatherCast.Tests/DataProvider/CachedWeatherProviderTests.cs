@@ -118,7 +118,7 @@ namespace WeatherCast.Tests.DataProvider
         }
 
         [Test]
-        public void GetCurrentWeather_WeatherAutoUpdateWhenTimedOut()
+        public void GetCurrentWeather_WeatherAutoUpdateWhenTimedOutTest()
         {
             var internetProviderMock = new MockDataProvider();
             var fileProviderMock = new MockDataProvider();
@@ -133,7 +133,7 @@ namespace WeatherCast.Tests.DataProvider
         }
 
         [Test]
-        public void GetForecastWeather_WeatherAutoUpdateWhenTimedOut()
+        public void GetForecastWeather_WeatherAutoUpdateWhenTimedOutTest()
         {
             var internetProviderMock = new MockDataProvider();
             var timeOut = TimeSpan.FromSeconds(1);
@@ -148,16 +148,17 @@ namespace WeatherCast.Tests.DataProvider
         }
 
         [Test]
-        public void RaisePropertyChanged_WasRaised()
+        public void RaisePropertyChanged_WhenTimedOut_RaiseOnAutoUpdateEventTest()
         {
-            var internetProviderMock = new MockDataProvider();
+            var dataProviderMock = new MockDataProvider();
             var timeOut = TimeSpan.FromSeconds(1);
-            var fileProviderMock = new MockDataProvider();
-            var target = new CachedWeatherProvider(internetProviderMock, fileProviderMock, timeOut);
+            var target = new CachedWeatherProvider(dataProviderMock, dataProviderMock, timeOut);
+            bool wasRaised = false;
+            target.OnWeatherAutoUpdate += (o, e) => wasRaised = true;
 
             TestHelper.WaitAsync(timeOut).ContinueWith(_ =>
             {
-                Assert.IsTrue(target.wasRaised);
+                Assert.IsTrue(wasRaised);
             });
         }
     }
