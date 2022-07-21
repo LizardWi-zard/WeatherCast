@@ -5,7 +5,9 @@ using System.IO;
 using System.Linq;
 using System.Timers;
 using WeatherCast.Core;
+using WeatherCast.DataProvider;
 using WeatherCast.Model;
+using static WeatherCast.DataProvider.CachedWeatherProvider;
 
 namespace WeatherCast.ViewModel
 {
@@ -17,6 +19,7 @@ namespace WeatherCast.ViewModel
         private string selectedCity = "Москва";
         private Timer timer = new Timer();
         private WeatherService control;
+        private CachedWeatherProvider cachedWeatherProvider;
 
         public MainViewModel()
         {
@@ -41,6 +44,10 @@ namespace WeatherCast.ViewModel
                 CurrentView = SettingsVM;
             });
 
+            //cachedWeatherProvider = new CachedWeatherProvider(new InternetWeatherProvider(), new FileWeatherProvider(), TimeSpan.FromSeconds(5));
+
+            //cachedWeatherProvider.WeatherWasUpdated += UpdateData;
+
             /*
             SearchVM = new SearchViewModel();
 
@@ -57,11 +64,6 @@ namespace WeatherCast.ViewModel
                 CurrentView = SearchVM;
             });
             */
-
-            timer.Interval = 1000 * 60 * 1;
-            timer.AutoReset = true;
-            timer.Elapsed += OnTimedEvent;
-            timer.Start();
         }
 
         public ViewModelBase VMBase { get; set; }
@@ -92,12 +94,7 @@ namespace WeatherCast.ViewModel
             }
         }
 
-        private void OnTimedEvent(Object sourse, System.Timers.ElapsedEventArgs e)
-        {
-            Response = SaveData(control);
 
-            HomeVM.CurrentWeather = Response;
-        }
 
         public CurrentWeather SaveData(WeatherService control)
         {
@@ -194,5 +191,11 @@ namespace WeatherCast.ViewModel
                 }
             }
         }
+
+//        private void UpdateData(object sourse, EventArgs? e)
+//        {
+//            //HomeVM.CurrentWeather = cachedWeatherProvider.GetCurrentWeather(selectedCity);
+//            //HomeVM.ForecastWeather = cachedWeatherProvider.GetForecastWeather(HomeVM.CurrentWeather.Coord.Longitude.ToString(), HomeVM.CurrentWeather.Coord.Latitude.ToString());
+//        }
     }
 }

@@ -14,6 +14,7 @@ namespace WeatherCast.DataProvider
         private readonly TimeSpan upadteCacheInterval;
         private Timer timer = new Timer();
         private string selectedCity = "Москва";
+        public bool wasRaised = false;
 
         public delegate void OnWeatherWasUpdated(object? sender, EventArgs? e);
 
@@ -29,6 +30,11 @@ namespace WeatherCast.DataProvider
             timer.AutoReset = true;
             timer.Elapsed += OnTimedEvent;
             timer.Start();
+
+            if (File.Exists(Definitions.DirectoryPath)) //TODO: find why something creating directory as file
+            {
+                File.Delete(Definitions.DirectoryPath);
+            }
 
             if (!Directory.Exists(Definitions.DirectoryPath))
             {
@@ -152,6 +158,8 @@ namespace WeatherCast.DataProvider
             GetForecastWeather(lastRequestInfo.Longitude, lastRequestInfo.Latitude);
 
             WeatherWasUpdated?.Invoke(null, null);
+
+            wasRaised = true; // i don't know if it is right, because RaisePropertyChanged being called inside property 
         }
 
         private bool TryGetCityNameAndRequestTime(out LastRequestInfo lastRequestInfo)

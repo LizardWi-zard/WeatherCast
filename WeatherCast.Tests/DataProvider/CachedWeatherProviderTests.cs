@@ -56,7 +56,7 @@ namespace WeatherCast.Tests.DataProvider
             Assert.IsFalse(internetProviderMock.GetCurrentWeatherWasCalled);
             Assert.IsTrue(fileProviderMock.GetCurrentWeatherWasCalled);
             Assert.AreSame(expectedResult, actualResult);
-            
+
         }
 
         [Test]
@@ -144,6 +144,20 @@ namespace WeatherCast.Tests.DataProvider
             {
                 Assert.IsTrue(internetProviderMock.GetCurrentWeatherWasCalled);
                 Assert.IsFalse(fileProviderMock.GetCurrentWeatherWasCalled);
+            });
+        }
+
+        [Test]
+        public void RaisePropertyChanged_WasRaised()
+        {
+            var internetProviderMock = new MockDataProvider();
+            var timeOut = TimeSpan.FromSeconds(1);
+            var fileProviderMock = new MockDataProvider();
+            var target = new CachedWeatherProvider(internetProviderMock, fileProviderMock, timeOut);
+
+            TestHelper.WaitAsync(timeOut).ContinueWith(_ =>
+            {
+                Assert.IsTrue(target.wasRaised);
             });
         }
     }
