@@ -149,7 +149,7 @@ namespace WeatherCast.DataProvider
             return weather;
         }
 
-        private void OnTimedEvent(object sourse, ElapsedEventArgs e)
+        private void OnTimedEvent(object sourse, WeatherUpdatedEventArgs e)
         {
             TryGetCityNameAndRequestTime(out LastRequestInfo lastRequestInfo);
 
