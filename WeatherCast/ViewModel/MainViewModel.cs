@@ -23,14 +23,14 @@ namespace WeatherCast.ViewModel
 
         public MainViewModel()
         {
+            cachedWeatherProvider = new CachedWeatherProvider(new InternetWeatherProvider(), new FileWeatherProvider(), TimeSpan.FromMinutes(1));
+
             control = new WeatherService();
             
-            VMBase = new ViewModelBase(control);
+            VMBase = new ViewModelBase();
 
-            currentWeather = SaveData(control);
-
-            HomeVM = new HomeViewModel(control, currentWeather);
-            SettingsVM = new SettingsViewModel(Definitions.DefaultCity);
+            HomeVM = new HomeViewModel(cachedWeatherProvider);
+            SettingsVM = new SettingsViewModel(HomeVM.CurrentWeather.Name);
 
             CurrentView = HomeVM;
 
@@ -44,9 +44,7 @@ namespace WeatherCast.ViewModel
                 CurrentView = SettingsVM;
             });
 
-            //cachedWeatherProvider = new CachedWeatherProvider(new InternetWeatherProvider(), new FileWeatherProvider(), TimeSpan.FromSeconds(5));
-
-            //cachedWeatherProvider.WeatherWasUpdated += UpdateData;
+            cachedWeatherProvider.OnWeatherAutoUpdate += UpdateData;
 
             /*
             SearchVM = new SearchViewModel();
@@ -94,108 +92,11 @@ namespace WeatherCast.ViewModel
             }
         }
 
-
-
-        public CurrentWeather SaveData(WeatherService control)
+        private void UpdateData(object sourse, WeatherUpdatedEventArgs? e)
         {
-           
-            FileInfo fileInf = new FileInfo(Definitions.RequestTimePath);
-
-            List<string> arrLine = new List<string>();
-
-            if (fileInf.Exists)
-            {
-                arrLine = File.ReadAllLines(Definitions.RequestTimePath).ToList();
-                selectedCity = arrLine[0];
-                lastRequestTime = DateTime.Parse(arrLine[1]);
-
-                if ((DateTime.Now - lastRequestTime).TotalMinutes >= 1)
-                {
-                    arrLine[1] = DateTime.Now.ToString();
-                }
-
-                File.WriteAllLines(Definitions.RequestTimePath, arrLine);
-            }
-            else
-            {
-                arrLine.Add(Definitions.DefaultCity);
-                arrLine.Add(DateTime.Now.ToString());
-
-                selectedCity = Definitions.DefaultCity;
-                lastRequestTime = DateTime.Now;
-
-                File.Create(Definitions.RequestTimePath).Close();
-
-                File.WriteAllLines(Definitions.RequestTimePath, arrLine);
-            }
-
-            fileInf = new FileInfo(Definitions.SelectedCityCurrenWeatherInfoPath);
-
-
-
-            if (!fileInf.Exists)
-            {
-                File.Create(Definitions.SelectedCityCurrenWeatherInfoPath).Close();
-
-                currentWeather = control.GetCurrentWeather(selectedCity);
-
-                using (StreamWriter sw = File.CreateText(Definitions.SelectedCityCurrenWeatherInfoPath))
-                {
-                    JsonSerializer serializer = new JsonSerializer();
-                    serializer.Serialize(sw, currentWeather);
-                    sw.Close();
-                }
-
-                return currentWeather;
-            }
-            else
-            {
-                string response;
-
-                if ((DateTime.Now - lastRequestTime).TotalMinutes >= 1)
-                {
-                    currentWeather = control.GetCurrentWeather(selectedCity);
-
-                    using (StreamWriter sw = File.CreateText(Definitions.SelectedCityCurrenWeatherInfoPath))
-                    {
-                        JsonSerializer serializer = new JsonSerializer();
-                        serializer.Serialize(sw, currentWeather);
-                        sw.Close();
-                    }
-
-                    return currentWeather;
-                }
-                else
-                {
-                    using (StreamReader streamReader = new StreamReader(Definitions.SelectedCityCurrenWeatherInfoPath))
-                    {
-                        response = streamReader.ReadToEnd();
-                        streamReader.Close();
-                    }
-
-                    currentWeather = JsonConvert.DeserializeObject<CurrentWeather>(response);
-
-                    if (currentWeather.Name.ToLower() != selectedCity.ToLower())
-                    {
-                        currentWeather = control.GetCurrentWeather(selectedCity);
-
-                        using (StreamWriter sw = File.CreateText(Definitions.SelectedCityCurrenWeatherInfoPath))
-                        {
-                            JsonSerializer serializer = new JsonSerializer();
-                            serializer.Serialize(sw, currentWeather);
-                            sw.Close();
-                        }
-                    }
-
-                    return currentWeather;
-                }
-            }
+            HomeVM.CurrentWeather = e.CurrentWeather;
+            HomeVM.ForecastWeather = e.ForecastWeather;
+            HomeVM.SelectedItem = e.ForecastWeather.Daily[0];
         }
-
-//        private void UpdateData(object sourse, EventArgs? e)
-//        {
-//            //HomeVM.CurrentWeather = cachedWeatherProvider.GetCurrentWeather(selectedCity);
-//            //HomeVM.ForecastWeather = cachedWeatherProvider.GetForecastWeather(HomeVM.CurrentWeather.Coord.Longitude.ToString(), HomeVM.CurrentWeather.Coord.Latitude.ToString());
-//        }
     }
 }

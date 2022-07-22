@@ -1,27 +1,27 @@
 ﻿using System;
 using System.Timers;
+using WeatherCast.DataProvider;
 using WeatherCast.Model;
 
 namespace WeatherCast.ViewModel
 {
-    public class HomeViewModel : ViewModelBase
+    internal class HomeViewModel : ViewModelBase
     {
         private string longitude;
         private string latitude;
         private DailyCast _selectedItem;
         private CurrentWeather _currentWeather;
+        private ForecastWeather _forecastWeather;
         private Timer timer = new Timer();
 
-        public HomeViewModel(WeatherService control, CurrentWeather weather) :
-            base(control)
+        public HomeViewModel(CachedWeatherProvider cachedWeatherProvider)
         {
-            this.control = control;
-            CurrentWeather = weather;
+            CurrentWeather = cachedWeatherProvider.GetCurrentWeather(Definitions.DefaultCity);
 
             latitude = CurrentWeather.Coord.Latitude.ToString();
             longitude = CurrentWeather.Coord.Longitude.ToString();
 
-            ForecastWeather = control.GetForecastWeather(longitude, latitude);
+            ForecastWeather = cachedWeatherProvider.GetForecastWeather(longitude, latitude);
 
             WelcomeText = SetMessageByTime();
 
@@ -39,7 +39,16 @@ namespace WeatherCast.ViewModel
             }
         }
 
-        public ForecastWeather ForecastWeather { get; set; }
+        public ForecastWeather ForecastWeather
+        {
+            get { return _forecastWeather; }
+            set
+            {
+                _forecastWeather = value;
+
+                RaisePropertyChanged(nameof(ForecastWeather));
+            }
+        }
 
         public string Title { get; set; }
 
@@ -54,8 +63,9 @@ namespace WeatherCast.ViewModel
             {
                 _selectedItem = value;
 
-                _selectedItem.Temperature.MaxTemperatureText = "Максимальная температура днём: " + value.Temperature.MaxTemperature.ToString();
-                _selectedItem.Temperature.MinTemperatureText = "Минимальная температура ночью: " + value.Temperature.MinTemperature.ToString();
+                //_selectedItem.Temperature.MaxTemperatureText = "Максимальная температура днём: " + value.Temperature.MaxTemperature.ToString(); // после обновления данных _selectedItem становиться null
+                //_selectedItem.Temperature.MinTemperatureText = "Минимальная температура ночью: " + value.Temperature.MinTemperature.ToString();
+
 
                 RaisePropertyChanged(nameof(SelectedItem));
             }

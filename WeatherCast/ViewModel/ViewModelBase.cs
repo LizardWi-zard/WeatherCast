@@ -12,16 +12,9 @@ namespace WeatherCast.ViewModel
 {
     public class ViewModelBase : INotifyPropertyChanged
     {
-        
         private DateTime lastRequestTime;
         protected CurrentWeather updatedInfo;
-        protected WeatherService control;
         public string selectedCity;
-
-        public ViewModelBase(WeatherService control)
-        {
-            this.control = control;
-        }
 
         public event PropertyChangedEventHandler PropertyChanged;
 

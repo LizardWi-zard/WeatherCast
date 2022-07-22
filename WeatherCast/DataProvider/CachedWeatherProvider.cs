@@ -13,8 +13,7 @@ namespace WeatherCast.DataProvider
         private readonly IDataProvider fileDataProvider;
         private readonly TimeSpan upadteCacheInterval;
         private Timer timer = new Timer();
-        private string selectedCity = "Москва";
-
+        
         public CachedWeatherProvider(IDataProvider internetDataProvider, IDataProvider fileDataProvider, TimeSpan upadteCacheInterval)
         {
             this.internetDataProvider = internetDataProvider ?? throw new ArgumentNullException(nameof(internetDataProvider));
@@ -50,9 +49,12 @@ namespace WeatherCast.DataProvider
 
             if (TryGetCityNameAndRequestTime(out LastRequestInfo lastRequestInfo))
             {
-                if (lastRequestInfo.CityName == cityName)
+                var diff = lastRequestTime.Subtract(lastRequestInfo.RequestTime);
+
+                if (diff >= upadteCacheInterval)
                 {
                     lastRequestTime = lastRequestInfo.RequestTime;
+                    cityName = lastRequestInfo.CityName;
                 }
             }
 
@@ -61,13 +63,15 @@ namespace WeatherCast.DataProvider
             {
                 try
                 {
-                    weather = internetDataProvider.GetCurrentWeather(selectedCity);
+                    weather = internetDataProvider.GetCurrentWeather(cityName);
 
                     SaveCurrentWeatherData(weather);
 
                     lastRequestInfo = new LastRequestInfo()
                     {
                         CityName = cityName,
+                        Longitude = weather.Coord.Longitude.ToString(),
+                        Latitude = weather.Coord.Latitude.ToString(),
                         RequestTime = DateTime.Now
                     };
                     
@@ -83,7 +87,7 @@ namespace WeatherCast.DataProvider
             {
                 try
                 {
-                    weather = fileDataProvider.GetCurrentWeather(selectedCity);
+                    weather = fileDataProvider.GetCurrentWeather(cityName);
                 }
                 catch
                 {
@@ -100,18 +104,25 @@ namespace WeatherCast.DataProvider
             Validate.GeographicCoordinateValue(longitude, "longitude");
             Validate.GeographicCoordinateValue(latitude, "latitude");
 
-            ForecastWeather weather;
+            ForecastWeather weather = ForecastWeather.Empty;
             DateTime lastRequestTime = DateTime.Now;
 
-            if (TryGetCityNameAndRequestTime(out LastRequestInfo lastRequestInfo))
+            TryGetCityNameAndRequestTime(out LastRequestInfo lastRequestInfo);
+
+            // Пришлось изменить поведение кода из-за перезаписи Времени последнего запроса в другом методе
+            // Получалось что последнего запроса было равно времени запроса CurrentWeather, тем самым проверка не срабатывала 
+
+            try
             {
-                if (lastRequestInfo.Longitude == longitude && lastRequestInfo.Latitude == latitude)
-                {
-                    lastRequestTime = lastRequestInfo.RequestTime;
-                }
+                weather = fileDataProvider.GetForecastWeather(longitude, latitude);
+            }
+            catch
+            {
+                // some logging
+                weather = ForecastWeather.Empty;
             }
 
-            if (DateTime.Now.Subtract(lastRequestTime) >= upadteCacheInterval)
+            if (weather == ForecastWeather.Empty || weather == null)
             {
                 try
                 {
@@ -133,23 +144,11 @@ namespace WeatherCast.DataProvider
                     weather = ForecastWeather.Empty;
                 }
             }
-            else
-            {
-                try
-                {
-                    weather = fileDataProvider.GetForecastWeather(longitude, latitude);
-                }
-                catch
-                {
-                    // some logging
-                    weather = ForecastWeather.Empty;
-                }
-            }
 
             return weather;
         }
 
-        private void OnTimedEvent(object sourse, WeatherUpdatedEventArgs e)
+        private void OnTimedEvent(object sourse, System.Timers.ElapsedEventArgs e)
         {
             TryGetCityNameAndRequestTime(out LastRequestInfo lastRequestInfo);
 
@@ -209,9 +208,9 @@ namespace WeatherCast.DataProvider
         private void SaveFutureWeatherData(ForecastWeather weather)
         {
             CreateIfNotExist(Path.GetDirectoryName(Definitions.SelectedCityFutureWeatherInfoPath));
-            CreateIfNotExist(Definitions.SelectedCityFutureWeatherInfoPath);
+            //CreateIfNotExist(Definitions.SelectedCityFutureWeatherInfoPath); //TODO: устранить причину по которой При удаленном файле срабатывает ошибка на этой строке
 
-            using (StreamWriter sw = File.CreateText(Definitions.SelectedCityCurrenWeatherInfoPath))
+            using (StreamWriter sw = File.CreateText(Definitions.SelectedCityFutureWeatherInfoPath)) // StreamWriter не нуждается в создании пустого файла (создаёт сам)
             {
                 JsonSerializer serializer = new JsonSerializer();
                 serializer.Serialize(sw, weather);
@@ -223,19 +222,19 @@ namespace WeatherCast.DataProvider
         {
             FileAttributes fileSystemItemattributes = File.GetAttributes(path);
 
-            var isDirectory = (fileSystemItemattributes & FileAttributes.Directory) == FileAttributes.Directory;
+            //var isDirectory = (fileSystemItemattributes & FileAttributes.Directory) == FileAttributes.Directory;
 
-            if (isDirectory)
+            if (fileSystemItemattributes == FileAttributes.Directory)
             {
-
                 if (!Directory.Exists(path))
                 {
                     Directory.CreateDirectory(path);
                 }
+            
+                return;
             }
 
             File.Create(path).Close();
-            return;
         }
     }
 }

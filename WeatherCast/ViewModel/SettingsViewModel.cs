@@ -5,6 +5,9 @@ using System.Linq;
 using WeatherCast.Core;
 using WeatherCast.Model;
 using WeatherCast.Helpers;
+using Newtonsoft.Json;
+using WeatherCast.DataProvider;
+using System.Windows;
 
 namespace WeatherCast.ViewModel
 {
@@ -20,7 +23,24 @@ namespace WeatherCast.ViewModel
                 {
                     SelectedCity = !string.IsNullOrWhiteSpace(InputText) ? InputText : Definitions.DefaultCity;
 
-                    OverWriteDefaultCity();
+                    try
+                    {
+                        var lastRequestInfo = new LastRequestInfo()
+                        {
+                            CityName = SelectedCity
+                        };
+
+                        using (StreamWriter sw = File.CreateText(Definitions.RequestTimePath))
+                        {
+                            JsonSerializer serializer = new JsonSerializer();
+                            serializer.Serialize(sw, lastRequestInfo);
+                            sw.Close();
+                        }
+                    }
+                    catch
+                    {
+                        MessageBox.Show("не удалось сохранить");
+                    }
                 }
             });
         }
@@ -30,30 +50,5 @@ namespace WeatherCast.ViewModel
         public string InputText { get; set; }
 
         public RelayCommand SendTextCommand { get; set; } 
-
-        public void OverWriteDefaultCity()
-        {
-            FileInfo fileInf = new FileInfo(Definitions.RequestTimePath);
-
-            List<string> arrLine = new List<string>();
-
-
-            if (fileInf.Exists)
-            {
-                arrLine = File.ReadAllLines(Definitions.RequestTimePath).ToList();
-                arrLine[0] = SelectedCity;
-
-                File.WriteAllLines(Definitions.RequestTimePath, arrLine);
-            }
-            else
-            {
-                arrLine.Add(SelectedCity);
-                arrLine.Add(DateTime.Now.ToString());
-
-                File.Create(Definitions.RequestTimePath).Close();
-
-                File.WriteAllLines(Definitions.RequestTimePath, arrLine);
-            }
-        }
     }
 }
