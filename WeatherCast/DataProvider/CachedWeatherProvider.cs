@@ -71,8 +71,7 @@ namespace WeatherCast.DataProvider
                     {
                         CityName = cityName,
                         Longitude = weather.Coord.Longitude.ToString(),
-                        Latitude = weather.Coord.Latitude.ToString(),
-                        RequestTime = DateTime.Now
+                        Latitude = weather.Coord.Latitude.ToString()
                     };
                     
                     SaveLastRequestInfo(lastRequestInfo);
@@ -107,22 +106,18 @@ namespace WeatherCast.DataProvider
             ForecastWeather weather = ForecastWeather.Empty;
             DateTime lastRequestTime = DateTime.Now;
 
-            TryGetCityNameAndRequestTime(out LastRequestInfo lastRequestInfo);
-
-            // Пришлось изменить поведение кода из-за перезаписи Времени последнего запроса в другом методе
-            // Получалось что последнего запроса было равно времени запроса CurrentWeather, тем самым проверка не срабатывала 
-
-            try
+            if (TryGetCityNameAndRequestTime(out LastRequestInfo lastRequestInfo))
             {
-                weather = fileDataProvider.GetForecastWeather(longitude, latitude);
-            }
-            catch
-            {
-                // some logging
-                weather = ForecastWeather.Empty;
+                var diff = lastRequestTime.Subtract(lastRequestInfo.RequestTime);
+
+                if (diff >= upadteCacheInterval)
+                {
+                    lastRequestTime = lastRequestInfo.RequestTime;
+                }
             }
 
-            if (weather == ForecastWeather.Empty || weather == null)
+            var difference = DateTime.Now.Subtract(lastRequestTime);
+            if (difference >= upadteCacheInterval)
             {
                 try
                 {
@@ -133,10 +128,23 @@ namespace WeatherCast.DataProvider
                     lastRequestInfo = new LastRequestInfo()
                     {
                         Longitude = longitude,
-                        Latitude = latitude
+                        Latitude = latitude,
+                        RequestTime = DateTime.Now
                     };
 
                     SaveLastRequestInfo(lastRequestInfo);
+                }
+                catch
+                {
+                    // some logging
+                    weather = ForecastWeather.Empty;
+                }
+            }
+            else
+            {
+                try
+                {
+                    weather = fileDataProvider.GetForecastWeather(longitude, latitude);
                 }
                 catch
                 {
@@ -153,7 +161,11 @@ namespace WeatherCast.DataProvider
             TryGetCityNameAndRequestTime(out LastRequestInfo lastRequestInfo);
 
             var current = GetCurrentWeather(lastRequestInfo.CityName);
-            var forecast = GetForecastWeather(lastRequestInfo.Longitude, lastRequestInfo.Latitude);
+
+            var longitude = current.Coord.Longitude.ToString();
+            var latitude = current.Coord.Latitude.ToString();
+
+            var forecast = GetForecastWeather(longitude, latitude);
 
             var args = new WeatherUpdatedEventArgs(current, forecast);
 
@@ -182,7 +194,7 @@ namespace WeatherCast.DataProvider
         private void SaveCurrentWeatherData(CurrentWeather weather) 
         {
             CreateIfNotExist(Path.GetDirectoryName(Definitions.SelectedCityCurrenWeatherInfoPath));
-            CreateIfNotExist(Definitions.SelectedCityCurrenWeatherInfoPath);
+            //CreateIfNotExist(Definitions.SelectedCityCurrenWeatherInfoPath);
 
             using (StreamWriter sw = File.CreateText(Definitions.SelectedCityCurrenWeatherInfoPath))
             {
@@ -195,7 +207,7 @@ namespace WeatherCast.DataProvider
         private void SaveLastRequestInfo(LastRequestInfo lastRequestInfo)
         {
             CreateIfNotExist(Path.GetDirectoryName(Definitions.RequestTimePath));
-            CreateIfNotExist(Definitions.RequestTimePath);
+            //CreateIfNotExist(Definitions.RequestTimePath);
 
             using (StreamWriter sw = File.CreateText(Definitions.RequestTimePath))
             {
