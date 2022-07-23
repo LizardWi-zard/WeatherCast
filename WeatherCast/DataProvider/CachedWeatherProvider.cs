@@ -103,27 +103,28 @@ namespace WeatherCast.DataProvider
             Validate.GeographicCoordinateValue(latitude, "latitude");
 
             ForecastWeather weather;
-            DateTime lastRequestTime = DateTime.Now.AddMinutes(-30);
+            DateTime lastRequestTime = DateTime.Now;
 
-            if (TryGetForecastCityNameAndRequestTime(out LastRequestForecastInfo lastRequestInfo))
-            {
-                if (lastRequestInfo.Longitude == longitude && lastRequestInfo.Latitude == latitude)
-                {
-                    lastRequestTime = lastRequestInfo.RequestTime;
-                }
-            }
-            if (DateTime.Now.Subtract(lastRequestTime) >= upadteCacheInterval)
+            TryGetForecastCityNameAndRequestTime(out LastRequestForecastInfo lastRequestInfo);
+
+            lastRequestTime = lastRequestInfo.RequestTime;
+
+            var difference = DateTime.Now.Subtract(lastRequestTime);
+            if (difference >= upadteCacheInterval)
             {
                 try
                 {
                     weather = internetDataProvider.GetForecastWeather(longitude, latitude);
+
                     SaveFutureWeatherData(weather);
+
                     lastRequestInfo = new LastRequestForecastInfo()
                     {
                         Longitude = longitude,
                         Latitude = latitude,
                         RequestTime = DateTime.Now
                     };
+
                     SaveLastForecastRequestInfo(lastRequestInfo);
                 }
                 catch

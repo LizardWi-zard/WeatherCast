@@ -96,7 +96,6 @@ namespace WeatherCast.ViewModel
         {
             HomeVM.CurrentWeather = e.CurrentWeather;
             HomeVM.ForecastWeather = e.ForecastWeather;
-            HomeVM.SelectedItem = e.ForecastWeather.Daily[0];
         }
     }
 }
