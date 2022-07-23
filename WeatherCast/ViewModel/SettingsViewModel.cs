@@ -25,12 +25,12 @@ namespace WeatherCast.ViewModel
 
                     try
                     {
-                        var lastRequestInfo = new LastRequestInfo()
+                        var lastRequestInfo = new LastRequestCurrentInfo()
                         {
                             CityName = SelectedCity
                         };
 
-                        using (StreamWriter sw = File.CreateText(Definitions.RequestTimePath))
+                        using (StreamWriter sw = File.CreateText(Definitions.RequestCurrentInfoTimePath))
                         {
                             JsonSerializer serializer = new JsonSerializer();
                             serializer.Serialize(sw, lastRequestInfo);

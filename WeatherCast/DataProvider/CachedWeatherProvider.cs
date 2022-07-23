@@ -47,14 +47,14 @@ namespace WeatherCast.DataProvider
             CurrentWeather weather;
             DateTime lastRequestTime = DateTime.Now;
 
-            if (TryGetCityNameAndRequestTime(out LastRequestInfo lastRequestInfo))
+            if (TryGetCurrentCityNameAndRequestTime(out LastRequestCurrentInfo lastRequestCurrentInfo))
             {
-                var diff = lastRequestTime.Subtract(lastRequestInfo.RequestTime);
+                var diff = lastRequestTime.Subtract(lastRequestCurrentInfo.RequestTime);
 
                 if (diff >= upadteCacheInterval)
                 {
-                    lastRequestTime = lastRequestInfo.RequestTime;
-                    cityName = lastRequestInfo.CityName;
+                    lastRequestTime = lastRequestCurrentInfo.RequestTime;
+                    cityName = lastRequestCurrentInfo.CityName;
                 }
             }
 
@@ -67,14 +67,13 @@ namespace WeatherCast.DataProvider
 
                     SaveCurrentWeatherData(weather);
 
-                    lastRequestInfo = new LastRequestInfo()
+                    lastRequestCurrentInfo = new LastRequestCurrentInfo()
                     {
                         CityName = cityName,
-                        Longitude = weather.Coord.Longitude.ToString(),
-                        Latitude = weather.Coord.Latitude.ToString()
+                        RequestTime = DateTime.Now
                     };
                     
-                    SaveLastRequestInfo(lastRequestInfo);
+                    SaveLastCurrentRequestInfo(lastRequestCurrentInfo);
                 }
                 catch
                 {
@@ -103,36 +102,29 @@ namespace WeatherCast.DataProvider
             Validate.GeographicCoordinateValue(longitude, "longitude");
             Validate.GeographicCoordinateValue(latitude, "latitude");
 
-            ForecastWeather weather = ForecastWeather.Empty;
-            DateTime lastRequestTime = DateTime.Now;
+            ForecastWeather weather;
+            DateTime lastRequestTime = DateTime.Now.AddMinutes(-30);
 
-            if (TryGetCityNameAndRequestTime(out LastRequestInfo lastRequestInfo))
+            if (TryGetForecastCityNameAndRequestTime(out LastRequestForecastInfo lastRequestInfo))
             {
-                var diff = lastRequestTime.Subtract(lastRequestInfo.RequestTime);
-
-                if (diff >= upadteCacheInterval)
+                if (lastRequestInfo.Longitude == longitude && lastRequestInfo.Latitude == latitude)
                 {
                     lastRequestTime = lastRequestInfo.RequestTime;
                 }
             }
-
-            var difference = DateTime.Now.Subtract(lastRequestTime);
-            if (difference >= upadteCacheInterval)
+            if (DateTime.Now.Subtract(lastRequestTime) >= upadteCacheInterval)
             {
                 try
                 {
                     weather = internetDataProvider.GetForecastWeather(longitude, latitude);
-
                     SaveFutureWeatherData(weather);
-
-                    lastRequestInfo = new LastRequestInfo()
+                    lastRequestInfo = new LastRequestForecastInfo()
                     {
                         Longitude = longitude,
                         Latitude = latitude,
                         RequestTime = DateTime.Now
                     };
-
-                    SaveLastRequestInfo(lastRequestInfo);
+                    SaveLastForecastRequestInfo(lastRequestInfo);
                 }
                 catch
                 {
@@ -152,13 +144,12 @@ namespace WeatherCast.DataProvider
                     weather = ForecastWeather.Empty;
                 }
             }
-
             return weather;
         }
 
         private void OnTimedEvent(object sourse, System.Timers.ElapsedEventArgs e)
         {
-            TryGetCityNameAndRequestTime(out LastRequestInfo lastRequestInfo);
+            TryGetCurrentCityNameAndRequestTime(out LastRequestCurrentInfo lastRequestInfo);
 
             var current = GetCurrentWeather(lastRequestInfo.CityName);
 
@@ -172,19 +163,38 @@ namespace WeatherCast.DataProvider
             OnWeatherAutoUpdate?.Invoke(this, args);
         }
 
-        private bool TryGetCityNameAndRequestTime(out LastRequestInfo lastRequestInfo)
+        private bool TryGetCurrentCityNameAndRequestTime(out LastRequestCurrentInfo lastRequestInfo)
         {
-            if (File.Exists(Definitions.RequestTimePath))
+            if (File.Exists(Definitions.RequestCurrentInfoTimePath))
             {
-                using (StreamReader sr = new StreamReader(Definitions.RequestTimePath))
+                using (StreamReader sr = new StreamReader(Definitions.RequestCurrentInfoTimePath))
                 {
                     JsonTextReader reader = new JsonTextReader(sr);
-                    lastRequestInfo = new JsonSerializer().Deserialize<LastRequestInfo>(reader);
+                    lastRequestInfo = new JsonSerializer().Deserialize<LastRequestCurrentInfo>(reader);
                 }
             }
             else
             {
-                lastRequestInfo = new LastRequestInfo();
+                lastRequestInfo = new LastRequestCurrentInfo();
+                return false;
+            }
+
+            return true;
+        }
+
+        private bool TryGetForecastCityNameAndRequestTime(out LastRequestForecastInfo lastRequestInfo)
+        {
+            if (File.Exists(Definitions.RequestFutureInfoTimePath))
+            {
+                using (StreamReader sr = new StreamReader(Definitions.RequestFutureInfoTimePath))
+                {
+                    JsonTextReader reader = new JsonTextReader(sr);
+                    lastRequestInfo = new JsonSerializer().Deserialize<LastRequestForecastInfo>(reader);
+                }
+            }
+            else
+            {
+                lastRequestInfo = new LastRequestForecastInfo();
                 return false;
             }
 
@@ -194,8 +204,7 @@ namespace WeatherCast.DataProvider
         private void SaveCurrentWeatherData(CurrentWeather weather) 
         {
             CreateIfNotExist(Path.GetDirectoryName(Definitions.SelectedCityCurrenWeatherInfoPath));
-            //CreateIfNotExist(Definitions.SelectedCityCurrenWeatherInfoPath);
-
+           
             using (StreamWriter sw = File.CreateText(Definitions.SelectedCityCurrenWeatherInfoPath))
             {
                 JsonSerializer serializer = new JsonSerializer();
@@ -204,12 +213,11 @@ namespace WeatherCast.DataProvider
             }
         }
 
-        private void SaveLastRequestInfo(LastRequestInfo lastRequestInfo)
+        private void SaveLastCurrentRequestInfo(LastRequestCurrentInfo lastRequestInfo)
         {
-            CreateIfNotExist(Path.GetDirectoryName(Definitions.RequestTimePath));
-            //CreateIfNotExist(Definitions.RequestTimePath);
-
-            using (StreamWriter sw = File.CreateText(Definitions.RequestTimePath))
+            CreateIfNotExist(Path.GetDirectoryName(Definitions.RequestCurrentInfoTimePath));
+            
+            using (StreamWriter sw = File.CreateText(Definitions.RequestCurrentInfoTimePath))
             {
                 JsonSerializer serializer = new JsonSerializer();
                 serializer.Serialize(sw, lastRequestInfo);
@@ -220,12 +228,23 @@ namespace WeatherCast.DataProvider
         private void SaveFutureWeatherData(ForecastWeather weather)
         {
             CreateIfNotExist(Path.GetDirectoryName(Definitions.SelectedCityFutureWeatherInfoPath));
-            //CreateIfNotExist(Definitions.SelectedCityFutureWeatherInfoPath); //TODO: устранить причину по которой При удаленном файле срабатывает ошибка на этой строке
-
+           
             using (StreamWriter sw = File.CreateText(Definitions.SelectedCityFutureWeatherInfoPath)) // StreamWriter не нуждается в создании пустого файла (создаёт сам)
             {
                 JsonSerializer serializer = new JsonSerializer();
                 serializer.Serialize(sw, weather);
+                sw.Close();
+            }
+        }
+
+        private void SaveLastForecastRequestInfo(LastRequestForecastInfo lastRequestInfo)
+        {
+            CreateIfNotExist(Path.GetDirectoryName(Definitions.RequestFutureInfoTimePath));
+
+            using (StreamWriter sw = File.CreateText(Definitions.RequestFutureInfoTimePath))
+            {
+                JsonSerializer serializer = new JsonSerializer();
+                serializer.Serialize(sw, lastRequestInfo);
                 sw.Close();
             }
         }

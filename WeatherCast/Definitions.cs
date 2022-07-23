@@ -12,7 +12,9 @@ namespace WeatherCast
 
         internal static readonly string DirectoryPath = Path.Combine(Directory.GetCurrentDirectory(), "SavedData");
 
-        internal static readonly string RequestTimePath = Path.Combine(Directory.GetCurrentDirectory(), "SavedData", "RequestTime.txt");
+        internal static readonly string RequestCurrentInfoTimePath = Path.Combine(Directory.GetCurrentDirectory(), "SavedData", "RequestCurrentInfoTime.txt");
+
+        internal static readonly string RequestFutureInfoTimePath = Path.Combine(Directory.GetCurrentDirectory(), "SavedData", "RequestFutureInfoTime.txt");
 
         internal static readonly string SelectedCityCurrenWeatherInfoPath = Path.Combine(Directory.GetCurrentDirectory(), "SavedData", "SelectedCityCurrentInfo.txt");
 
