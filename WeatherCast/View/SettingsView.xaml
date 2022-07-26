@@ -7,82 +7,56 @@
              xmlns:viewmodel="clr-namespace:WeatherCast.ViewModel" 
              d:DataContext="{d:DesignInstance Type=viewmodel:SettingsViewModel}"
              mc:Ignorable="d" 
-             d:DesignWidth="800" 
-             Height="600"
+             d:DesignHeight="600" d:DesignWidth="800"
              FontFamily="Segoe UI">
+
     
-    <Grid>
+        <Grid VerticalAlignment="Top">
 
-        <Grid.RowDefinitions>
-            <RowDefinition Height="48"/>
-            <RowDefinition/>
-        </Grid.RowDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="48"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
 
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition MinWidth="0" MaxWidth="210" Width="*"/>
-            <ColumnDefinition MinWidth="400" MaxWidth="1450" Width="100*"/>
-            <ColumnDefinition MinWidth="0" MaxWidth="210" Width="*"/>
-        </Grid.ColumnDefinitions>
+            <Canvas Grid.Row="0" 
+                Height="48"
+                Background="LightGray">
 
-        <Canvas Grid.ColumnSpan="3"
-            Grid.Row="0"
-            Background="#C7CBD3">
+                <TextBlock Text="Настройки"
+                       FontSize="22"
+                       FontWeight="Bold"
+                       Margin="10"/>
+            </Canvas>
 
-            <TextBlock 
-               Text="Настройки"
-               FontSize="20"
-               FontWeight="Bold"
-              
-               VerticalAlignment="Center"
-               HorizontalAlignment="Left"
-               Margin="20 10 0 0" />
+            <Grid Grid.Row="1">
 
-        </Canvas>
+                <TextBlock Text="При запуске показывать"
+                       FontSize="26"
+                       FontWeight="Normal"
+                       VerticalAlignment="Top"
+                       HorizontalAlignment="Left"
+                       Margin="20 10 0 0"/>
 
-        <ScrollViewer VerticalScrollBarVisibility="Auto"
-                      Grid.Row="1"
-                      Grid.ColumnSpan="2"
-                      Grid.Column="1"
-                      Margin="0 5 0 5">
-
-            <Grid Grid.Column="1"
-                  Grid.Row="1">
-
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="180"/>
-                    <RowDefinition/>
-                </Grid.RowDefinitions>
-
-
-                <Grid Grid.Row="0">
-
-                    <TextBlock Text="При запуске показывать"
-                               FontSize="26"
-                               FontWeight="Normal"
-                               VerticalAlignment="Top"
-                               HorizontalAlignment="Left"
-                               Margin="20 10 0 0" />
-
-                    <TextBox Height="36"
+                <TextBox Height="36"
                              Width="340"
                              HorizontalAlignment="Left"
-                             VerticalAlignment="Bottom"
+                             VerticalAlignment="Top"
                              FontSize="18"
                              TextAlignment="Left"
-                             Margin="20 0 20 40"
+                             Margin="20 100 20 40"
                              Text="{Binding InputText}"/>
 
-                    <Button Content="Сохранить"
+                <Button Content="Сохранить"
                             Height="36"
                             Width="80"
                             HorizontalAlignment="Left"
-                            VerticalAlignment="Bottom"
+                            VerticalAlignment="Top"
                             FontSize="14"
-                            Margin="370 0 20 40"
+                            Margin="370 100 20 40"
                             Command="{Binding SendTextCommand}" 
                             Click="Button_Click"/>
 
-                    <Label x:Name="UpdateText"
+                <Label x:Name="UpdateText"
                            Content="Данные обновятся через время"
                            FontSize="16"
                            Visibility="Hidden"
@@ -90,9 +64,22 @@
                            VerticalAlignment="Bottom"
                            Margin="20 0 20 10"/>
 
-                </Grid>
+
+            </Grid>
+
+
+
+
+
+        </Grid>
+    
+</UserControl>
+
+
+<!--
                 
-                <!--
+                <
+                
                 <Grid Grid.Row="1"
                       Height="192"
                       VerticalAlignment="Top">
@@ -129,10 +116,3 @@
                 </Grid>
                 
                 -->
-
-            </Grid>
-
-        </ScrollViewer>
-
-    </Grid>
-</UserControl>

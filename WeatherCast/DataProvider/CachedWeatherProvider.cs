@@ -105,9 +105,17 @@ namespace WeatherCast.DataProvider
             ForecastWeather weather;
             DateTime lastRequestTime = DateTime.Now;
 
-            TryGetForecastCityNameAndRequestTime(out LastRequestForecastInfo lastRequestInfo);
+            if (TryGetForecastCityNameAndRequestTime(out LastRequestForecastInfo lastRequestInfo))
+            {
+                var diff = lastRequestTime.Subtract(lastRequestInfo.RequestTime);
 
-            lastRequestTime = lastRequestInfo.RequestTime;
+                if (diff >= upadteCacheInterval)
+                {
+                    lastRequestTime = lastRequestInfo.RequestTime;
+
+                }
+            }
+
 
             var difference = DateTime.Now.Subtract(lastRequestTime);
             if (difference >= upadteCacheInterval)
