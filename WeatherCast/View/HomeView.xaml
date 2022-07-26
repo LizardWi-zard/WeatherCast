@@ -181,6 +181,7 @@
                        Margin="5"
                        FontSize="24"/>
 
+
             <ListBox x:Name="ForecastList"
                      SelectedItem="{Binding SelectedItem}"
                      Grid.Row="3"

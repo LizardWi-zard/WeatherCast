@@ -106,6 +106,13 @@ namespace WeatherCast.ViewModel
 
             string currentWeather = CurrentWeather.Weather[0].Main.ToLower();
 
+            TimeSpan time = DateTime.Now.TimeOfDay;
+
+            if (new TimeSpan(21, 0, 0) < time || new TimeSpan(4, 0, 0) >= time)
+            {
+                return link + "Night.png";
+            }
+
             if (currentWeather != "rain" && currentWeather != "clouds")
             {
                 return link + "clouds.png";
