@@ -21,7 +21,8 @@
         <converters:ProbabilityOfPrecipitationConverter x:Key="POPFormat"/>
     </UserControl.Resources>
 
-    <ScrollViewer VerticalScrollBarVisibility="Auto">
+    <ScrollViewer Name="MainScrollViewer" 
+                  VerticalScrollBarVisibility="Auto">
         <ScrollViewer.Background>
             <VisualBrush>
                 <VisualBrush.Visual>
@@ -194,7 +195,8 @@
                      BorderBrush="Transparent"
                      ItemsSource="{Binding ForecastWeather.Daily}"
                      ItemContainerStyle="{StaticResource ListBoxDayItemTheme}"
-                     SelectedIndex="0">
+                     SelectedIndex="0"
+                     PreviewMouseWheel="List_PreviewMouseWheel">
 
                 <ListBox.ItemsPanel>
                     <ItemsPanelTemplate >
@@ -226,7 +228,8 @@
                      ScrollViewer.VerticalScrollBarVisibility="Disabled"
                      BorderBrush="Transparent"
                      ItemsSource="{Binding ForecastWeather.ForecastFor24Hours}"
-                     ItemContainerStyle="{StaticResource ListBoxHourItemTheme}">
+                     ItemContainerStyle="{StaticResource ListBoxHourItemTheme}"
+                     PreviewMouseWheel="List_PreviewMouseWheel">
 
                 <ListBox.ItemsPanel>
                     <ItemsPanelTemplate >

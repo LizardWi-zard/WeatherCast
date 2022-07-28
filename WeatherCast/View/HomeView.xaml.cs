@@ -24,5 +24,19 @@ namespace WeatherCast.View
         {
             InitializeComponent();
         }
+
+        private void List_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            if (e.Delta < 0)
+            {
+                MainScrollViewer.LineDown(); // Использую два раза чтоб скорость прокрутки была одинаковая как вне так и внутри ListBox
+                MainScrollViewer.LineDown();
+            }
+            else
+            {
+                MainScrollViewer.LineUp();
+                MainScrollViewer.LineUp();
+            }
+        }
     }
 }
