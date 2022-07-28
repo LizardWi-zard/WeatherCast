@@ -24,18 +24,8 @@
     <ScrollViewer Name="MainScrollViewer" 
                   VerticalScrollBarVisibility="Auto">
         <ScrollViewer.Background>
-            <VisualBrush>
-                <VisualBrush.Visual>
-                    <Grid>
-                        
-                        <Image Source="{Binding Path=BackgroundImg}"
-                               Stretch="UniformToFill"/>
-                        <Rectangle Fill="#5F8EC3"
-                                   Opacity="0.3"/>
-                        
-                    </Grid>
-                </VisualBrush.Visual>
-            </VisualBrush>
+            <ImageBrush ImageSource="{Binding Path=BackgroundImg}"
+                        Stretch="UniformToFill"/>
         </ScrollViewer.Background>
 
         <Grid HorizontalAlignment="Center"
