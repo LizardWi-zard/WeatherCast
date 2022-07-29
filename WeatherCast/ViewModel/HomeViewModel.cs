@@ -46,6 +46,8 @@ namespace WeatherCast.ViewModel
             {
                 _forecastWeather = value;
 
+                ResetSelectedItem();
+
                 RaisePropertyChanged(nameof(ForecastWeather));
             }
         }
@@ -56,6 +58,8 @@ namespace WeatherCast.ViewModel
 
         public string WelcomeText { get; set; }
 
+        public int SelectedItemIndex { get; set; } = 0;
+
         public DailyCast SelectedItem
         {
             get { return _selectedItem; }
@@ -63,9 +67,8 @@ namespace WeatherCast.ViewModel
             {
                 _selectedItem = value;
 
-                //_selectedItem.Temperature.MaxTemperatureText = "Максимальная температура днём: " + value.Temperature.MaxTemperature.ToString(); // после обновления данных _selectedItem становиться null
-                //_selectedItem.Temperature.MinTemperatureText = "Минимальная температура ночью: " + value.Temperature.MinTemperature.ToString();
-
+                _selectedItem.Temperature.MaxTemperatureText = "Максимальная температура днём: " + value.Temperature.MaxTemperature.ToString();
+                _selectedItem.Temperature.MinTemperatureText = "Минимальная температура ночью: " + value.Temperature.MinTemperature.ToString();
 
                 RaisePropertyChanged(nameof(SelectedItem));
             }
@@ -123,6 +126,11 @@ namespace WeatherCast.ViewModel
             }
         }
 
+        private void ResetSelectedItem()
+        {
+            SelectedItemIndex = 0;
 
+            SelectedItem = ForecastWeather.Daily[0];
+        }
     }
 }

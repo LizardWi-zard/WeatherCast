@@ -185,7 +185,7 @@
                      BorderBrush="Transparent"
                      ItemsSource="{Binding ForecastWeather.Daily}"
                      ItemContainerStyle="{StaticResource ListBoxDayItemTheme}"
-                     SelectedIndex="0"
+                     SelectedIndex="{Binding SelectedItemIndex}"
                      PreviewMouseWheel="List_PreviewMouseWheel">
 
                 <ListBox.ItemsPanel>
