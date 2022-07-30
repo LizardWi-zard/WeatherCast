@@ -13,21 +13,23 @@
 
                     <ControlTemplate TargetType="Button">
 
-                        <Grid Height="50"
+                        <Grid Height="20"
                               Width="20" 
                               HorizontalAlignment="Center"
                               Background="Transparent">
 
                             <TextBlock Text="{TemplateBinding Property=Content}" 
-                                       FontSize="22"
-                                       Foreground="White"/>
+                                       FontSize="20"
+                                       Foreground="White"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"/>
 
                             <Border x:Name="BG"
                                     Width="20"
-                                    Height="40" 
+                                    Height="20" 
                                     Opacity="0"
-                                    BorderThickness="2"
-                                    CornerRadius="1"
+                                    BorderThickness="1"
+                                    CornerRadius="8"
                                     BorderBrush="Transparent"
                                     Background="Transparent"
                                     HorizontalAlignment="Center"/>
@@ -35,7 +37,7 @@
                         </Grid>
 
                         <ControlTemplate.Triggers>
-                            
+
                             <Trigger Property="IsMouseOver" 
                                      Value="true">
 
@@ -48,7 +50,7 @@
                                         Value="White"/>
 
                             </Trigger>
-                            
+
                         </ControlTemplate.Triggers>
 
                     </ControlTemplate>
@@ -64,11 +66,6 @@
                     Value="0"/>
 
         </Style.Setters>
-
-        <Style.Triggers>
-
-            
-        </Style.Triggers>
 
     </Style>
 

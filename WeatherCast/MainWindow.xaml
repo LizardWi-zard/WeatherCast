@@ -13,8 +13,8 @@
     <Window.DataContext>
         <viewModel:MainViewModel/>
     </Window.DataContext>
-    
-    <Grid Background="#E4E7E4">
+
+    <Grid Background="#F5F5F5">
         <Grid.ColumnDefinitions>
             <ColumnDefinition MaxWidth="48"/>
             <ColumnDefinition Width="*"/>

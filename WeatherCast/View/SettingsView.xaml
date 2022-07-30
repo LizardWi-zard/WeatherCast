@@ -8,7 +8,8 @@
              d:DataContext="{d:DesignInstance Type=viewmodel:SettingsViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="800"
-             FontFamily="Segoe UI">
+             FontFamily="Segoe UI"
+             Background="#E9E9EB">
 
     
         <Grid VerticalAlignment="Top">
@@ -20,7 +21,7 @@
 
             <Canvas Grid.Row="0" 
                 Height="48"
-                Background="LightGray">
+                Background="#B7B8C1">
 
                 <TextBlock Text="Настройки"
                        FontSize="22"

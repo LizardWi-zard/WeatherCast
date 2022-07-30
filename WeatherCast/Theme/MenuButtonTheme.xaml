@@ -50,7 +50,7 @@
                                 
                                 <Setter TargetName="SelectionMarker"
                                         Property="Background"
-                                        Value="#6F7283"/>
+                                        Value="#212543"/>
                                 
                             </Trigger>
                             
@@ -76,7 +76,7 @@
                      Value="True">
                 
                 <Setter Property="Background"
-                        Value="#A9ADB3"/>
+                        Value="#B7B8C1"/>
                 
             </Trigger>
             
