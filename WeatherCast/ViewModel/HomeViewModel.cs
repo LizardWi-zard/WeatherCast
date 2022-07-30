@@ -116,13 +116,28 @@ namespace WeatherCast.ViewModel
                 return link + "Night.png";
             }
 
-            if (currentWeather != "rain" && currentWeather != "clouds")
-            {
-                return link + "clouds.png";
-            }
-            else
-            {
-                return link + currentWeather + ".png";
+            switch (currentWeather)
+            {                
+                case "clouds":
+                    return link + "Clouds.png";
+
+                case "clear":
+                    return link + "Clear.png";
+
+                case "drizzle":
+                    return link + "Drizzle.png";
+
+                case "rain":
+                    return link + "Rain.png";
+
+                case "snow":
+                    return link + "Snow.png";
+
+                case "thunderstorm":
+                    return link + "Thunderstorm.png";
+
+                default:
+                    return link + "Clear.png";
             }
         }
 
