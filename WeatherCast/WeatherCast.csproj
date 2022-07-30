@@ -10,8 +10,11 @@
   <ItemGroup>
     <None Remove="Images\Background\Clear.png" />
     <None Remove="Images\Background\Clouds.png" />
+    <None Remove="Images\Background\Drizzle.png" />
     <None Remove="Images\Background\Night.png" />
     <None Remove="Images\Background\Rain.png" />
+    <None Remove="Images\Background\Snow.png" />
+    <None Remove="Images\Background\Thunderstorm.png" />
     <None Remove="Images\Icons\home.png" />
     <None Remove="Images\Icons\search.png" />
     <None Remove="Images\Icons\settings.png" />
@@ -25,8 +28,11 @@
   <ItemGroup>
     <Resource Include="Images\Background\Clear.png" />
     <Resource Include="Images\Background\Clouds.png" />
+    <Resource Include="Images\Background\Drizzle.png" />
     <Resource Include="Images\Background\Night.png" />
     <Resource Include="Images\Background\Rain.png" />
+    <Resource Include="Images\Background\Snow.png" />
+    <Resource Include="Images\Background\Thunderstorm.png" />
     <Resource Include="Images\Icons\home.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>

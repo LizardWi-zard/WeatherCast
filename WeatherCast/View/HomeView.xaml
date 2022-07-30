@@ -173,28 +173,58 @@
                        FontSize="24"/>
 
 
-            <ListBox x:Name="ForecastList"
-                     SelectedItem="{Binding SelectedItem}"
-                     Grid.Row="3"
-                     Grid.Column="1" 
-                     VerticalAlignment="Top"
-                     Height="180"
-                     Background="Transparent"
-                     ScrollViewer.HorizontalScrollBarVisibility="Auto"
-                     ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                     BorderBrush="Transparent"
-                     ItemsSource="{Binding ForecastWeather.Daily}"
-                     ItemContainerStyle="{StaticResource ListBoxDayItemTheme}"
-                     SelectedIndex="{Binding SelectedItemIndex}"
-                     PreviewMouseWheel="List_PreviewMouseWheel">
+            <Grid Grid.Row="3"
+                  Grid.Column="1">
 
-                <ListBox.ItemsPanel>
-                    <ItemsPanelTemplate >
-                        <WrapPanel IsItemsHost="True"/>
-                    </ItemsPanelTemplate>
-                </ListBox.ItemsPanel>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="20"/>
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="20"/>
+                </Grid.ColumnDefinitions>
 
-            </ListBox>
+                <Button Content= "&lt;"
+                        FontSize="24"
+                        Grid.Column="0"
+                        Height="150"
+                        VerticalAlignment="Top"
+                        Click="Click_Daily_ScrollLeft"
+                        Margin="0 2 0 0"
+                        Style="{StaticResource ScrollButtonTheme}"/>
+
+                <ListBox x:Name="DailyList"
+                         Grid.Column="1"
+                         SelectedItem="{Binding SelectedItem}"
+                         VerticalAlignment="Top"
+                         Height="180"
+                         Background="Transparent"
+                         ScrollViewer.HorizontalScrollBarVisibility="Hidden"
+                         ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                         ScrollViewer.CanContentScroll="True"
+                         BorderBrush="Transparent"
+                         ItemsSource="{Binding ForecastWeather.Daily}"
+                         ItemContainerStyle="{StaticResource ListBoxDayItemTheme}"
+                         SelectedIndex="{Binding SelectedItemIndex}"
+                         PreviewMouseWheel="List_PreviewMouseWheel">
+                    
+
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate >
+                            <WrapPanel IsItemsHost="True"/>
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+
+                </ListBox>
+
+                <Button Content="&gt;"
+                        FontSize="24"
+                        Grid.Column="2"
+                        Height="150"
+                        VerticalAlignment="Top"
+                        Click="Click_Daily_ScrollRight"
+                        Margin="0 2 0 0"
+                        Style="{StaticResource ScrollButtonTheme}"/>
+
+            </Grid>
 
             <StackPanel Grid.Row="4" 
                         Grid.Column="1"
@@ -207,28 +237,57 @@
                 <TextBlock Text="{Binding ForecastWeather.Daily[0].Date, Converter={StaticResource DateFormat}, ConverterParameter=DayDate}" 
                            Margin="5"
                            FontSize="24"/>
+                
             </StackPanel>
 
-            <ListBox Grid.Row="5" 
-                     Grid.Column="1" 
-                     VerticalAlignment="Top"
-                     Height="180"
-                     Background="Transparent"
-                     ScrollViewer.HorizontalScrollBarVisibility="Auto"
-                     ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                     BorderBrush="Transparent"
-                     ItemsSource="{Binding ForecastWeather.ForecastFor24Hours}"
-                     ItemContainerStyle="{StaticResource ListBoxHourItemTheme}"
-                     PreviewMouseWheel="List_PreviewMouseWheel">
+            <Grid Grid.Row="5"
+                  Grid.Column="1">
 
-                <ListBox.ItemsPanel>
-                    <ItemsPanelTemplate >
-                        <WrapPanel IsItemsHost="True"/>
-                    </ItemsPanelTemplate>
-                </ListBox.ItemsPanel>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="20"/>
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="20"/>
+                </Grid.ColumnDefinitions>
 
-            </ListBox>
+                <Button Content="&lt;" 
+                        Grid.Column="0"
+                        Height="150"
+                        VerticalAlignment="Top"
+                        Click="Click_Hourly_ScrollLeft"
+                        Margin="0 2 0 0"
+                        Style="{StaticResource ScrollButtonTheme}"/>
 
+                <ListBox x:Name="HourlyList"
+                         Grid.Column="1" 
+                         VerticalAlignment="Top"
+                         Height="180"
+                         Background="Transparent"
+                         ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                         ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                         BorderBrush="Transparent"
+                         ItemsSource="{Binding ForecastWeather.ForecastFor24Hours}"
+                         ItemContainerStyle="{StaticResource ListBoxHourItemTheme}"
+                         PreviewMouseWheel="List_PreviewMouseWheel">
+
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate >
+                            <WrapPanel IsItemsHost="True"/>
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+
+                </ListBox>
+
+                <Button Content="&gt;"
+                        FontSize="24"
+                        Grid.Column="2"
+                        Height="150"
+                        VerticalAlignment="Top"
+                        Click="Click_Hourly_ScrollRight"
+                        Margin="0 2 0 0"
+                        Style="{StaticResource ScrollButtonTheme}"/>
+
+            </Grid>
+                
             <WrapPanel Grid.Row="7" 
                        Grid.Column="1"
                        Orientation="Horizontal"
