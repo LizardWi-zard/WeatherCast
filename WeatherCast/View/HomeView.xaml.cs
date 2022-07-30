@@ -38,5 +38,34 @@ namespace WeatherCast.View
                 MainScrollViewer.LineUp();
             }
         }
+
+        private void Click_Daily_ScrollLeft(object sender, RoutedEventArgs e)
+        {
+            ScrollHorizontally(-150.0, DailyList);
+        }
+
+        private void Click_Daily_ScrollRight(object sender, RoutedEventArgs e)
+        {
+            ScrollHorizontally(150.0, DailyList);
+        }
+
+        private void Click_Hourly_ScrollLeft(object sender, RoutedEventArgs e)
+        {
+            ScrollHorizontally(-150.0, HourlyList);
+        }
+
+        private void Click_Hourly_ScrollRight(object sender, RoutedEventArgs e)
+        {
+            ScrollHorizontally(150.0, HourlyList);
+        }
+
+        private void ScrollHorizontally(double offset, ListBox listBox)
+        {
+            Decorator border = VisualTreeHelper.GetChild(listBox, 0) as Decorator;
+
+            ScrollViewer scrollViewer = border.Child as ScrollViewer;
+
+            scrollViewer?.ScrollToHorizontalOffset(scrollViewer.HorizontalOffset + offset);
+        }
     }
 }
