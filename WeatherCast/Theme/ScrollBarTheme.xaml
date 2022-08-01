@@ -62,7 +62,7 @@
                 Value="false" />
         
         <Setter Property="Foreground" 
-                Value="#8C8C8C" />
+                Value="#EFEFEF" />
         
         <Setter Property="Background" 
                 Value="Transparent" />

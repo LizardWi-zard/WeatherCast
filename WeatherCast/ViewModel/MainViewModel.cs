@@ -23,7 +23,7 @@ namespace WeatherCast.ViewModel
 
         public MainViewModel()
         {
-            cachedWeatherProvider = new CachedWeatherProvider(new InternetWeatherProvider(), new FileWeatherProvider(), TimeSpan.FromMinutes(1));
+            cachedWeatherProvider = new CachedWeatherProvider(new InternetWeatherProvider(), new FileWeatherProvider(), TimeSpan.FromMinutes(15));
 
             control = new WeatherService();
             

@@ -305,7 +305,8 @@
                     </Grid.RowDefinitions>
 
                     <Canvas Grid.Row="0"
-                            Background="#9B9EA7"
+                            Background="#EFEFEF"
+                            Opacity="0.5"
                             HorizontalAlignment="Stretch"/>
 
                     <StackPanel Grid.Row="1">
@@ -350,7 +351,8 @@
                     </Grid.RowDefinitions>
 
                     <Canvas Grid.Row="0"
-                            Background="#9B9EA7"
+                            Background="#EFEFEF"
+                            Opacity="0.5"
                             HorizontalAlignment="Stretch"/>
 
                     <StackPanel Grid.Row="1">
@@ -395,7 +397,8 @@
                     </Grid.RowDefinitions>
 
                     <Canvas Grid.Row="0"
-                            Background="#9B9EA7"
+                            Background="#EFEFEF"
+                            Opacity="0.5"
                             HorizontalAlignment="Stretch"/>
 
 
@@ -446,7 +449,8 @@
 
                     <Canvas Grid.Row="0"
                             Grid.ColumnSpan="2"
-                            Background="#9B9EA7"
+                            Background="#EFEFEF"
+                            Opacity="0.5"
                             HorizontalAlignment="Stretch"/>
 
                     <StackPanel Grid.Row="1">
