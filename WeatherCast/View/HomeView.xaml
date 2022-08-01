@@ -19,6 +19,7 @@
         <converters:WindSpeedConverter x:Key="WindFormat"/>
         <converters:HumidityConverter x:Key="HumidityFormat"/>
         <converters:ProbabilityOfPrecipitationConverter x:Key="POPFormat"/>
+        <converters:WeatherConditionsConverter x:Key="WeatherFormat"/>
     </UserControl.Resources>
 
     <ScrollViewer Name="MainScrollViewer" 
@@ -100,7 +101,7 @@
                                    Grid.Column="1"
                                    VerticalAlignment="Bottom"
                                    HorizontalAlignment="Center"
-                                   Text="{Binding CurrentWeather.Weather[0].Main}"
+                                   Text="{Binding CurrentWeather.Weather[0].Main, Converter={StaticResource WeatherFormat}}"
                                    FontSize="32"/>
 
                         <WrapPanel Grid.Column="0"
@@ -262,7 +263,7 @@
                          VerticalAlignment="Top"
                          Height="180"
                          Background="Transparent"
-                         ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                         ScrollViewer.HorizontalScrollBarVisibility="Hidden"
                          ScrollViewer.VerticalScrollBarVisibility="Disabled"
                          BorderBrush="Transparent"
                          ItemsSource="{Binding ForecastWeather.ForecastFor24Hours}"

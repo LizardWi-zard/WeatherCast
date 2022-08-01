@@ -5,7 +5,8 @@
     <converters:FloatTempToIntTempConverter x:Key="FloatToInt"/>
     <converters:DateToStringConverter x:Key="DateFormat"/>
     <converters:WindSpeedConverter x:Key="WindFormat"/>
-    
+    <converters:WeatherConditionsConverter x:Key="WeatherFormat"/>
+
     <Style BasedOn="{StaticResource {x:Type ListBoxItem}}"
            TargetType="{x:Type ListBoxItem}"
            x:Key="ListBoxHourItemTheme">
@@ -53,7 +54,7 @@
                                     
                                 </StackPanel>
 
-                                <TextBlock Text="{Binding Weather[0].Main}"
+                                <TextBlock Text="{Binding Weather[0].Main, Converter={StaticResource WeatherFormat}}"
                                            FontSize="19"
                                            Margin="0 3 3 3"/>
 
