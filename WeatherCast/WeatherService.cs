@@ -1,26 +1,27 @@
 ﻿using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
+using WeatherCast.Model;
 
 namespace WeatherCast
 {
     public class WeatherService
     {
-        private HttpWebRequest httpWebRequest;
         private HttpWebResponse httpWebResponse;
 
         public CurrentWeather GetCurrentWeather(string cityName)
         {
+            if (string.IsNullOrEmpty(cityName))
+            {
+                throw new ArgumentException();
+            }
+
             var requestUrl = CreateСurrentWeatherUrl(cityName);
 
             var response = GetResponseAsString(requestUrl);
-
+            
             var currentWeather = JsonConvert.DeserializeObject<CurrentWeather>(response);
 
             return currentWeather;

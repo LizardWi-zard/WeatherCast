@@ -5,16 +5,25 @@
     <converters:FloatTempToIntTempConverter x:Key="FloatToInt"/>
     <converters:DateToStringConverter x:Key="DateFormat"/>
     <converters:WindSpeedConverter x:Key="WindFormat"/>
-    
+    <converters:WeatherConditionsConverter x:Key="WeatherFormat"/>
+
     <Style BasedOn="{StaticResource {x:Type ListBoxItem}}"
            TargetType="{x:Type ListBoxItem}"
            x:Key="ListBoxHourItemTheme">
+        
         <Style.Setters>
-            <Setter Property="Foreground" Value="#FFFFFF"/>
-            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="Foreground"
+                    Value="#FFFFFF"/>
+            
+            <Setter Property="FontFamily"
+                    Value="Segoe UI"/>
+            
             <Setter Property="Template">
+                
                 <Setter.Value>
+                    
                     <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                        
                         <Border x:Name="ItemHolder"
                                 HorizontalAlignment="Stretch"
                                 VerticalAlignment="Stretch"
@@ -24,14 +33,15 @@
 
                             <StackPanel Orientation="Vertical">
 
-                                <Canvas Background="#9B9EA7"
+                                <Canvas Background="#EFEFEF"
+                                        Opacity="0.5"
                                         HorizontalAlignment="Stretch"
                                         VerticalAlignment="Center"
                                         Height="1.1"
-                                        Opacity="0.7"
                                         Margin="0 5 0 5" />
 
                                 <StackPanel Orientation="Horizontal">
+                                    
                                     <TextBlock Text="{Binding Temperature, Converter={StaticResource FloatToInt}}"
                                                FontSize="32"
                                                VerticalAlignment="Bottom" />
@@ -41,9 +51,10 @@
                                                VerticalAlignment="Bottom"
                                                Opacity="0.6"
                                                Margin="4"/>
+                                    
                                 </StackPanel>
 
-                                <TextBlock Text="{Binding Weather[0].Main}"
+                                <TextBlock Text="{Binding Weather[0].Main, Converter={StaticResource WeatherFormat}}"
                                            FontSize="19"
                                            Margin="0 3 3 3"/>
 
@@ -52,11 +63,11 @@
                                            TextAlignment="Left"
                                            Opacity="0.6"/>
 
-                                <Canvas Background="#9B9EA7"
+                                <Canvas Background="#EFEFEF"
+                                        Opacity="0.5"
                                         HorizontalAlignment="Stretch"
                                         VerticalAlignment="Center"
                                         Height="1.1"
-                                        Opacity="0.7"
                                         Margin="0 5 0 5" />
 
                                 <TextBlock Text="{Binding Date, Converter={StaticResource DateFormat}, ConverterParameter=HourMinutes}"
@@ -67,9 +78,15 @@
                             </StackPanel>
                             
                         </Border>
+                        
                     </ControlTemplate>
+                    
                 </Setter.Value>
+                
             </Setter>
+            
         </Style.Setters>
+        
     </Style>
+    
 </ResourceDictionary>

@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:viewModel="clr-namespace:WeatherCast.MVVM.ViewModel"
+        xmlns:viewModel="clr-namespace:WeatherCast.ViewModel"
         xmlns:local="clr-namespace:WeatherCast"
         mc:Ignorable="d"
         Title="WeatherCast" 
@@ -14,10 +14,7 @@
         <viewModel:MainViewModel/>
     </Window.DataContext>
 
-
-   
-
-    <Grid Background="#E4E7E4">
+    <Grid Background="#F5F5F5">
         <Grid.ColumnDefinitions>
             <ColumnDefinition MaxWidth="48"/>
             <ColumnDefinition Width="*"/>
@@ -45,33 +42,26 @@
                     <RowDefinition Height="50"/>
                 </Grid.RowDefinitions>
 
-                <RadioButton Style="{StaticResource MenuButtonTheme}"
-                        Height="48"
-                        Command="{Binding HomeViewCommand}"
-                        Grid.Row="0"
-                        Content="C:\Users\ArEf\source\repos\WeatherCast\WeatherCast\Images\Icons\home.png" 
-                        IsChecked="True" />
-
-                <RadioButton Content="Поиск"
-                             Height="48"
-                             FontSize="15"
+                <RadioButton Grid.Row="0" 
                              Style="{StaticResource MenuButtonTheme}"
-                             Command="{Binding SearchViewCommand}"
-                             Grid.Row="1"/>
+                             Content="../Images/Icons/home.png"
+                             Command="{Binding HomeViewCommand}"
+                             IsChecked="True" />
+
+                <!--
+                <RadioButton Grid.Row="1"
+                             Style="{StaticResource MenuButtonTheme}"
+                             Content="../Images/Icons/star.png"
+                             Command="{Binding SearchViewCommand}"/>
+                -->
+
+                <RadioButton Grid.Row="4"
+                             Style="{StaticResource MenuButtonTheme}"
+                             Content="../Images/Icons/settings.png"
+                             Command="{Binding SettingsViewCommand}"/>
 
             </Grid>
         </Grid>
-        <!--
-        <TextBlock Text="Добавленные города"
-                           Foreground="#080C2E"
-                           HorizontalAlignment="Left"
-                           VerticalAlignment="Center" 
-                           FontSize="17"
-                           FontWeight="Bold"
-                           Margin="30 0 0 0"
-                           Grid.Row="2"/>
-        -->
-        
 
         <Grid Grid.Row="1"
               Grid.Column="1">
