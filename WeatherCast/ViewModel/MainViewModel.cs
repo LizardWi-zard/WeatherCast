@@ -8,6 +8,7 @@ using WeatherCast.Core;
 using WeatherCast.DataProvider;
 using WeatherCast.Model;
 using static WeatherCast.DataProvider.CachedWeatherProvider;
+using static WeatherCast.ViewModel.SearchViewModel;
 
 namespace WeatherCast.ViewModel
 {
@@ -18,19 +19,19 @@ namespace WeatherCast.ViewModel
         private DateTime lastRequestTime;
         private string selectedCity = "Москва";
         private Timer timer = new Timer();
-        private WeatherService control;
         private CachedWeatherProvider cachedWeatherProvider;
 
         public MainViewModel()
         {
             cachedWeatherProvider = new CachedWeatherProvider(new InternetWeatherProvider(), new FileWeatherProvider(), TimeSpan.FromMinutes(15));
-
-            control = new WeatherService();
             
             VMBase = new ViewModelBase();
 
             HomeVM = new HomeViewModel(cachedWeatherProvider);
+            SearchVM = new SearchViewModel();
             SettingsVM = new SettingsViewModel(HomeVM.CurrentWeather.Name);
+
+            SearchVM.OnButtonClickEvent += ChangeView;
 
             CurrentView = HomeVM;
 
@@ -44,16 +45,13 @@ namespace WeatherCast.ViewModel
                 CurrentView = SettingsVM;
             });
 
-            cachedWeatherProvider.OnWeatherAutoUpdate += UpdateData;
-
-            SearchVM = new SearchViewModel();
-
-            
             SearchViewCommand = new RelayCommand(o =>
             {
                 CurrentView = SearchVM;
             });
-            
+
+            cachedWeatherProvider.OnWeatherAutoUpdate += UpdateData
+
             /*
             
             SearchCommand = new RelayCommand(o =>
@@ -98,6 +96,11 @@ namespace WeatherCast.ViewModel
         {
             HomeVM.CurrentWeather = e.CurrentWeather;
             HomeVM.ForecastWeather = e.ForecastWeather;
+        }
+
+        private void ChangeView(object sourse, OnButtonClick? e)
+        {
+            CurrentView = HomeVM;
         }
     }
 }

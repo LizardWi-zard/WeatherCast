@@ -1,19 +1,23 @@
-﻿using WeatherCast.Model;
+﻿using System;
+using WeatherCast.Core;
+using WeatherCast.Model;
 
 namespace WeatherCast.ViewModel
 {
     public class SearchViewModel
     {
-        public WeatherService Control { get; set; }
+        public delegate void OnButtonClick(object? sender, OnButtonClick? e);
 
-        public CurrentWeather Response { get; set; }
+        public event OnButtonClick OnButtonClickEvent;
 
-        public string Title { get; set; }
-
-        public void UpdateControlResponse(WeatherService Control, CurrentWeather Response)
+        public SearchViewModel()
         {
-            this.Control = Control;
-            this.Response = Response;
+            ChangeViewCommand = new RelayCommand(o =>
+            {
+                OnButtonClickEvent?.Invoke(this, null);
+            });
         }
+
+        public RelayCommand ChangeViewCommand { get; set; }
     }
 }

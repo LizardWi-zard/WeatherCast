@@ -117,7 +117,10 @@
             
             <Setter Property="Padding"
                     Value="0"/>
-            
+
+            <Setter Property="Command"
+                    Value="{Binding ChangeViewCommand}"/>
+
         </Style.Setters>
 
     </Style>
