@@ -48,12 +48,12 @@
                              Command="{Binding HomeViewCommand}"
                              IsChecked="True" />
 
-                <!--
+                
                 <RadioButton Grid.Row="1"
                              Style="{StaticResource MenuButtonTheme}"
                              Content="../Images/Icons/star.png"
                              Command="{Binding SearchViewCommand}"/>
-                -->
+                
 
                 <RadioButton Grid.Row="4"
                              Style="{StaticResource MenuButtonTheme}"

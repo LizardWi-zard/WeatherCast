@@ -17,34 +17,53 @@
                         <Grid HorizontalAlignment="Center"
                               VerticalAlignment="Center" 
                               Width="292"
-                              Height="120">
+                              Height="120"
+                              Background="AliceBlue">
 
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="71*"/>
-                                <ColumnDefinition Width="73*"/>
+                                <ColumnDefinition Width="60*"/>
+                                <ColumnDefinition Width="80*"/>
                             </Grid.ColumnDefinitions>
 
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="31*"/>
-                                <RowDefinition Height="85*"/>
+                                <RowDefinition Height="93*"/>
                             </Grid.RowDefinitions>
 
-                            <TextBlock Background="AliceBlue"
-                                       Text="Иваново" 
+                            <TextBlock Text="Иваново"
                                        Grid.ColumnSpan="2"
-                                       FontSize="23"/>
+                                       Grid.RowSpan="2"
+                                       FontSize="16"
+                                       FontFamily="Segoe UI"
+                                       FontWeight="Medium"
+                                       Margin="10 6 0 0"/>
 
-                            <TextBlock Grid.Column="0" 
-                                       Grid.Row="1" 
-                                       Text="18" 
-                                       FontSize="58" 
-                                       Background="White"
-                                       TextAlignment="Left"
-                                       FontWeight="Light"/>
+                            <TextBlock Text="18"
+                                       Grid.Column="0" 
+                                       Grid.RowSpan="2" 
+                                       FontSize="50" 
+                                       FontFamily="Segoe UI"
+                                       FontWeight="Light"
+                                       Margin="10 22 0 0"/>
+
+                            <TextBlock Text="°C" 
+                                       Grid.Column="0" 
+                                       Grid.RowSpan="2" 
+                                       FontSize="16"
+                                       FontFamily="Segoe UI"
+                                       Margin="57 34 0 0"/>
+
+                            <TextBlock Text="В основном солнечно"
+                                       Grid.ColumnSpan="2" 
+                                       Grid.RowSpan="2" 
+                                       FontSize="14"
+                                       FontFamily="Segoe UI"
+                                       FontWeight="Medium"
+                                       Margin="10 90 0 0"/>
 
                             <Grid Grid.Row="1"
                                   Grid.Column="1"
-                                  Background="LightBlue">
+                                  Background="Transparent">
 
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="50"/>
@@ -52,25 +71,33 @@
                                 </Grid.ColumnDefinitions>
 
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="20"/>
+                                    <RowDefinition Height="30"/>
                                     <RowDefinition />
                                 </Grid.RowDefinitions>
 
-                                <TextBlock Text="19" 
+                                <TextBlock Text="19°"
+                                           FontSize="16"
                                            Grid.Row="0"
-                                           Grid.Column="0"/>
+                                           Grid.Column="0"
+                                           Margin="2 4 0 0"/>
 
                                 <TextBlock Text="9"
+                                           FontSize="16"
                                            Grid.Row="1" 
-                                           Grid.Column="0"/>
+                                           Grid.Column="0"
+                                           Margin="2 0 0 0"/>
 
-                                <TextBlock Text="19" 
+                                <TextBlock Text="19°" 
+                                           FontSize="16"
                                            Grid.Row="0" 
-                                           Grid.Column="1"/>
+                                           Grid.Column="1"
+                                           Margin="18 4 0 0"/>
 
                                 <TextBlock Text="9" 
+                                           FontSize="16"
                                            Grid.Row="1" 
-                                           Grid.Column="1"/>
+                                           Grid.Column="1"
+                                           Margin="18 0 0 0"/>
 
                             </Grid>
 
@@ -86,6 +113,9 @@
                     Value="Transparent"/>
             
             <Setter Property="BorderThickness"
+                    Value="2"/>
+            
+            <Setter Property="Padding"
                     Value="0"/>
             
         </Style.Setters>

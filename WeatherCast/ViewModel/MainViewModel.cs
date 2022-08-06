@@ -46,19 +46,21 @@ namespace WeatherCast.ViewModel
 
             cachedWeatherProvider.OnWeatherAutoUpdate += UpdateData;
 
-            /*
             SearchVM = new SearchViewModel();
 
+            
+            SearchViewCommand = new RelayCommand(o =>
+            {
+                CurrentView = SearchVM;
+            });
+            
+            /*
+            
             SearchCommand = new RelayCommand(o =>
             {
                 Response = currentWeather;
                 SearchVM.UpdateControlResponse(control, Response);
 
-                CurrentView = SearchVM;
-            });
-            
-            SearchViewCommand = new RelayCommand(o =>
-            {
                 CurrentView = SearchVM;
             });
             */
