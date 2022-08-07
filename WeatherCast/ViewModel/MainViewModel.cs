@@ -8,7 +8,7 @@ using WeatherCast.Core;
 using WeatherCast.DataProvider;
 using WeatherCast.Model;
 using static WeatherCast.DataProvider.CachedWeatherProvider;
-using static WeatherCast.ViewModel.SearchViewModel;
+using static WeatherCast.ViewModel.MarkedCityViewModel;
 
 namespace WeatherCast.ViewModel
 {
@@ -28,7 +28,7 @@ namespace WeatherCast.ViewModel
             VMBase = new ViewModelBase();
 
             HomeVM = new HomeViewModel(cachedWeatherProvider);
-            SearchVM = new SearchViewModel();
+            SearchVM = new MarkedCityViewModel();
             SettingsVM = new SettingsViewModel(HomeVM.CurrentWeather.Name);
 
             SearchVM.OnButtonClickEvent += ChangeView;
@@ -50,7 +50,7 @@ namespace WeatherCast.ViewModel
                 CurrentView = SearchVM;
             });
 
-            cachedWeatherProvider.OnWeatherAutoUpdate += UpdateData
+            cachedWeatherProvider.OnWeatherAutoUpdate += UpdateData;
 
             /*
             
@@ -68,7 +68,7 @@ namespace WeatherCast.ViewModel
 
         public HomeViewModel HomeVM { get; set; }
 
-        public SearchViewModel SearchVM { get; set; }
+        public MarkedCityViewModel SearchVM { get; set; }
 
         public SettingsViewModel SettingsVM { get; set; }
 
@@ -101,6 +101,7 @@ namespace WeatherCast.ViewModel
         private void ChangeView(object sourse, OnButtonClick? e)
         {
             CurrentView = HomeVM;
+
         }
     }
 }

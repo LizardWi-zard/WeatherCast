@@ -24,7 +24,7 @@
                 <view:HomeView/>
             </DataTemplate>
 
-            <DataTemplate DataType="{x:Type viewModel:SearchViewModel}">
+            <DataTemplate DataType="{x:Type viewModel:MarkedCityViewModel}">
                 <view:SearchView/>
             </DataTemplate>
 

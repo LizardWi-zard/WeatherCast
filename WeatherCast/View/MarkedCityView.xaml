@@ -39,7 +39,8 @@
 
         </Canvas>
 
-        <ScrollViewer VerticalScrollBarVisibility="Auto"
+        <ScrollViewer Name="MarkedPageScrollViewer" 
+                      VerticalScrollBarVisibility="Auto"
                       Grid.Row="1"
                       Grid.ColumnSpan="2"
                       Grid.Column="1"
@@ -55,18 +56,17 @@
 
 
                 <Grid Grid.Row="0">
-                    
+
                     <TextBlock Text="Показывать при запуске"
                        FontSize="26"
                        FontWeight="Normal"
                        VerticalAlignment="Top"
                        HorizontalAlignment="Left"
-                       Margin="20 10 0 0" />
+                       Margin="22 10 0 0" />
 
-                    <Button 
-                            HorizontalAlignment="Left"
+                    <Button HorizontalAlignment="Left"
                             VerticalAlignment="Bottom"
-                            Margin="20 0 0 20"
+                            Margin="24 0 0 15"
                             Style="{StaticResource MarkedCity}">
 
                     </Button>
@@ -76,7 +76,7 @@
                 <Grid Grid.Row="2">
 
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="55"/>
+                        <RowDefinition Height="40"/>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
 
@@ -86,14 +86,16 @@
                                FontWeight="Normal"
                                VerticalAlignment="Top"
                                HorizontalAlignment="Left"
-                               Margin="20 10 0 0" />
+                               Margin="22 0 0 0" />
 
                     <ListBox Grid.Row="1"
                              Margin="20 10 20 10"
                              ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                             ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                             ScrollViewer.VerticalScrollBarVisibility="Auto"
                              Background="Transparent"
-                             BorderThickness="0">
+                             BorderThickness="0"
+                             ScrollViewer.CanContentScroll="True"
+                             PreviewMouseWheel="List_PreviewMouseWheel">
 
                         <ListBox.ItemsPanel>
                             <ItemsPanelTemplate >
@@ -101,16 +103,41 @@
                             </ItemsPanelTemplate>
                         </ListBox.ItemsPanel>
 
-                       
+                        <ListBoxItem Padding="2">
+                            <Button Style="{StaticResource MarkedCity}" />
+                        </ListBoxItem>
+
+                        <ListBoxItem Padding="2">
+                            <Button Style="{StaticResource MarkedCity}" />
+                        </ListBoxItem>
+
+                        <ListBoxItem Padding="2">
+                            <Button Style="{StaticResource MarkedCity}" />
+                        </ListBoxItem>
+
+                        <ListBoxItem Padding="2">
+                            <Button Style="{StaticResource MarkedCity}" />
+                        </ListBoxItem>
+
+                        <ListBoxItem Padding="2">
+                            <Button Background="White" 
+                                    Height="120" 
+                                    Width="292" 
+                                    Content="+"
+                                    FontSize="72"
+                                    FontWeight="Light"
+                                    FontFamily="Sugoe UI"
+                                    Click="OpenSearchWindow"/>
+                        </ListBoxItem>
 
                     </ListBox>
 
                 </Grid>
 
             </Grid>
-            
+
         </ScrollViewer>
 
     </Grid>
-        
+
 </UserControl>

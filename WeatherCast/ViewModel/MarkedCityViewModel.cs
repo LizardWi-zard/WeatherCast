@@ -4,13 +4,13 @@ using WeatherCast.Model;
 
 namespace WeatherCast.ViewModel
 {
-    public class SearchViewModel
+    public class MarkedCityViewModel
     {
         public delegate void OnButtonClick(object? sender, OnButtonClick? e);
 
         public event OnButtonClick OnButtonClickEvent;
 
-        public SearchViewModel()
+        public MarkedCityViewModel()
         {
             ChangeViewCommand = new RelayCommand(o =>
             {
