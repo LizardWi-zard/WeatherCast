@@ -46,7 +46,7 @@
                              Style="{StaticResource MenuButtonTheme}"
                              Content="../Images/Icons/home.png"
                              Command="{Binding HomeViewCommand}"
-                             IsChecked="True" />
+                             IsChecked="{Binding IsChecked}" />
 
                 
                 <RadioButton Grid.Row="1"

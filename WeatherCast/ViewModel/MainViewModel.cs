@@ -16,6 +16,7 @@ namespace WeatherCast.ViewModel
     {
         private CurrentWeather currentWeather;
         private object _currentView;
+        private bool _isChecked = true;
         private DateTime lastRequestTime;
         private string selectedCity = "Москва";
         private Timer timer = new Timer();
@@ -92,6 +93,16 @@ namespace WeatherCast.ViewModel
             }
         }
 
+        public bool IsChecked
+        {
+            get { return _isChecked; }
+            set
+            {
+                _isChecked = value;
+                OnPropertyChanged();
+            }
+        }
+
         private void UpdateData(object sourse, WeatherUpdatedEventArgs? e)
         {
             HomeVM.CurrentWeather = e.CurrentWeather;
@@ -102,6 +113,7 @@ namespace WeatherCast.ViewModel
         {
             CurrentView = HomeVM;
 
+            IsChecked = true;
         }
     }
 }
