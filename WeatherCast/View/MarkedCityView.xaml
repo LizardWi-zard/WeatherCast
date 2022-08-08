@@ -25,17 +25,15 @@
         </Grid.ColumnDefinitions>
 
         <Canvas Grid.ColumnSpan="3"
-            Grid.Row="0"
-            Background="#B7B8C1">
+                Grid.Row="0"
+                Background="#B7B8C1">
 
-            <TextBlock 
-               Text="Избранное"
-               FontSize="17"
-               FontWeight="Bold"
-              
-               VerticalAlignment="Center"
-               HorizontalAlignment="Left"
-               Margin="20 15 0 0" />
+            <TextBlock Text="Избранное"
+                       FontSize="17"
+                       FontWeight="Bold"
+                       VerticalAlignment="Center"
+                       HorizontalAlignment="Left"
+                       Margin="20 15 0 0" />
 
         </Canvas>
 
@@ -58,11 +56,11 @@
                 <Grid Grid.Row="0">
 
                     <TextBlock Text="Показывать при запуске"
-                       FontSize="26"
-                       FontWeight="Normal"
-                       VerticalAlignment="Top"
-                       HorizontalAlignment="Left"
-                       Margin="22 10 0 0" />
+                               FontSize="26"
+                               FontWeight="Normal"
+                               VerticalAlignment="Top"
+                               HorizontalAlignment="Left"
+                               Margin="22 10 0 0" />
 
                     <Button HorizontalAlignment="Left"
                             VerticalAlignment="Bottom"
@@ -95,7 +93,10 @@
                              Background="Transparent"
                              BorderThickness="0"
                              ScrollViewer.CanContentScroll="True"
-                             PreviewMouseWheel="List_PreviewMouseWheel">
+                             PreviewMouseWheel="List_PreviewMouseWheel"
+                             ItemsSource="{Binding MarkedCities}"
+                             MaxWidth="1400"
+                             HorizontalAlignment="Left">
 
                         <ListBox.ItemsPanel>
                             <ItemsPanelTemplate >
@@ -103,22 +104,8 @@
                             </ItemsPanelTemplate>
                         </ListBox.ItemsPanel>
 
-                        <ListBoxItem Padding="2">
-                            <Button Style="{StaticResource MarkedCity}" />
-                        </ListBoxItem>
 
-                        <ListBoxItem Padding="2">
-                            <Button Style="{StaticResource MarkedCity}" />
-                        </ListBoxItem>
-
-                        <ListBoxItem Padding="2">
-                            <Button Style="{StaticResource MarkedCity}" />
-                        </ListBoxItem>
-
-                        <ListBoxItem Padding="2">
-                            <Button Style="{StaticResource MarkedCity}" />
-                        </ListBoxItem>
-
+                        <!--
                         <ListBoxItem Padding="2">
                             <Button Background="White" 
                                     Height="120" 
@@ -128,7 +115,7 @@
                                     FontWeight="Light"
                                     FontFamily="Sugoe UI"
                                     Click="OpenSearchWindow"/>
-                        </ListBoxItem>
+                        </ListBoxItem> -->
 
                     </ListBox>
 
