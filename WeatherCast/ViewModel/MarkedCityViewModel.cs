@@ -4,7 +4,7 @@ using WeatherCast.Model;
 
 namespace WeatherCast.ViewModel
 {
-    public class MarkedCityViewModel
+    public class MarkedCityViewModel : ViewModelBase
     {
         public delegate void OnButtonClick(object? sender, OnButtonClick? e);
 
@@ -22,10 +22,21 @@ namespace WeatherCast.ViewModel
             MarkedCities = new CurrentWeather[] {CurrentWeather.Empty, CurrentWeather.Empty, CurrentWeather.Empty, CurrentWeather.Empty };
         }
 
-        public CurrentWeather CurrentWeather { get; set; }
+        public CurrentWeather _currentWeather { get; set; }
 
         public RelayCommand ChangeViewCommand { get; set; }
 
         public CurrentWeather[] MarkedCities { get; set; }
+
+        public CurrentWeather CurrentWeather
+        {
+            get { return _currentWeather; }
+            set
+            {
+                _currentWeather = value;
+
+                RaisePropertyChanged(nameof(CurrentWeather));
+            }
+        }
     }
 }

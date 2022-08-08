@@ -24,15 +24,15 @@ namespace WeatherCast.ViewModel
 
         public MainViewModel()
         {
-            cachedWeatherProvider = new CachedWeatherProvider(new InternetWeatherProvider(), new FileWeatherProvider(), TimeSpan.FromMinutes(15));
+            cachedWeatherProvider = new CachedWeatherProvider(new InternetWeatherProvider(), new FileWeatherProvider(), TimeSpan.FromMinutes(1));
             
             VMBase = new ViewModelBase();
 
             HomeVM = new HomeViewModel(cachedWeatherProvider);
-            SearchVM = new MarkedCityViewModel(HomeVM.CurrentWeather);
+            MarkedCityVM = new MarkedCityViewModel(HomeVM.CurrentWeather);
             SettingsVM = new SettingsViewModel(HomeVM.CurrentWeather.Name);
 
-            SearchVM.OnButtonClickEvent += ChangeView;
+            MarkedCityVM.OnButtonClickEvent += ChangeView;
 
             CurrentView = HomeVM;
 
@@ -48,7 +48,7 @@ namespace WeatherCast.ViewModel
 
             SearchViewCommand = new RelayCommand(o =>
             {
-                CurrentView = SearchVM;
+                CurrentView = MarkedCityVM;
             });
 
             cachedWeatherProvider.OnWeatherAutoUpdate += UpdateData;
@@ -69,7 +69,7 @@ namespace WeatherCast.ViewModel
 
         public HomeViewModel HomeVM { get; set; }
 
-        public MarkedCityViewModel SearchVM { get; set; }
+        public MarkedCityViewModel MarkedCityVM { get; set; }
 
         public SettingsViewModel SettingsVM { get; set; }
 
@@ -107,6 +107,7 @@ namespace WeatherCast.ViewModel
         {
             HomeVM.CurrentWeather = e.CurrentWeather;
             HomeVM.ForecastWeather = e.ForecastWeather;
+            MarkedCityVM.CurrentWeather = e.CurrentWeather;
         }
 
         private void ChangeView(object sourse, OnButtonClick? e)
