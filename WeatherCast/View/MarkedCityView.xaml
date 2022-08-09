@@ -95,6 +95,7 @@
                              ScrollViewer.CanContentScroll="True"
                              PreviewMouseWheel="List_PreviewMouseWheel"
                              ItemsSource="{Binding MarkedCities}"
+                             ItemContainerStyle="{StaticResource ListBoxMarkedCityItem}"
                              MaxWidth="1400"
                              HorizontalAlignment="Left">
 
