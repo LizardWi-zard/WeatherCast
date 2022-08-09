@@ -29,7 +29,7 @@ namespace WeatherCast.ViewModel
             VMBase = new ViewModelBase();
 
             HomeVM = new HomeViewModel(cachedWeatherProvider);
-            MarkedCityVM = new MarkedCityViewModel(HomeVM.CurrentWeather);
+            MarkedCityVM = new MarkedCityViewModel(HomeVM.CurrentWeather, cachedWeatherProvider);
             SettingsVM = new SettingsViewModel(HomeVM.CurrentWeather.Name);
 
             MarkedCityVM.OnButtonClickEvent += ChangeView;

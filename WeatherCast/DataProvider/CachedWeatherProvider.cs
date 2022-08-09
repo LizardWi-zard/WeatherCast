@@ -47,6 +47,8 @@ namespace WeatherCast.DataProvider
             CurrentWeather weather;
             DateTime lastRequestTime = DateTime.Now;
 
+            string fileCityName = null;
+
             if (TryGetCurrentCityNameAndRequestTime(out LastRequestCurrentInfo lastRequestCurrentInfo))
             {
                 var diff = lastRequestTime.Subtract(lastRequestCurrentInfo.RequestTime);
@@ -54,12 +56,14 @@ namespace WeatherCast.DataProvider
                 if (diff >= upadteCacheInterval)
                 {
                     lastRequestTime = lastRequestCurrentInfo.RequestTime;
-                    cityName = lastRequestCurrentInfo.CityName;
+                    fileCityName = lastRequestCurrentInfo.CityName.ToLower();
                 }
             }
 
+            var differentCities = fileCityName != cityName;
+
             var difference = DateTime.Now.Subtract(lastRequestTime);
-            if (difference >= upadteCacheInterval)
+            if (difference >= upadteCacheInterval || differentCities)
             {
                 try
                 {
