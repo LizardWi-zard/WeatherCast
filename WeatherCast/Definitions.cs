@@ -19,5 +19,7 @@ namespace WeatherCast
         internal static readonly string SelectedCityCurrenWeatherInfoPath = Path.Combine(Directory.GetCurrentDirectory(), "SavedData", "SelectedCityCurrentInfo.txt");
 
         internal static readonly string SelectedCityFutureWeatherInfoPath = Path.Combine(Directory.GetCurrentDirectory(), "SavedData", "SelectedCityFutureInfo.txt");
+
+        internal static readonly string MarkedCitiesCurrenWeatherWeatherInfoPath = Path.Combine(Directory.GetCurrentDirectory(), "SavedData", "MarkedCitiesCurrentInfo.txt");
     }
 }

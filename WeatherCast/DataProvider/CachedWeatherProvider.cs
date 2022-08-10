@@ -1,6 +1,9 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Printing;
 using System.Timers;
 using WeatherCast.Helpers;
 using WeatherCast.Model;
@@ -158,6 +161,93 @@ namespace WeatherCast.DataProvider
                 }
             }
             return weather;
+        }
+
+        public CurrentWeather[] GetMarkedCityCurrentWeather(List<string> markedCitiesNames)  //TODO: refactoring
+        { 
+            List<CurrentWeather> weather = new List<CurrentWeather>();
+            DateTime lastRequestTime = DateTime.Now;
+         
+            string fileCityName = null;
+
+            if (File.Exists(Definitions.MarkedCitiesCurrenWeatherWeatherInfoPath))
+            {
+                if (markedCitiesNames.Count() == 0)
+                {
+                    using (StreamReader sr = new StreamReader(Definitions.MarkedCitiesCurrenWeatherWeatherInfoPath))
+                    {
+                        JsonTextReader reader = new JsonTextReader(sr);
+                        return new JsonSerializer().Deserialize<CurrentWeather[]>(reader);
+                    }
+                }
+            }
+
+            if (TryGetCurrentCityNameAndRequestTime(out LastRequestCurrentInfo lastRequestCurrentInfo))
+            {
+                var diff = lastRequestTime.Subtract(lastRequestCurrentInfo.RequestTime);
+
+                if (diff >= upadteCacheInterval)
+                {
+                    lastRequestTime = lastRequestCurrentInfo.RequestTime;
+                }
+            }
+
+            var difference = DateTime.Now.Subtract(lastRequestTime);
+            
+            foreach(string item in markedCitiesNames)
+            {
+                Validate.CityName(item, nameof(item));
+
+                if (difference >= upadteCacheInterval)
+                {
+                    try
+                    {
+                        weather.Add(internetDataProvider.GetCurrentWeather(item));
+
+                        //SaveCurrentWeatherData(weather);
+                    }
+                    catch
+                    {
+                        weather.Add(CurrentWeather.Empty);
+                    }
+                }
+                else
+                {
+                    try
+                    {
+                        weather.Add(GetMarkedCity(item));
+                    }
+                    catch
+                    {
+                        weather.Add(internetDataProvider.GetCurrentWeather(item));
+
+                        //weather = CurrentWeather.Empty;
+                    }
+                }
+            }
+
+            return weather.ToArray();
+        }
+
+        private CurrentWeather GetMarkedCity(string name)
+        {
+            CurrentWeather[] markedCities;
+
+            using (StreamReader sr = new StreamReader(Definitions.MarkedCitiesCurrenWeatherWeatherInfoPath))
+            {
+                JsonTextReader reader = new JsonTextReader(sr);
+                markedCities = new JsonSerializer().Deserialize<CurrentWeather[]>(reader);
+            }
+
+            foreach( var item in markedCities)
+            {
+                if(item.Name.ToLower() == name)
+                {
+                    return item;
+                }
+            }
+
+            return null;
         }
 
         private void OnTimedEvent(object sourse, System.Timers.ElapsedEventArgs e)
