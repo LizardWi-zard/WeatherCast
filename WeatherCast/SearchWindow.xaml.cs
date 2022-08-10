@@ -23,5 +23,15 @@ namespace WeatherCast
         {
             InitializeComponent();
         }
+
+        private void AcceptClick(object sender, RoutedEventArgs e)
+        {
+            this.DialogResult = true;
+        }
+
+        public string CityName
+        {
+            get { return InputBox.Text; }
+        }
     }
 }

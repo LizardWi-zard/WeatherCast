@@ -6,20 +6,44 @@
         xmlns:local="clr-namespace:WeatherCast"
         mc:Ignorable="d"
         ResizeMode="NoResize"
-        Title="SearchWindow" Height="350" Width="600"
+        Title="Добавление города" Height="160" Width="440"
         FontFamily="Segoe UI"
         Background="#E9E9EB">
-    
-    <Grid>
 
-        <TextBox Height="40"
-                 Width="440"
-                 HorizontalAlignment="Center"
-                 VerticalAlignment="Top"
-                 Margin="0 100 0 0"
-                 TextAlignment="Left"
-                 FontSize="18"/>
+    <Grid Margin="10">
+        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30" />
+            <RowDefinition Height="30" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="Введите название города"
+                   TextAlignment="Center"
+                   FontSize="16"/>
+        
+        <TextBox Name="InputBox" 
+                 Grid.Row="1"
+                 Width="400" 
+                 Height="30"
+                 FontSize="20" />
+
+        <WrapPanel Grid.Row="2" 
+                   HorizontalAlignment="Center" 
+                   Margin="0,15,0,0">
+            
+            <Button Content="Добавить" 
+                    IsDefault="True" 
+                    Click="AcceptClick" 
+                    MinWidth="60" 
+                    Margin="0,0,10,0"/>
+            
+            <Button Content="Отмена"
+                    IsCancel="True" 
+                    MinWidth="60"/>
+            
+        </WrapPanel>
 
     </Grid>
-    
+
 </Window>
