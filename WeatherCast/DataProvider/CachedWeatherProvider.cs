@@ -49,6 +49,7 @@ namespace WeatherCast.DataProvider
 
             CurrentWeather weather;
             DateTime lastRequestTime = DateTime.Now;
+            SettingsProvider settings = SettingsProvider.getInstance();
 
             string fileCityName = null;
 
@@ -59,12 +60,14 @@ namespace WeatherCast.DataProvider
                 if (diff >= upadteCacheInterval)
                 {
                     lastRequestTime = lastRequestCurrentInfo.RequestTime;
+                    settings.LastRequestTime = lastRequestTime;
+
                     fileCityName = lastRequestCurrentInfo.CityName.ToLower();
                 }
             }
 
             var differentCities = fileCityName != cityName;
-
+            
             var difference = DateTime.Now.Subtract(lastRequestTime);
             if (difference >= upadteCacheInterval || differentCities)
             {
@@ -119,10 +122,8 @@ namespace WeatherCast.DataProvider
                 if (diff >= upadteCacheInterval)
                 {
                     lastRequestTime = lastRequestInfo.RequestTime;
-
                 }
             }
-
 
             var difference = DateTime.Now.Subtract(lastRequestTime);
             if (difference >= upadteCacheInterval)
@@ -160,73 +161,42 @@ namespace WeatherCast.DataProvider
                     weather = ForecastWeather.Empty;
                 }
             }
+
             return weather;
         }
 
-        public CurrentWeather[] GetMarkedCityCurrentWeather(List<string> markedCitiesNames)  //TODO: refactoring
-        { 
-            List<CurrentWeather> weather = new List<CurrentWeather>();
+        public List<CurrentWeather> GetMarkedCitiesCurrentWeather(List<string> markedCitiesNames)  //TODO: refactoring
+        {
             DateTime lastRequestTime = DateTime.Now;
-         
-            string fileCityName = null;
+            SettingsProvider settings = SettingsProvider.getInstance();
 
-            if (File.Exists(Definitions.MarkedCitiesCurrenWeatherWeatherInfoPath))
+            if (TryGetMarkedCityCurrentWeather(out List<CurrentWeather> markedCitiesWeather))
             {
-                if (markedCitiesNames.Count() == 0)
+                if( markedCitiesNames.Count() == 0)
                 {
-                    using (StreamReader sr = new StreamReader(Definitions.MarkedCitiesCurrenWeatherWeatherInfoPath))
-                    {
-                        JsonTextReader reader = new JsonTextReader(sr);
-                        return new JsonSerializer().Deserialize<CurrentWeather[]>(reader);
-                    }
+                    UpdateMarkedCitiesNames(markedCitiesWeather);
+
+                    return markedCitiesWeather;
                 }
             }
 
-            if (TryGetCurrentCityNameAndRequestTime(out LastRequestCurrentInfo lastRequestCurrentInfo))
-            {
-                var diff = lastRequestTime.Subtract(lastRequestCurrentInfo.RequestTime);
+            var updatedWeatherInfo = new List<CurrentWeather>();
 
-                if (diff >= upadteCacheInterval)
-                {
-                    lastRequestTime = lastRequestCurrentInfo.RequestTime;
-                }
-            }
-
-            var difference = DateTime.Now.Subtract(lastRequestTime);
+            var difference = DateTime.Now.Subtract(settings.LastRequestTime);
             
             foreach(string item in markedCitiesNames)
             {
                 Validate.CityName(item, nameof(item));
 
-                if (difference >= upadteCacheInterval)
-                {
-                    try
-                    {
-                        weather.Add(internetDataProvider.GetCurrentWeather(item));
-
-                        //SaveCurrentWeatherData(weather);
-                    }
-                    catch
-                    {
-                        weather.Add(CurrentWeather.Empty);
-                    }
-                }
-                else
-                {
-                    try
-                    {
-                        weather.Add(GetMarkedCity(item));
-                    }
-                    catch
-                    {
-                        weather.Add(internetDataProvider.GetCurrentWeather(item));
-
-                        //weather = CurrentWeather.Empty;
-                    }
-                }
+                //if (difference >= upadteCacheInterval)
+                //{
+                    updatedWeatherInfo.Add(internetDataProvider.GetCurrentWeather(item));
+                //}
             }
 
-            return weather.ToArray();
+            SaveMarkedCitiesCurrentWeatherInfo(markedCitiesWeather);
+
+            return updatedWeatherInfo;
         }
 
         private CurrentWeather GetMarkedCity(string name)
@@ -248,6 +218,16 @@ namespace WeatherCast.DataProvider
             }
 
             return null;
+        }
+
+        private void UpdateMarkedCitiesNames(List<CurrentWeather> Names)
+        {
+            SettingsProvider singleton = SettingsProvider.getInstance();
+
+            foreach(var item in Names)
+            {
+                singleton.AddCity(item.Name);
+            }
         }
 
         private void OnTimedEvent(object sourse, System.Timers.ElapsedEventArgs e)
@@ -304,6 +284,26 @@ namespace WeatherCast.DataProvider
             return true;
         }
 
+        private bool TryGetMarkedCityCurrentWeather(out List<CurrentWeather> markedCitiesWeather)
+        {
+            if (File.Exists(Definitions.MarkedCitiesCurrenWeatherWeatherInfoPath))
+            {
+                using (StreamReader sr = new StreamReader(Definitions.MarkedCitiesCurrenWeatherWeatherInfoPath))
+                {
+                    JsonTextReader reader = new JsonTextReader(sr);
+
+                    markedCitiesWeather = new JsonSerializer().Deserialize<List<CurrentWeather>>(reader);
+                }
+            }
+            else
+            {
+                markedCitiesWeather = new List<CurrentWeather>();
+                return false;
+            }
+
+            return true;
+        }
+
         private void SaveCurrentWeatherData(CurrentWeather weather) 
         {
             CreateIfNotExist(Path.GetDirectoryName(Definitions.SelectedCityCurrenWeatherInfoPath));
@@ -348,6 +348,18 @@ namespace WeatherCast.DataProvider
             {
                 JsonSerializer serializer = new JsonSerializer();
                 serializer.Serialize(sw, lastRequestInfo);
+                sw.Close();
+            }
+        }
+
+        private void SaveMarkedCitiesCurrentWeatherInfo(List<CurrentWeather> weather)
+        {
+            CreateIfNotExist(Path.GetDirectoryName(Definitions.MarkedCitiesCurrenWeatherWeatherInfoPath));
+
+            using (StreamWriter sw = File.CreateText(Definitions.MarkedCitiesCurrenWeatherWeatherInfoPath))
+            {
+                JsonSerializer serializer = new JsonSerializer();
+                serializer.Serialize(sw, weather);
                 sw.Close();
             }
         }
