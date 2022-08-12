@@ -7,11 +7,15 @@ using WeatherCast.Core;
 using WeatherCast.DataProvider;
 using WeatherCast.Model;
 using WeatherCast.Helpers;
+using System.Windows.Input;
 
 namespace WeatherCast.ViewModel
 {
     internal class MarkedCityViewModel : ViewModelBase
     {
+        private SettingsProvider singleton = SettingsProvider.getInstance();
+        private CurrentWeather _currentWeather;
+        private List<CurrentWeather> _markedCities;
 
         public delegate void OnButtonClick(object? sender, OnButtonClick? e);
 
@@ -22,25 +26,48 @@ namespace WeatherCast.ViewModel
             this.provider = provider;
             this.CurrentWeather = weather;
 
+            AddCityCommand = new RelayCommand(o =>
+            {
+                MarkedCities = provider.GetMarkedCitiesCurrentWeather(singleton.CitiyNames);
+
+                UpdateMarkedCitiesNames();
+            });
+
+            RemoveCityCommand = new RelayCommand(o =>
+            {
+                singleton = SettingsProvider.getInstance();
+
+                singleton.CitiyNames.RemoveAt(SelectedMarkedCity);
+                MarkedCities.RemoveAt(SelectedMarkedCity);
+
+                MarkedCities = provider.GetMarkedCitiesCurrentWeather(singleton.CitiyNames);
+            });
+
             ChangeViewCommand = new RelayCommand(o =>
             {
                 OnButtonClickEvent?.Invoke(this, null);
             });
 
-            MarkedCities = provider.GetMarkedCityCurrentWeather(MarkedCitiesNames);
+            MarkedCities = provider.GetMarkedCitiesCurrentWeather(singleton.CitiyNames);
+
+            UpdateMarkedCitiesNames();
         }
+
 
         public CachedWeatherProvider provider;
 
-        private CurrentWeather _currentWeather;
 
-        private CurrentWeather[] _markedCities;
+        public RelayCommand AddCityCommand { get; set; }
+
+        public RelayCommand RemoveCityCommand { get; set; }
 
         public RelayCommand ChangeViewCommand { get; set; }
 
+        public int SelectedMarkedCity { get; set; }
+
         public List<string> MarkedCitiesNames { get; set; } = new List<string>(); 
 
-        public CurrentWeather[] MarkedCities
+        public List<CurrentWeather> MarkedCities
         {
             get { return _markedCities; }
             set
@@ -61,32 +88,17 @@ namespace WeatherCast.ViewModel
                 RaisePropertyChanged(nameof(CurrentWeather));
             }
         }
+        
+        public void UpdateMarkedCitiesNames()
+        {
+            singleton = SettingsProvider.getInstance();
 
-        public void AddCity(string name)
-        {
-            Validate.CityName(name, nameof(name));
-        
-            if( MarkedCitiesNames.Count() <= 5)
+            singleton.CitiyNames.Clear();
+
+            foreach (var item in MarkedCities)
             {
-                MarkedCitiesNames.Add(name);
+                singleton.CitiyNames.Add(item.Name);
             }
-            else
-            {
-                MarkedCitiesNames.RemoveAt(0);
-                MarkedCitiesNames.Add(name);
-            }
-        }
-        
-        public void UpdateMarkedCitiesInfo()
-        {
-            List<CurrentWeather> weathers = new List<CurrentWeather>();
-        
-            foreach(var item in MarkedCitiesNames)
-            {
-                weathers.Add(provider.GetCurrentWeather(item.ToString()));
-            }
-        
-            MarkedCities = weathers.ToArray();
         }
 
         private void GetMarkedCities()
@@ -94,7 +106,7 @@ namespace WeatherCast.ViewModel
             using (StreamReader sr = new StreamReader(Definitions.MarkedCitiesCurrenWeatherWeatherInfoPath))
             {
                 JsonTextReader reader = new JsonTextReader(sr);
-                MarkedCities = new JsonSerializer().Deserialize<CurrentWeather[]>(reader);
+                MarkedCities = new JsonSerializer().Deserialize<List<CurrentWeather>>(reader);
             }
         }
 

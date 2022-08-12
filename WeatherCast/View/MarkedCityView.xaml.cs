@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using WeatherCast.Helpers;
 
 namespace WeatherCast.View
 {
@@ -28,8 +29,16 @@ namespace WeatherCast.View
         private void OpenSearchWindow(object sender, RoutedEventArgs e)
         {
             SearchWindow window = new SearchWindow();
-           
+
             window.ShowDialog();
+
+            SettingsProvider singleton = SettingsProvider.getInstance();
+
+            if (window.DialogResult == true)
+            {
+                singleton.AddCity(window.CityName);
+            }
+            
         }
 
         private void List_PreviewMouseWheel(object sender, MouseWheelEventArgs e)

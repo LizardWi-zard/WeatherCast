@@ -65,10 +65,22 @@
                     <Button HorizontalAlignment="Left"
                             VerticalAlignment="Bottom"
                             Margin="24 0 0 15"
-                            Style="{StaticResource MarkedCity}">
+                            Style="{StaticResource MarkedCity}" />
 
-                    </Button>
-
+                    <Button Background="White" 
+                            Name="NewCityButton"
+                            Height="120" 
+                            Width="120" 
+                            Content="+"
+                            FontSize="72"
+                            FontWeight="Light"
+                            FontFamily="Sugoe UI"
+                            Click="OpenSearchWindow"
+                            Command="{Binding AddCityCommand}"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Bottom"
+                            Margin="330 0 0 15"/>
+                    
                 </Grid>
 
                 <Grid Grid.Row="2">
@@ -86,7 +98,8 @@
                                HorizontalAlignment="Left"
                                Margin="22 0 0 0" />
 
-                    <ListBox Grid.Row="1"
+                    <ListBox Name="MarkedCityListBox"
+                             Grid.Row="1"
                              Margin="20 10 20 10"
                              ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                              ScrollViewer.VerticalScrollBarVisibility="Auto"
@@ -97,13 +110,21 @@
                              ItemsSource="{Binding MarkedCities}"
                              ItemContainerStyle="{StaticResource ListBoxMarkedCityItem}"
                              MaxWidth="1400"
-                             HorizontalAlignment="Left">
+                             HorizontalAlignment="Left"
+                             SelectedIndex="{Binding SelectedMarkedCity}">
 
                         <ListBox.ItemsPanel>
                             <ItemsPanelTemplate >
                                 <WrapPanel IsItemsHost="True"/>
                             </ItemsPanelTemplate>
                         </ListBox.ItemsPanel>
+
+                        <ListBox.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="Удалить"
+                                          Command="{Binding RemoveCityCommand}"/>
+                            </ContextMenu>
+                        </ListBox.ContextMenu>
 
 
                         <!--
