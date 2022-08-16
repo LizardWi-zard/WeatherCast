@@ -25,7 +25,7 @@
     <ScrollViewer Name="MainScrollViewer" 
                   VerticalScrollBarVisibility="Auto">
         <ScrollViewer.Background>
-            <ImageBrush ImageSource="{Binding Path=BackgroundImg}"
+            <ImageBrush ImageSource="{Binding Path=BackgroundImage}"
                         Stretch="UniformToFill"/>
         </ScrollViewer.Background>
 

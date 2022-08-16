@@ -24,6 +24,8 @@ namespace WeatherCast.Helpers
 
         public DateTime LastRequestTime { get; set; }
 
+        public bool FirstLaunch { get; set; } = true;
+
         public void AddCity(string name)
         {
             if (CitiyNames.Count() <= 5)

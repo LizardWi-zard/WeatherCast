@@ -55,21 +55,24 @@ namespace WeatherCast.DataProvider
 
             if (TryGetCurrentCityNameAndRequestTime(out LastRequestCurrentInfo lastRequestCurrentInfo))
             {
-                var diff = lastRequestTime.Subtract(lastRequestCurrentInfo.RequestTime);
+                lastRequestTime = lastRequestCurrentInfo.RequestTime;
 
-                if (diff >= upadteCacheInterval)
+                fileCityName = lastRequestCurrentInfo.CityName.ToLower();
+
+                if (settings.FirstLaunch == true)
                 {
-                    lastRequestTime = lastRequestCurrentInfo.RequestTime;
-                    settings.LastRequestTime = lastRequestTime;
+                    cityName = fileCityName;
 
-                    fileCityName = lastRequestCurrentInfo.CityName.ToLower();
+                    settings.FirstLaunch = false;
                 }
             }
+            else
+            {
+                lastRequestTime = settings.LastRequestTime;
+            }
 
-            var differentCities = fileCityName != cityName;
-            
             var difference = DateTime.Now.Subtract(lastRequestTime);
-            if (difference >= upadteCacheInterval || differentCities)
+            if (difference >= upadteCacheInterval)
             {
                 try
                 {
@@ -114,15 +117,15 @@ namespace WeatherCast.DataProvider
 
             ForecastWeather weather;
             DateTime lastRequestTime = DateTime.Now;
+            SettingsProvider settings = SettingsProvider.getInstance();
 
             if (TryGetForecastCityNameAndRequestTime(out LastRequestForecastInfo lastRequestInfo))
             {
-                var diff = lastRequestTime.Subtract(lastRequestInfo.RequestTime);
-
-                if (diff >= upadteCacheInterval)
-                {
-                    lastRequestTime = lastRequestInfo.RequestTime;
-                }
+                lastRequestTime = lastRequestInfo.RequestTime;
+            }
+            else
+            {
+                lastRequestTime = settings.LastRequestTime;
             }
 
             var difference = DateTime.Now.Subtract(lastRequestTime);
@@ -188,13 +191,10 @@ namespace WeatherCast.DataProvider
             {
                 Validate.CityName(item, nameof(item));
 
-                //if (difference >= upadteCacheInterval)
-                //{
-                    updatedWeatherInfo.Add(internetDataProvider.GetCurrentWeather(item));
-                //}
+                updatedWeatherInfo.Add(internetDataProvider.GetCurrentWeather(item));
             }
 
-            SaveMarkedCitiesCurrentWeatherInfo(markedCitiesWeather);
+            SaveMarkedCitiesCurrentWeatherInfo(updatedWeatherInfo);
 
             return updatedWeatherInfo;
         }
@@ -291,7 +291,6 @@ namespace WeatherCast.DataProvider
                 using (StreamReader sr = new StreamReader(Definitions.MarkedCitiesCurrenWeatherWeatherInfoPath))
                 {
                     JsonTextReader reader = new JsonTextReader(sr);
-
                     markedCitiesWeather = new JsonSerializer().Deserialize<List<CurrentWeather>>(reader);
                 }
             }
