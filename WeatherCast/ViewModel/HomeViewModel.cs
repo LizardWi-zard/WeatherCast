@@ -9,6 +9,7 @@ namespace WeatherCast.ViewModel
     {
         private string longitude;
         private string latitude;
+        private string _backgroundImage;
         private DailyCast _selectedItem;
         private CurrentWeather _currentWeather;
         private ForecastWeather _forecastWeather;
@@ -25,7 +26,7 @@ namespace WeatherCast.ViewModel
 
             WelcomeText = SetMessageByTime();
 
-            BackgroundImg = SetBackgroundImg(CurrentWeather);
+            BackgroundImage = SetBackgroundImage(CurrentWeather);
         }
 
         public CurrentWeather CurrentWeather
@@ -52,9 +53,18 @@ namespace WeatherCast.ViewModel
             }
         }
 
-        public string Title { get; set; }
+        public string BackgroundImage
+        {
+            get { return _backgroundImage; }
+            set
+            {
+                _backgroundImage = value;
 
-        public string BackgroundImg { get; set; }
+                RaisePropertyChanged(nameof(BackgroundImage));
+            }
+        }
+
+        public string Title { get; set; }
 
         public string WelcomeText { get; set; }
 
@@ -72,6 +82,14 @@ namespace WeatherCast.ViewModel
 
                 RaisePropertyChanged(nameof(SelectedItem));
             }
+        }
+
+        public void UpdateData(CurrentWeather currentWeather, ForecastWeather forecastWeather)
+        {
+            CurrentWeather = currentWeather;
+            ForecastWeather = forecastWeather;
+
+            BackgroundImage = SetBackgroundImage(CurrentWeather);
         }
 
         static string SetMessageByTime()
@@ -100,11 +118,8 @@ namespace WeatherCast.ViewModel
             return message;
         }
 
-        static string SetBackgroundImg(CurrentWeather CurrentWeather)
+        static string SetBackgroundImage(CurrentWeather CurrentWeather)
         {
-            // компьютеро-зависимый путь
-            // string link = "C:/Users/ArEf/source/repos/WeatherCast/WeatherCast/Images/Background/";
-            // сделать так же во всех остальных местах использования файлов
             string link = @"..\Images\Background\";
 
             string currentWeather = CurrentWeather.Weather[0].Main.ToLower();

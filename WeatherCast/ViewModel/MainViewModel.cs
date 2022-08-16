@@ -52,17 +52,6 @@ namespace WeatherCast.ViewModel
             });
 
             cachedWeatherProvider.OnWeatherAutoUpdate += UpdateData;
-
-            /*
-            
-            SearchCommand = new RelayCommand(o =>
-            {
-                Response = currentWeather;
-                SearchVM.UpdateControlResponse(control, Response);
-
-                CurrentView = SearchVM;
-            });
-            */
         }
 
         public ViewModelBase VMBase { get; set; }
@@ -105,8 +94,8 @@ namespace WeatherCast.ViewModel
 
         private void UpdateData(object sourse, WeatherUpdatedEventArgs? e)
         {
-            HomeVM.CurrentWeather = e.CurrentWeather;
-            HomeVM.ForecastWeather = e.ForecastWeather;
+            HomeVM.UpdateData(e.CurrentWeather, e.ForecastWeather);
+
             MarkedCityVM.CurrentWeather = e.CurrentWeather;
         }
 
