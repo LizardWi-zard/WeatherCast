@@ -14,15 +14,18 @@ namespace WeatherCast.ViewModel
         private CurrentWeather _currentWeather;
         private ForecastWeather _forecastWeather;
         private Timer timer = new Timer();
+        private CachedWeatherProvider _cachedWeatherProvider;
 
         public HomeViewModel(CachedWeatherProvider cachedWeatherProvider)
         {
-            CurrentWeather = cachedWeatherProvider.GetCurrentWeather(Definitions.DefaultCity);
+            _cachedWeatherProvider = cachedWeatherProvider; 
+
+            CurrentWeather = _cachedWeatherProvider.GetCurrentWeather(Definitions.DefaultCity);
 
             latitude = CurrentWeather.Coord.Latitude.ToString();
             longitude = CurrentWeather.Coord.Longitude.ToString();
 
-            ForecastWeather = cachedWeatherProvider.GetForecastWeather(longitude, latitude);
+            ForecastWeather = _cachedWeatherProvider.GetForecastWeather(longitude, latitude);
 
             WelcomeText = SetMessageByTime();
 
@@ -82,6 +85,18 @@ namespace WeatherCast.ViewModel
 
                 RaisePropertyChanged(nameof(SelectedItem));
             }
+        }
+
+        public void UpdateData(CurrentWeather currentWeather)
+        {
+            CurrentWeather = currentWeather;
+
+            latitude = CurrentWeather.Coord.Latitude.ToString();
+            longitude = CurrentWeather.Coord.Longitude.ToString();
+
+            ForecastWeather = _cachedWeatherProvider.GetForecastWeather(longitude, latitude);
+
+            BackgroundImage = SetBackgroundImage(CurrentWeather);
         }
 
         public void UpdateData(CurrentWeather currentWeather, ForecastWeather forecastWeather)

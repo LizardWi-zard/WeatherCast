@@ -19,7 +19,7 @@
 
                     <ControlTemplate TargetType="ListBoxItem">
 
-                        <Button x:Name="InnerButton"
+                        <Border x:Name="InnerButton"
                                 BorderThickness="2"
                                 Padding="0"
                                 BorderBrush="Transparent">
@@ -119,7 +119,7 @@
 
                             </Grid>
 
-                        </Button>
+                        </Border>
 
                     </ControlTemplate>
 

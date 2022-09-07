@@ -32,7 +32,7 @@ namespace WeatherCast.ViewModel
             MarkedCityVM = new MarkedCityViewModel(HomeVM.CurrentWeather, cachedWeatherProvider);
             SettingsVM = new SettingsViewModel(HomeVM.CurrentWeather.Name);
 
-            MarkedCityVM.OnButtonClickEvent += ChangeView;
+            MarkedCityVM.ChangeViewEvent += ChangeView;
 
             CurrentView = HomeVM;
 
@@ -99,9 +99,11 @@ namespace WeatherCast.ViewModel
             MarkedCityVM.CurrentWeather = e.CurrentWeather;
         }
 
-        private void ChangeView(object sourse, OnButtonClick? e)
+        private void ChangeView(object sourse, CurrentCityCangedArgs? e)
         {
             CurrentView = HomeVM;
+
+            HomeVM.UpdateData(e.CurrentWeather);
 
             IsChecked = true;
         }

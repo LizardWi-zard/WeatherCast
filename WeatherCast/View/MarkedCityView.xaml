@@ -111,7 +111,8 @@
                              ItemContainerStyle="{StaticResource ListBoxMarkedCityItem}"
                              MaxWidth="1400"
                              HorizontalAlignment="Left"
-                             SelectedIndex="{Binding SelectedMarkedCity}">
+                             SelectedIndex="{Binding SelectedMarkedCity}"
+                             SelectedItem="{Binding SelectedCurrentWeather}">
 
                         <ListBox.ItemsPanel>
                             <ItemsPanelTemplate >
