@@ -89,7 +89,7 @@ namespace WeatherCast.Tests.DataProvider
             var target = new CachedWeatherProvider(internetProviderMock, fileProviderMock, TimeSpan.FromSeconds(5));
 
             // action
-            var actualResult = target.GetForecastWeather("54,196291", "37,621648");
+            var actualResult = target.GetForecastWeather("54,196291", "37,621648", false);
 
             // assertion
             Assert.IsFalse(internetProviderMock.GetForecastWeatherWasCalled);
@@ -109,7 +109,7 @@ namespace WeatherCast.Tests.DataProvider
             ForecastWeather result = new ForecastWeather();
 
             // action
-            var actualResult = target.GetForecastWeather("54,196291", "37,621648");
+            var actualResult = target.GetForecastWeather("54,196291", "37,621648", true);
 
             // assertion
             Assert.IsTrue(internetProviderMock.GetForecastWeatherWasCalled);

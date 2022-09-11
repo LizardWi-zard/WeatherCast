@@ -25,7 +25,7 @@ namespace WeatherCast.ViewModel
             latitude = CurrentWeather.Coord.Latitude.ToString();
             longitude = CurrentWeather.Coord.Longitude.ToString();
 
-            ForecastWeather = _cachedWeatherProvider.GetForecastWeather(longitude, latitude);
+            ForecastWeather = _cachedWeatherProvider.GetForecastWeather(longitude, latitude, true);
 
             WelcomeText = SetMessageByTime();
 
@@ -49,8 +49,6 @@ namespace WeatherCast.ViewModel
             set
             {
                 _forecastWeather = value;
-
-                ResetSelectedItem();
 
                 RaisePropertyChanged(nameof(ForecastWeather));
             }
@@ -89,14 +87,17 @@ namespace WeatherCast.ViewModel
 
         public void UpdateData(CurrentWeather currentWeather)
         {
-            CurrentWeather = currentWeather;
+            if(currentWeather != null)
+            {
+                CurrentWeather = currentWeather;
 
-            latitude = CurrentWeather.Coord.Latitude.ToString();
-            longitude = CurrentWeather.Coord.Longitude.ToString();
+                latitude = currentWeather.Coord.Latitude.ToString();
+                longitude = currentWeather.Coord.Longitude.ToString();
 
-            ForecastWeather = _cachedWeatherProvider.GetForecastWeather(longitude, latitude);
+                ForecastWeather = _cachedWeatherProvider.GetForecastWeather(longitude, latitude, true);
 
-            BackgroundImage = SetBackgroundImage(CurrentWeather);
+                BackgroundImage = SetBackgroundImage(CurrentWeather);
+            }
         }
 
         public void UpdateData(CurrentWeather currentWeather, ForecastWeather forecastWeather)

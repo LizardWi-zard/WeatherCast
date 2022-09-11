@@ -28,15 +28,7 @@ namespace WeatherCast.DataProvider
             timer.Elapsed += OnTimedEvent;
             timer.Start();
 
-            if (File.Exists(Definitions.DirectoryPath)) //TODO: find why something creating directory as file
-            {
-                File.Delete(Definitions.DirectoryPath);
-            }
-
-            if (!Directory.Exists(Definitions.DirectoryPath))
-            {
-                Directory.CreateDirectory(Definitions.DirectoryPath);
-            }
+            CheckDirectoryExistion();
         }
 
         public delegate void OnWeatherUpdated(object? sender, WeatherUpdatedEventArgs? e);
@@ -51,13 +43,17 @@ namespace WeatherCast.DataProvider
             DateTime lastRequestTime = DateTime.Now;
             SettingsProvider settings = SettingsProvider.getInstance();
 
-            string fileCityName = null;
+            string fileCityName;
 
-            if (TryGetCurrentCityNameAndRequestTime(out LastRequestCurrentInfo lastRequestCurrentInfo))
+            LastRequestCurrentInfo lastRequestInfo;
+
+            lastRequestInfo = (LastRequestCurrentInfo)ReadFromFileOfCertainInfoType(typeof(LastRequestCurrentInfo).ToString());
+
+            if (lastRequestInfo != null)
             {
-                lastRequestTime = lastRequestCurrentInfo.RequestTime;
+                lastRequestTime = lastRequestInfo.RequestTime;
 
-                fileCityName = lastRequestCurrentInfo.CityName.ToLower();
+                fileCityName = lastRequestInfo.CityName.ToLower();
 
                 if (settings.FirstLaunch == true)
                 {
@@ -80,13 +76,13 @@ namespace WeatherCast.DataProvider
 
                     SaveCurrentWeatherData(weather);
 
-                    lastRequestCurrentInfo = new LastRequestCurrentInfo()
+                    lastRequestInfo = new LastRequestCurrentInfo()
                     {
                         CityName = cityName,
                         RequestTime = DateTime.Now
                     };
                     
-                    SaveLastCurrentRequestInfo(lastRequestCurrentInfo);
+                    SaveLastCurrentRequestInfo(lastRequestInfo);
                 }
                 catch
                 {
@@ -110,7 +106,7 @@ namespace WeatherCast.DataProvider
             return weather;
         }
 
-        public ForecastWeather GetForecastWeather(string longitude, string latitude)
+        public ForecastWeather GetForecastWeather(string longitude, string latitude, bool isPlannedRequest)
         {
             Validate.GeographicCoordinateValue(longitude, "longitude");
             Validate.GeographicCoordinateValue(latitude, "latitude");
@@ -119,7 +115,11 @@ namespace WeatherCast.DataProvider
             DateTime lastRequestTime = DateTime.Now;
             SettingsProvider settings = SettingsProvider.getInstance();
 
-            if (TryGetForecastCityNameAndRequestTime(out LastRequestForecastInfo lastRequestInfo))
+            LastRequestForecastInfo lastRequestInfo;
+
+            lastRequestInfo = (LastRequestForecastInfo)ReadFromFileOfCertainInfoType(typeof(LastRequestForecastInfo).ToString());
+
+            if (lastRequestInfo != null)
             {
                 lastRequestTime = lastRequestInfo.RequestTime;
             }
@@ -129,11 +129,11 @@ namespace WeatherCast.DataProvider
             }
 
             var difference = DateTime.Now.Subtract(lastRequestTime);
-            if (difference >= upadteCacheInterval)
+            if (difference >= upadteCacheInterval || isPlannedRequest)
             {
                 try
                 {
-                    weather = internetDataProvider.GetForecastWeather(longitude, latitude);
+                    weather = internetDataProvider.GetForecastWeather(longitude, latitude, true);
 
                     SaveFutureWeatherData(weather);
 
@@ -156,7 +156,7 @@ namespace WeatherCast.DataProvider
             {
                 try
                 {
-                    weather = fileDataProvider.GetForecastWeather(longitude, latitude);
+                    weather = fileDataProvider.GetForecastWeather(longitude, latitude, true);
                 }
                 catch
                 {
@@ -172,8 +172,11 @@ namespace WeatherCast.DataProvider
         {
             DateTime lastRequestTime = DateTime.Now;
             SettingsProvider settings = SettingsProvider.getInstance();
+            List<CurrentWeather> markedCitiesWeather;
 
-            if (TryGetMarkedCityCurrentWeather(out List<CurrentWeather> markedCitiesWeather))
+            markedCitiesWeather = (List<CurrentWeather>)ReadFromFileOfCertainInfoType(typeof(List<CurrentWeather>).ToString());
+
+            if (markedCitiesWeather != null)
             {
                 if( markedCitiesNames.Count() == 0)
                 {
@@ -199,27 +202,6 @@ namespace WeatherCast.DataProvider
             return updatedWeatherInfo;
         }
 
-        private CurrentWeather GetMarkedCity(string name)
-        {
-            CurrentWeather[] markedCities;
-
-            using (StreamReader sr = new StreamReader(Definitions.MarkedCitiesCurrenWeatherWeatherInfoPath))
-            {
-                JsonTextReader reader = new JsonTextReader(sr);
-                markedCities = new JsonSerializer().Deserialize<CurrentWeather[]>(reader);
-            }
-
-            foreach( var item in markedCities)
-            {
-                if(item.Name.ToLower() == name)
-                {
-                    return item;
-                }
-            }
-
-            return null;
-        }
-
         private void UpdateMarkedCitiesNames(List<CurrentWeather> Names)
         {
             SettingsProvider singleton = SettingsProvider.getInstance();
@@ -232,75 +214,86 @@ namespace WeatherCast.DataProvider
 
         private void OnTimedEvent(object sourse, System.Timers.ElapsedEventArgs e)
         {
-            TryGetCurrentCityNameAndRequestTime(out LastRequestCurrentInfo lastRequestInfo);
+            LastRequestCurrentInfo lastRequestInfo;
+
+            lastRequestInfo = (LastRequestCurrentInfo)ReadFromFileOfCertainInfoType(typeof(LastRequestCurrentInfo).ToString());
 
             var current = GetCurrentWeather(lastRequestInfo.CityName);
 
             var longitude = current.Coord.Longitude.ToString();
             var latitude = current.Coord.Latitude.ToString();
 
-            var forecast = GetForecastWeather(longitude, latitude);
+            var forecast = GetForecastWeather(longitude, latitude, true);
 
             var args = new WeatherUpdatedEventArgs(current, forecast);
 
             OnWeatherAutoUpdate?.Invoke(this, args);
         }
 
-        private bool TryGetCurrentCityNameAndRequestTime(out LastRequestCurrentInfo lastRequestInfo)
+        private object ReadFromFileOfCertainInfoType(string fileInfoType)
         {
-            if (File.Exists(Definitions.RequestCurrentInfoTimePath))
-            {
-                using (StreamReader sr = new StreamReader(Definitions.RequestCurrentInfoTimePath))
-                {
-                    JsonTextReader reader = new JsonTextReader(sr);
-                    lastRequestInfo = new JsonSerializer().Deserialize<LastRequestCurrentInfo>(reader);
-                }
-            }
-            else
-            {
-                lastRequestInfo = new LastRequestCurrentInfo();
-                return false;
-            }
+            string filePath;
 
-            return true;
-        }
+            var FileType = typeof(LastRequestCurrentInfo);
 
-        private bool TryGetForecastCityNameAndRequestTime(out LastRequestForecastInfo lastRequestInfo)
-        {
-            if (File.Exists(Definitions.RequestFutureInfoTimePath))
+            switch (fileInfoType)
             {
-                using (StreamReader sr = new StreamReader(Definitions.RequestFutureInfoTimePath))
-                {
-                    JsonTextReader reader = new JsonTextReader(sr);
-                    lastRequestInfo = new JsonSerializer().Deserialize<LastRequestForecastInfo>(reader);
-                }
-            }
-            else
-            {
-                lastRequestInfo = new LastRequestForecastInfo();
-                return false;
-            }
+                case "WeatherCast.DataProvider.LastRequestCurrentInfo":
+                    filePath = Definitions.RequestCurrentInfoTimePath;
+                    LastRequestCurrentInfo lastRequestCurrentInfo;
+                    if (File.Exists(filePath))
+                    {
+                        using (StreamReader sr = new StreamReader(filePath))
+                        {
+                            JsonTextReader reader = new JsonTextReader(sr);
+                            lastRequestCurrentInfo = new JsonSerializer().Deserialize<LastRequestCurrentInfo>(reader);
+                        }
+                    }
+                    else
+                    {
+                        lastRequestCurrentInfo = null;
+                    }
+                    return lastRequestCurrentInfo;
 
-            return true;
-        }
+                case "WeatherCast.DataProvider.LastRequestForecastInfo":
+                    filePath = Definitions.RequestFutureInfoTimePath;
+                    LastRequestForecastInfo lastRequesForecasttInfo;
+                    if (File.Exists(filePath))
+                    {
+                        using (StreamReader sr = new StreamReader(filePath))
+                        {
+                            JsonTextReader reader = new JsonTextReader(sr);
+                            lastRequesForecasttInfo = new JsonSerializer().Deserialize<LastRequestForecastInfo>(reader);
+                        }
+                    }
+                    else
+                    {
+                        lastRequesForecasttInfo = new LastRequestForecastInfo();
+                    }
+                    return lastRequesForecasttInfo;
 
-        private bool TryGetMarkedCityCurrentWeather(out List<CurrentWeather> markedCitiesWeather)
-        {
-            if (File.Exists(Definitions.MarkedCitiesCurrenWeatherWeatherInfoPath))
-            {
-                using (StreamReader sr = new StreamReader(Definitions.MarkedCitiesCurrenWeatherWeatherInfoPath))
-                {
-                    JsonTextReader reader = new JsonTextReader(sr);
-                    markedCitiesWeather = new JsonSerializer().Deserialize<List<CurrentWeather>>(reader);
-                }
-            }
-            else
-            {
-                markedCitiesWeather = new List<CurrentWeather>();
-                return false;
-            }
 
-            return true;
+                case "System.Collections.Generic.List`1[WeatherCast.Model.CurrentWeather]":
+                    filePath = Definitions.MarkedCitiesCurrenWeatherWeatherInfoPath;
+                    List<CurrentWeather> lastRequestListInfo;
+                    if (File.Exists(filePath))
+                    {
+                        using (StreamReader sr = new StreamReader(filePath))
+                        {
+                            JsonTextReader reader = new JsonTextReader(sr);
+                            lastRequestListInfo = new JsonSerializer().Deserialize<List<CurrentWeather>>(reader);
+                        }
+                    }
+                    else
+                    {
+                        lastRequestListInfo = new List<CurrentWeather>();
+                    }
+                    return lastRequestListInfo;
+
+
+                default:
+                    return null;
+            }
         }
 
         private void SaveCurrentWeatherData(CurrentWeather weather) 
@@ -380,6 +373,19 @@ namespace WeatherCast.DataProvider
             }
 
             File.Create(path).Close();
+        }
+
+        private void CheckDirectoryExistion()
+        {
+            if (File.Exists(Definitions.DirectoryPath)) //TODO: find why something creating directory as file
+            {
+                File.Delete(Definitions.DirectoryPath);
+            }
+
+            if (!Directory.Exists(Definitions.DirectoryPath))
+            {
+                Directory.CreateDirectory(Definitions.DirectoryPath);
+            }
         }
     }
 }

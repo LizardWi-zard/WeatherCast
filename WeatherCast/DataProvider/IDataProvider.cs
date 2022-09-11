@@ -6,6 +6,6 @@ namespace WeatherCast.DataProvider
     {
         CurrentWeather GetCurrentWeather(string cityName);
 
-        ForecastWeather GetForecastWeather(string longitude, string latitude);
+        ForecastWeather GetForecastWeather(string longitude, string latitude, bool isPlannedRequest);
     }
 }

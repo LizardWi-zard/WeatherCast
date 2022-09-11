@@ -29,7 +29,7 @@ namespace WeatherCast.DataProvider
             return currentWeather;
         }
 
-        public ForecastWeather GetForecastWeather(string lon, string lat)
+        public ForecastWeather GetForecastWeather(string lon, string lat, bool isPlannedRequest)
         {
             Validate.GeographicCoordinateValue(lon, "longitude");
             Validate.GeographicCoordinateValue(lat, "latitude");
